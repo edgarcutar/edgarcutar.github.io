@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>tidytuesday | Edgar Cutar Junior</title>
+    <link>/tags/tidytuesday/</link>
+      <atom:link href="/tags/tidytuesday/index.xml" rel="self" type="application/rss+xml" />
+    <description>tidytuesday</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Tue, 06 Aug 2019 08:54:32 -0300</lastBuildDate>
+    <image>
+      <url>/img/edgar.jpg</url>
+      <title>tidytuesday</title>
+      <link>/tags/tidytuesday/</link>
+    </image>
+    
+    <item>
+      <title>Uma Análise (Quase) Estatística De Bob Ross</title>
+      <link>/post/2019-08-06-bob/</link>
+      <pubDate>Tue, 06 Aug 2019 08:54:32 -0300</pubDate>
+      <guid>/post/2019-08-06-bob/</guid>
+      <description>
+
+
+&lt;p&gt;A &lt;a href=&#34;https://github.com/rfordatascience/tidytuesday&#34;&gt;Tidy Tuesday&lt;/a&gt; dessa semana trás um dataset sobre &lt;a href=&#34;https://pt.wikipedia.org/wiki/Bob_Ross&#34;&gt;Bob Ross&lt;/a&gt;. Bob foi um pintor americano conhecido pelo programa &lt;a href=&#34;https://pt.wikipedia.org/wiki/The_Joy_of_Painting&#34;&gt;&lt;em&gt;The Joy of Painting&lt;/em&gt;&lt;/a&gt;, que foi ao ar nos anos 80 e 90 nos EUA, Canadá e Europa. No seu programa, ele mostrava técnicas de pintura a óleo enquanto completava uma pintura toda semana.&lt;/p&gt;
+&lt;p&gt;O dataset sobre o trabalho de Bob Ross foi fornecido para a #tidytuesday pelo site &lt;a href=&#34;https://fivethirtyeight.com/&#34;&gt;538&lt;/a&gt;:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;if (!require(&amp;quot;pacman&amp;quot;)) install.packages(&amp;quot;pacman&amp;quot;)
+pacman::p_load(tidyverse, janitor)
+
+bob_ross &amp;lt;- readr::read_csv(&amp;quot;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-08-06/bob-ross.csv&amp;quot;) %&amp;gt;% 
+  clean_names()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Em primeiro lugar, vamos ver o que temos nos dados:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bob_ross %&amp;gt;% head()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 6 x 69
+##   episode title apple_frame aurora_borealis  barn beach  boat bridge
+##   &amp;lt;chr&amp;gt;   &amp;lt;chr&amp;gt;       &amp;lt;dbl&amp;gt;           &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt;
+## 1 S01E01  &amp;quot;\&amp;quot;A~           0               0     0     0     0      0
+## 2 S01E02  &amp;quot;\&amp;quot;M~           0               0     0     0     0      0
+## 3 S01E03  &amp;quot;\&amp;quot;E~           0               0     0     0     0      0
+## 4 S01E04  &amp;quot;\&amp;quot;W~           0               0     0     0     0      0
+## 5 S01E05  &amp;quot;\&amp;quot;Q~           0               0     0     0     0      0
+## 6 S01E06  &amp;quot;\&amp;quot;W~           0               0     0     0     0      0
+## # ... with 61 more variables: building &amp;lt;dbl&amp;gt;, bushes &amp;lt;dbl&amp;gt;, cabin &amp;lt;dbl&amp;gt;,
+## #   cactus &amp;lt;dbl&amp;gt;, circle_frame &amp;lt;dbl&amp;gt;, cirrus &amp;lt;dbl&amp;gt;, cliff &amp;lt;dbl&amp;gt;,
+## #   clouds &amp;lt;dbl&amp;gt;, conifer &amp;lt;dbl&amp;gt;, cumulus &amp;lt;dbl&amp;gt;, deciduous &amp;lt;dbl&amp;gt;,
+## #   diane_andre &amp;lt;dbl&amp;gt;, dock &amp;lt;dbl&amp;gt;, double_oval_frame &amp;lt;dbl&amp;gt;, farm &amp;lt;dbl&amp;gt;,
+## #   fence &amp;lt;dbl&amp;gt;, fire &amp;lt;dbl&amp;gt;, florida_frame &amp;lt;dbl&amp;gt;, flowers &amp;lt;dbl&amp;gt;,
+## #   fog &amp;lt;dbl&amp;gt;, framed &amp;lt;dbl&amp;gt;, grass &amp;lt;dbl&amp;gt;, guest &amp;lt;dbl&amp;gt;,
+## #   half_circle_frame &amp;lt;dbl&amp;gt;, half_oval_frame &amp;lt;dbl&amp;gt;, hills &amp;lt;dbl&amp;gt;,
+## #   lake &amp;lt;dbl&amp;gt;, lakes &amp;lt;dbl&amp;gt;, lighthouse &amp;lt;dbl&amp;gt;, mill &amp;lt;dbl&amp;gt;, moon &amp;lt;dbl&amp;gt;,
+## #   mountain &amp;lt;dbl&amp;gt;, mountains &amp;lt;dbl&amp;gt;, night &amp;lt;dbl&amp;gt;, ocean &amp;lt;dbl&amp;gt;,
+## #   oval_frame &amp;lt;dbl&amp;gt;, palm_trees &amp;lt;dbl&amp;gt;, path &amp;lt;dbl&amp;gt;, person &amp;lt;dbl&amp;gt;,
+## #   portrait &amp;lt;dbl&amp;gt;, rectangle_3d_frame &amp;lt;dbl&amp;gt;, rectangular_frame &amp;lt;dbl&amp;gt;,
+## #   river &amp;lt;dbl&amp;gt;, rocks &amp;lt;dbl&amp;gt;, seashell_frame &amp;lt;dbl&amp;gt;, snow &amp;lt;dbl&amp;gt;,
+## #   snowy_mountain &amp;lt;dbl&amp;gt;, split_frame &amp;lt;dbl&amp;gt;, steve_ross &amp;lt;dbl&amp;gt;,
+## #   structure &amp;lt;dbl&amp;gt;, sun &amp;lt;dbl&amp;gt;, tomb_frame &amp;lt;dbl&amp;gt;, tree &amp;lt;dbl&amp;gt;, trees &amp;lt;dbl&amp;gt;,
+## #   triple_frame &amp;lt;dbl&amp;gt;, waterfall &amp;lt;dbl&amp;gt;, waves &amp;lt;dbl&amp;gt;, windmill &amp;lt;dbl&amp;gt;,
+## #   window_frame &amp;lt;dbl&amp;gt;, winter &amp;lt;dbl&amp;gt;, wood_framed &amp;lt;dbl&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Temos cada uma das 403 pinturas que Bob Ross fez ao longo dos 11 anos e 31 temporadas de &lt;em&gt;The Joy of Painting&lt;/em&gt;, cada uma delas contendo os diversos elementos presentes em cada pintura: casas, barcos, palmeiras, árvores etc.&lt;/p&gt;
+&lt;p&gt;Vamos usar a função &lt;code&gt;gather&lt;/code&gt; para deixar a tabela mais fácil de ser manipulada daqui pra frente, colocando os diversos elementos em uma única coluna e sua existência ou não como outra coluna. Vamos também separar episódio e temporada em colunas próprias, numéricas, usando algumas funções do pacote &lt;code&gt;stringr&lt;/code&gt; e um pouquinho de &lt;code&gt;regex&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bob_ross_gather &amp;lt;- bob_ross %&amp;gt;% 
+  separate(episode, into = c(&amp;quot;season&amp;quot;, &amp;quot;episode&amp;quot;), sep = &amp;quot;E&amp;quot;) %&amp;gt;% 
+  mutate(season = str_extract(season, &amp;quot;[:digit:]+&amp;quot;)) %&amp;gt;% 
+  mutate_at(vars(season, episode), as.integer) %&amp;gt;% 
+  gather(apple_frame:wood_framed, key = element, value = presence) %&amp;gt;% 
+  print()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 27,001 x 5
+##    season episode title                     element     presence
+##     &amp;lt;int&amp;gt;   &amp;lt;int&amp;gt; &amp;lt;chr&amp;gt;                     &amp;lt;chr&amp;gt;          &amp;lt;dbl&amp;gt;
+##  1      1       1 &amp;quot;\&amp;quot;A WALK IN THE WOODS\&amp;quot;&amp;quot; apple_frame        0
+##  2      1       2 &amp;quot;\&amp;quot;MT. MCKINLEY\&amp;quot;&amp;quot;        apple_frame        0
+##  3      1       3 &amp;quot;\&amp;quot;EBONY SUNSET\&amp;quot;&amp;quot;        apple_frame        0
+##  4      1       4 &amp;quot;\&amp;quot;WINTER MIST\&amp;quot;&amp;quot;         apple_frame        0
+##  5      1       5 &amp;quot;\&amp;quot;QUIET STREAM\&amp;quot;&amp;quot;        apple_frame        0
+##  6      1       6 &amp;quot;\&amp;quot;WINTER MOON\&amp;quot;&amp;quot;         apple_frame        0
+##  7      1       7 &amp;quot;\&amp;quot;AUTUMN MOUNTAINS\&amp;quot;&amp;quot;    apple_frame        0
+##  8      1       8 &amp;quot;\&amp;quot;PEACEFUL VALLEY\&amp;quot;&amp;quot;     apple_frame        0
+##  9      1       9 &amp;quot;\&amp;quot;SEASCAPE\&amp;quot;&amp;quot;            apple_frame        0
+## 10      1      10 &amp;quot;\&amp;quot;MOUNTAIN LAKE\&amp;quot;&amp;quot;       apple_frame        0
+## # ... with 26,991 more rows&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Agora vamos ver quais são os elementos mais presentes nas pinturas e separar os 20 primeiros.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;top_elements &amp;lt;- bob_ross_gather %&amp;gt;% 
+  group_by(element) %&amp;gt;% 
+  summarise(presence = sum(presence)) %&amp;gt;% 
+  arrange(-presence) %&amp;gt;% 
+  top_n(20, presence) %&amp;gt;% 
+  mutate(element = factor(element, levels = element)) #transformando em factor para manter a ordem
+
+top_elements %&amp;gt;% 
+  ggplot(aes(x = element, y = presence)) + 
+  geom_point(size=3) + 
+  geom_segment(aes(x = element, 
+                   xend = element, 
+                   y = 0, 
+                   yend = presence)) + 
+  labs(x = NULL,
+       y = &amp;quot;Nº de Pinturas&amp;quot;,
+       title = &amp;quot;Elementos mais presentes nas pinturas de Bob Ross&amp;quot;, 
+       caption = &amp;quot;Fonte: Tidy Tuesday (https://github.com/rfordatascience/tidytuesday)&amp;quot;) + 
+  coord_flip() +
+  theme_bw()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-08-06-bob/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Em primeiro lugar, chamam atenção as árvores: 89% de suas pinturas contém ao menos uma árvore, e quase 84% delas possuem mais de uma. Curiosidade: uma vez que Bob pintasse a primeira árvore, ele não pintava a segunda, ele pintava uma “amiga” da primeira. Os dois próximos elementos da lista tratam dos tipos de árvores pintadas, decíduas e coníferas. Para os leigos: árvores que perdem folhas no inverno e pinheiros.&lt;/p&gt;
+&lt;p&gt;Essa paisagem de coníferas e decíduas remete ao segundo tema mais constante da obra de Bob Ross, o inverno. Bob Ross ingressou na Força Aérea aos 17 anos (uma coisa que temos em comum). Diferente de mim, no entanto, ele continuou por lá, passando 20 anos na Base Aérea de Eielson, no Alasca. Isso parece ter permeado sua arte, uma vez que pinturas de áreas congeladas parece ter sido um &lt;em&gt;trend&lt;/em&gt; em sua carreira. Montanhas nevadas, neve, inverno, são outros elementos constantes em sua obra.&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;cold.jpg&#34; alt=&#34;Um tema constante&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;Um tema constante&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Puxando para o meu lado florestal, separei manualmente todas as referências a elementos vegetais nas obras de Bob. Se deixei passar algum, me avisem:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;veggies &amp;lt;- c(&amp;quot;bushes&amp;quot;, &amp;quot;cactus&amp;quot;, &amp;quot;conifer&amp;quot;, &amp;quot;deciduous&amp;quot;, 
+             &amp;quot;flowers&amp;quot;, &amp;quot;grass&amp;quot;,&amp;quot;palm_trees&amp;quot;, &amp;quot;tree&amp;quot;, &amp;quot;trees&amp;quot;)
+
+bob_ross_veg &amp;lt;- bob_ross_gather %&amp;gt;%
+  filter(element %in% veggies) 
+
+bob_ross_veg %&amp;gt;%
+  group_by(element) %&amp;gt;% 
+  summarise(presence = sum(presence)) %&amp;gt;% 
+  arrange(-presence) %&amp;gt;% 
+  mutate(element = factor(element, levels = element))%&amp;gt;% 
+  ggplot(aes(x = element, y = presence)) + 
+  geom_point(size=3) + 
+  geom_segment(aes(x = element, 
+                   xend = element, 
+                   y = 0, 
+                   yend = presence)) + 
+  labs(x = NULL,
+       y = &amp;quot;Nº de Pinturas&amp;quot;,
+       title = &amp;quot;Elementos vegetais mais presentes nas pinturas de Bob Ross&amp;quot;, 
+       caption = &amp;quot;Fonte: Tidy Tuesday (https://github.com/rfordatascience/tidytuesday)&amp;quot;) + 
+  coord_flip() +
+  theme_bw()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-08-06-bob/index_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Vamos dar uma olhada se algum desses elementos teve alguma grande alteração ao longo dos anos.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bob_ross_veg %&amp;gt;%
+  group_by(element, season) %&amp;gt;% 
+  summarise(presence = sum(presence)) %&amp;gt;% 
+  ungroup() %&amp;gt;% 
+  ggplot(aes(x = season, y = presence)) + 
+  geom_line(aes(color = element), show.legend = FALSE) +  
+  geom_smooth(method = &amp;quot;lm&amp;quot;, se = F, color = &amp;quot;lightgray&amp;quot;) +
+  labs(x = NULL,
+       y = &amp;quot;Nº de Pinturas&amp;quot;,
+       title = &amp;quot;Elementos vegetais mais presentes nas pinturas de Bob Ross ao longo do tempo&amp;quot;, 
+       caption = &amp;quot;Fonte: Tidy Tuesday (https://github.com/rfordatascience/tidytuesday)&amp;quot;) + 
+  facet_wrap(~element) +
+  theme_bw()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-08-06-bob/index_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Aparentemente Bob Ross pera bem consistente em suas pinturas. Também dá pra perceber a maior presença de plantas de climas mais frios (coníferas, decíduas) com maior frequência que aquelas de climas quentes (palmeiras, cactos). Isso continua nos mostrando como suas pinturas geralmente retratavam paisagens mais frias.&lt;/p&gt;
+&lt;p&gt;Dá pra notar uma diminuição do número de arbustos e árvores decíduas e um aumento das coníferas. Bob parece ter ido para climas ainda mais frios conforme o tempo passou.&lt;/p&gt;
+&lt;p&gt;Abraços!&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
