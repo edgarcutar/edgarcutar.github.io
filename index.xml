@@ -5,12 +5,140 @@
     <link>https://edgarcutar.github.io/</link>
       <atom:link href="https://edgarcutar.github.io/index.xml" rel="self" type="application/rss+xml" />
     <description>Edgar Cutar Junior</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Tue, 06 Aug 2019 08:54:32 -0300</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 11 Aug 2019 00:00:00 +0000</lastBuildDate>
     <image>
       <url>https://edgarcutar.github.io/img/edgar.jpg</url>
       <title>Edgar Cutar Junior</title>
       <link>https://edgarcutar.github.io/</link>
     </image>
+    
+    <item>
+      <title>Lidando com dados longitudinais e pareamento de dados</title>
+      <link>https://edgarcutar.github.io/post/2019-08-11-longitudinal/longitudinal/</link>
+      <pubDate>Sun, 11 Aug 2019 00:00:00 +0000</pubDate>
+      <guid>https://edgarcutar.github.io/post/2019-08-11-longitudinal/longitudinal/</guid>
+      <description>
+
+
+&lt;p&gt;Quando falamos em bases de dados, existem basicamente dois grandes tipos de dados: &lt;strong&gt;Transversais&lt;/strong&gt; e &lt;strong&gt;Longitudinais&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Dados transversais (também chamados de &lt;em&gt;cross-section&lt;/em&gt;) são o tipo de dado mais comum encontrado em qualquer área de estudo. Nesse tipo de base, existe uma observação para cada “indivíduo”. Como uma fotografia, ou um recorte, da população a ser estudada, um dado transversal tenta captar as variações que ocorrem na população através de uma imagem estática.&lt;/p&gt;
+&lt;p&gt;Um grande exemplo de dado transversal é a base de dados &lt;code&gt;starwars&lt;/code&gt; do pacote &lt;code&gt;dplyr&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;if (!require(&amp;quot;pacman&amp;quot;)) install.packages(&amp;quot;pacman&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Carregando pacotes exigidos: pacman&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pacman::p_load(tidyverse, datasets)
+
+dplyr::starwars&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 87 x 13
+##    name  height  mass hair_color skin_color eye_color birth_year gender
+##    &amp;lt;chr&amp;gt;  &amp;lt;int&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt;      &amp;lt;chr&amp;gt;      &amp;lt;chr&amp;gt;          &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt; 
+##  1 Luke~    172    77 blond      fair       blue            19   male  
+##  2 C-3PO    167    75 &amp;lt;NA&amp;gt;       gold       yellow         112   &amp;lt;NA&amp;gt;  
+##  3 R2-D2     96    32 &amp;lt;NA&amp;gt;       white, bl~ red             33   &amp;lt;NA&amp;gt;  
+##  4 Dart~    202   136 none       white      yellow          41.9 male  
+##  5 Leia~    150    49 brown      light      brown           19   female
+##  6 Owen~    178   120 brown, gr~ light      blue            52   male  
+##  7 Beru~    165    75 brown      light      blue            47   female
+##  8 R5-D4     97    32 &amp;lt;NA&amp;gt;       white, red red             NA   &amp;lt;NA&amp;gt;  
+##  9 Bigg~    183    84 black      light      brown           24   male  
+## 10 Obi-~    182    77 auburn, w~ fair       blue-gray       57   male  
+## # ... with 77 more rows, and 5 more variables: homeworld &amp;lt;chr&amp;gt;,
+## #   species &amp;lt;chr&amp;gt;, films &amp;lt;list&amp;gt;, vehicles &amp;lt;list&amp;gt;, starships &amp;lt;list&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Essa base mostra uma série de dados (altura, peso, cor de cabelo, pele e olhos) de diversos personagens da franquia Star Wars. Cada personagem aparece apenas uma vez (com exceção de Anakin Skywalker/Darth Vader, que aparece como dois personagens, mas divago).&lt;/p&gt;
+&lt;p&gt;O outro tipo de dado é o “transversal”. Nesse tipo de estudo, os dados são coletados repetidamente para ao mesmo indivíduo. Olhando para a base do Star Wars, se tivessemos dados da vida dos personagens, ela se tornaria transversal. Por exemplo, teríamos dados do Luke Skywalker com seu peso e altura em diversas fases da sua vida.&lt;/p&gt;
+&lt;p&gt;Uma base transversal, como você deve imaginar, é muito mais complicada de se obter, mas permite análises também mais complexas. É possível determinar tipos de crescimento, entender comportamentos antes/depois de certos acontecimentos (resposta a um remédio, sobrevida depois de uma cirurgia, medições de variáveis climáticas ao redor do globo). Conseguir uma base longitudinal leva tempo e custa caro, mas existem determinadas aplicações que necessitam desse tipo de dado.&lt;/p&gt;
+&lt;p&gt;Dentro da área florestal, existe um uso específico que exige dados longitudinais: os modelos de crescimento florestal. Para que seja possível entender os padrões de crescimento de um povoamento florestal, é preciso que sejam coletadas amostras de um determinado conjunto de árvores repetidamente ao longo do tempo.&lt;/p&gt;
+&lt;p&gt;Dessa forma, ficamos com uma base de dados como a abaixo:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;parcela &amp;lt;- read_csv2(&amp;quot;https://raw.githubusercontent.com/edgarcutar/example_data/master/parcelas.csv&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Using &amp;#39;,&amp;#39; as decimal and &amp;#39;.&amp;#39; as grouping mark. Use read_delim() for more control.&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Parsed with column specification:
+## cols(
+##   parcela_amostral = col_character(),
+##   idade = col_double(),
+##   volume = col_double(),
+##   area_basal = col_double(),
+##   altura_dominante = col_double()
+## )&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;parcela&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 9 x 5
+##   parcela_amostral idade volume area_basal altura_dominante
+##   &amp;lt;chr&amp;gt;            &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt;      &amp;lt;dbl&amp;gt;            &amp;lt;dbl&amp;gt;
+## 1 A                    2   53.7        9.9             12.9
+## 2 A                    3  131         17.4             19.4
+## 3 A                    4  220.        23.2             24.1
+## 4 B                    2   93.8       14.4             15.8
+## 5 B                    3  163.        18.7             20.9
+## 6 B                    4  217.        21.1             25.4
+## 7 C                    2   59.5       10.4             14.9
+## 8 C                    3  122.        15.3             19.8
+## 9 C                    4  175.        18.2             24.4&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Nesse caso, existem medições da mesma parcela amostral ao longo de 3 anos. Com esse tipo de dado é possível construir um modelo de crescimento e produção para aquele tipo de floresta.&lt;/p&gt;
+&lt;p&gt;Para que seja possível construir um modelo desse tipo, existe um passo extra necessário, é necessário organizar &lt;strong&gt;pares de observações&lt;/strong&gt;, em linha, de forma a parear estas bases de forma a conseguir ajustar um modelo do tipo &lt;span class=&#34;math inline&#34;&gt;\(Vol_2 \sim 1 + I_2 + Vol_1 + I_1\)&lt;/span&gt;, ou seja, um Volume no tempo 2 em função da idade no tempo 2, volume no tempo 1 e idade no tempo 1.&lt;/p&gt;
+&lt;p&gt;Um exemplo desse tipo de modelo é o de Lundqvist-Korf, em que uma de suas equações diferenciais pode ser escrita do seguinte modo:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(Vol_2 = a*(Vol_1/a)^(I_1/I_2)^c\)&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Para que seja possível ter uma base pronta para esse ajuste, é necessário que seja feito o pareamento dos dados, ou seja, cada idade deve ser combinada às demais. É basicamente uma combinatória com algumas regras:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Devem ser pareadas apenas as mesmas medições das parcelas;&lt;/li&gt;
+&lt;li&gt;A idade 2 deve ser maior que a idade 1;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Para fazer essa combinatória, elaborei uma função de pareamento, apresentada abaixo e aplicada aos dados do nosso exemplo. Apesar de ter pensado ela para dados florestais, a mesma pode ser usada com poucas modificações para quaisquer origem de dados.&lt;/p&gt;
+&lt;p&gt;A função terá 3 argumentos: - &lt;strong&gt;table&lt;/strong&gt;: o data frame a ser pareado - &lt;strong&gt;id&lt;/strong&gt;: o identificador único de sua parcela amostral - &lt;strong&gt;idade&lt;/strong&gt;: sua variável indicando o tempo de medição. Pode ser idade, ano, mês… a coluna que indica QUANDO a medição foi feita, em relação ao &lt;span class=&#34;math inline&#34;&gt;\(t_0\)&lt;/span&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pacman::p_load(dplyr)
+
+pareamento &amp;lt;- function(table, id, idade){
+  
+  expand.grid.df &amp;lt;- function(...) Reduce(function(...) merge(..., by=NULL), list(...)) #Cria Função combinatória
+  
+  id_ &amp;lt;- sym(deparse(substitute(id))) #transforma inputs em strings e depois em objetos
+  idade1 &amp;lt;- sym(str_c(deparse(substitute(idade)), &amp;quot;.x&amp;quot;))
+  idade2 &amp;lt;- sym(str_c(deparse(substitute(idade)), &amp;quot;.y&amp;quot;))
+  
+  par_unique &amp;lt;- unique(table %&amp;gt;%
+                         pull(!!id_))
+  
+  output &amp;lt;- vector(&amp;quot;list&amp;quot;, length(par_unique)) # cria output de listas vazio
+  
+  p &amp;lt;- progress_estimated(length(par_unique)) # Cria barra de progresso
+  
+  for (i in seq_along(par_unique)) {
+    
+    a &amp;lt;- table %&amp;gt;% filter(!!id_ == par_unique[i])  #filtra parcela i
+    b &amp;lt;- expand.grid.df(a,a) #combinatória de parcela amostral
+    c &amp;lt;- b %&amp;gt;% filter(!!idade2 &amp;gt; !!idade1) #separa i2 &amp;gt; i1
+    output[[i]] &amp;lt;- c # cria lista i com output 
+    
+    p$tick()$print() #print barra de progresso
+  }
+  bind_rows(output) #combina output em um único data frame
+}
+
+#Aplicando a função a nosso exemplo
+parcela %&amp;gt;% 
+  pareamento(id = parcela_amostral, idade = idade)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##   parcela_amostral.x idade.x volume.x area_basal.x altura_dominante.x
+## 1                  A       2     53.7          9.9               12.9
+## 2                  A       2     53.7          9.9               12.9
+## 3                  A       3    131.0         17.4               19.4
+## 4                  B       2     93.8         14.4               15.8
+## 5                  B       2     93.8         14.4               15.8
+## 6                  B       3    163.1         18.7               20.9
+## 7                  C       2     59.5         10.4               14.9
+## 8                  C       2     59.5         10.4               14.9
+## 9                  C       3    121.9         15.3               19.8
+##   parcela_amostral.y idade.y volume.y area_basal.y altura_dominante.y
+## 1                  A       3    131.0         17.4               19.4
+## 2                  A       4    219.6         23.2               24.1
+## 3                  A       4    219.6         23.2               24.1
+## 4                  B       3    163.1         18.7               20.9
+## 5                  B       4    217.3         21.1               25.4
+## 6                  B       4    217.3         21.1               25.4
+## 7                  C       3    121.9         15.3               19.8
+## 8                  C       4    174.8         18.2               24.4
+## 9                  C       4    174.8         18.2               24.4&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Pode parecer um processo trivial pra uma função tão longa, mas já vi muita gente quebrando cabeça e fazendo macros enormes pra chegar nesse resultado.&lt;/p&gt;
+&lt;p&gt;Falei alguma groselha ou tem algum jeito menos maluco de fazer isso? Me avise no &lt;a href=&#34;http://twitter.com/edgar_cutar&#34;&gt;twitter&lt;/a&gt;!&lt;/p&gt;
+&lt;p&gt;Abraços!&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Uma Análise (Quase) Estatística De Bob Ross</title>

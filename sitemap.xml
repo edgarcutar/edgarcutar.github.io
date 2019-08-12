@@ -3,20 +3,61 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://edgarcutar.github.io/categories/</loc>
+    <lastmod>2019-08-11T18:49:30-03:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://edgarcutar.github.io/</loc>
-    <lastmod>2019-08-06T08:54:32-03:00</lastmod>
+    <lastmod>2019-08-11T18:49:30-03:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://edgarcutar.github.io/categories/estatistica/</loc>
+    <lastmod>2019-08-11T18:49:30-03:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://edgarcutar.github.io/post/2019-08-11-longitudinal/longitudinal/</loc>
+    <lastmod>2019-08-11T18:49:30-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://edgarcutar.github.io/categories/pareamento/</loc>
+    <lastmod>2019-08-11T18:49:30-03:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://edgarcutar.github.io/post/</loc>
-    <lastmod>2019-08-06T08:54:32-03:00</lastmod>
+    <lastmod>2019-08-11T18:49:30-03:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://edgarcutar.github.io/tags/</loc>
-    <lastmod>2019-08-06T08:54:32-03:00</lastmod>
+    <lastmod>2019-08-11T18:49:30-03:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://edgarcutar.github.io/tags/crescimento/</loc>
+    <lastmod>2019-08-11T18:49:30-03:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://edgarcutar.github.io/tags/forestry/</loc>
+    <lastmod>2019-08-11T18:49:30-03:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://edgarcutar.github.io/tags/longitudinal/</loc>
+    <lastmod>2019-08-11T18:49:30-03:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -53,11 +94,6 @@
   
   <url>
     <loc>https://edgarcutar.github.io/authors/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://edgarcutar.github.io/categories/</loc>
     <priority>0</priority>
   </url>
   
