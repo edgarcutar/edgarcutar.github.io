@@ -2,32 +2,32 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>tidytuesday | Edgar Cutar Junior</title>
-    <link>/tags/tidytuesday/</link>
-      <atom:link href="/tags/tidytuesday/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://edgarcutar.github.io/tags/tidytuesday/</link>
+      <atom:link href="https://edgarcutar.github.io/tags/tidytuesday/index.xml" rel="self" type="application/rss+xml" />
     <description>tidytuesday</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Tue, 06 Aug 2019 08:54:32 -0300</lastBuildDate>
     <image>
-      <url>/img/edgar.jpg</url>
+      <url>https://edgarcutar.github.io/img/edgar.jpg</url>
       <title>tidytuesday</title>
-      <link>/tags/tidytuesday/</link>
+      <link>https://edgarcutar.github.io/tags/tidytuesday/</link>
     </image>
     
     <item>
       <title>Uma Análise (Quase) Estatística De Bob Ross</title>
-      <link>/post/2019-08-06-bob/</link>
+      <link>https://edgarcutar.github.io/post/2019-08-06-bob/</link>
       <pubDate>Tue, 06 Aug 2019 08:54:32 -0300</pubDate>
-      <guid>/post/2019-08-06-bob/</guid>
+      <guid>https://edgarcutar.github.io/post/2019-08-06-bob/</guid>
       <description>
 
 
-&lt;p&gt;A &lt;a href=&#34;https://github.com/rfordatascience/tidytuesday&#34;&gt;Tidy Tuesday&lt;/a&gt; dessa semana trás um dataset sobre &lt;a href=&#34;https://pt.wikipedia.org/wiki/Bob_Ross&#34;&gt;Bob Ross&lt;/a&gt;. Bob foi um pintor americano conhecido pelo programa &lt;a href=&#34;https://pt.wikipedia.org/wiki/The_Joy_of_Painting&#34;&gt;&lt;em&gt;The Joy of Painting&lt;/em&gt;&lt;/a&gt;, que foi ao ar nos anos 80 e 90 nos EUA, Canadá e Europa. No seu programa, ele mostrava técnicas de pintura a óleo enquanto completava uma pintura toda semana.&lt;/p&gt;
+&lt;p&gt;A &lt;a href=&#34;https://github.com/rfordatascience/tidytuesday&#34;&gt;Tidy Tuesday&lt;/a&gt; dessa semana traz um dataset sobre &lt;a href=&#34;https://pt.wikipedia.org/wiki/Bob_Ross&#34;&gt;Bob Ross&lt;/a&gt;. Bob foi um pintor americano conhecido pelo programa &lt;a href=&#34;https://pt.wikipedia.org/wiki/The_Joy_of_Painting&#34;&gt;&lt;em&gt;The Joy of Painting&lt;/em&gt;&lt;/a&gt;, que foi ao ar nos anos 80 e 90 nos EUA, Canadá e Europa. No seu programa, ele mostrava técnicas de pintura a óleo enquanto completava uma pintura toda semana.&lt;/p&gt;
 &lt;p&gt;O dataset sobre o trabalho de Bob Ross foi fornecido para a #tidytuesday pelo site &lt;a href=&#34;https://fivethirtyeight.com/&#34;&gt;538&lt;/a&gt;:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;if (!require(&amp;quot;pacman&amp;quot;)) install.packages(&amp;quot;pacman&amp;quot;)
 pacman::p_load(tidyverse, janitor)
 
 bob_ross &amp;lt;- readr::read_csv(&amp;quot;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-08-06/bob-ross.csv&amp;quot;) %&amp;gt;% 
   clean_names()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Em primeiro lugar, vamos ver o que temos nos dados:&lt;/p&gt;
+&lt;p&gt;Em primeiro lugar, para ver o que temos nos dados, vamos usar a função &lt;code&gt;head&lt;/code&gt;, que retorna as primeiras linhas da planilha:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bob_ross %&amp;gt;% head()&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## # A tibble: 6 x 69
 ##   episode title apple_frame aurora_borealis  barn beach  boat bridge
@@ -55,7 +55,7 @@ bob_ross &amp;lt;- readr::read_csv(&amp;quot;https://raw.githubusercontent.com/r
 ## #   triple_frame &amp;lt;dbl&amp;gt;, waterfall &amp;lt;dbl&amp;gt;, waves &amp;lt;dbl&amp;gt;, windmill &amp;lt;dbl&amp;gt;,
 ## #   window_frame &amp;lt;dbl&amp;gt;, winter &amp;lt;dbl&amp;gt;, wood_framed &amp;lt;dbl&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Temos cada uma das 403 pinturas que Bob Ross fez ao longo dos 11 anos e 31 temporadas de &lt;em&gt;The Joy of Painting&lt;/em&gt;, cada uma delas contendo os diversos elementos presentes em cada pintura: casas, barcos, palmeiras, árvores etc.&lt;/p&gt;
-&lt;p&gt;Vamos usar a função &lt;code&gt;gather&lt;/code&gt; para deixar a tabela mais fácil de ser manipulada daqui pra frente, colocando os diversos elementos em uma única coluna e sua existência ou não como outra coluna. Vamos também separar episódio e temporada em colunas próprias, numéricas, usando algumas funções do pacote &lt;code&gt;stringr&lt;/code&gt; e um pouquinho de &lt;code&gt;regex&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Para organizar um pouco a tabela, vamos usar a função &lt;code&gt;gather&lt;/code&gt;, colocando os diversos elementos em uma única coluna e sua existência ou não como outra coluna. Vamos também separar episódio e temporada em colunas próprias, numéricas, usando algumas funções do pacote &lt;code&gt;stringr&lt;/code&gt; e um pouquinho de &lt;code&gt;regex&lt;/code&gt;.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bob_ross_gather &amp;lt;- bob_ross %&amp;gt;% 
   separate(episode, into = c(&amp;quot;season&amp;quot;, &amp;quot;episode&amp;quot;), sep = &amp;quot;E&amp;quot;) %&amp;gt;% 
   mutate(season = str_extract(season, &amp;quot;[:digit:]+&amp;quot;)) %&amp;gt;% 
@@ -97,12 +97,12 @@ top_elements %&amp;gt;%
        caption = &amp;quot;Fonte: Tidy Tuesday (https://github.com/rfordatascience/tidytuesday)&amp;quot;) + 
   coord_flip() +
   theme_bw()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-08-06-bob/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://edgarcutar.github.io/post/2019-08-06-bob/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Em primeiro lugar, chamam atenção as árvores: 89% de suas pinturas contém ao menos uma árvore, e quase 84% delas possuem mais de uma. Curiosidade: uma vez que Bob pintasse a primeira árvore, ele não pintava a segunda, ele pintava uma “amiga” da primeira. Os dois próximos elementos da lista tratam dos tipos de árvores pintadas, decíduas e coníferas. Para os leigos: árvores que perdem folhas no inverno e pinheiros.&lt;/p&gt;
 &lt;p&gt;Essa paisagem de coníferas e decíduas remete ao segundo tema mais constante da obra de Bob Ross, o inverno. Bob Ross ingressou na Força Aérea aos 17 anos (uma coisa que temos em comum). Diferente de mim, no entanto, ele continuou por lá, passando 20 anos na Base Aérea de Eielson, no Alasca. Isso parece ter permeado sua arte, uma vez que pinturas de áreas congeladas parece ter sido um &lt;em&gt;trend&lt;/em&gt; em sua carreira. Montanhas nevadas, neve, inverno, são outros elementos constantes em sua obra.&lt;/p&gt;
 &lt;div class=&#34;figure&#34;&gt;
-&lt;img src=&#34;cold.jpg&#34; alt=&#34;Um tema constante&#34; /&gt;
-&lt;p class=&#34;caption&#34;&gt;Um tema constante&lt;/p&gt;
+&lt;img src=&#34;cold.jpg&#34; /&gt;
+
 &lt;/div&gt;
 &lt;p&gt;Puxando para o meu lado florestal, separei manualmente todas as referências a elementos vegetais nas obras de Bob. Se deixei passar algum, me avisem:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;veggies &amp;lt;- c(&amp;quot;bushes&amp;quot;, &amp;quot;cactus&amp;quot;, &amp;quot;conifer&amp;quot;, &amp;quot;deciduous&amp;quot;, 
@@ -128,7 +128,7 @@ bob_ross_veg %&amp;gt;%
        caption = &amp;quot;Fonte: Tidy Tuesday (https://github.com/rfordatascience/tidytuesday)&amp;quot;) + 
   coord_flip() +
   theme_bw()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-08-06-bob/index_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://edgarcutar.github.io/post/2019-08-06-bob/index_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Vamos dar uma olhada se algum desses elementos teve alguma grande alteração ao longo dos anos.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bob_ross_veg %&amp;gt;%
   group_by(element, season) %&amp;gt;% 
@@ -143,9 +143,9 @@ bob_ross_veg %&amp;gt;%
        caption = &amp;quot;Fonte: Tidy Tuesday (https://github.com/rfordatascience/tidytuesday)&amp;quot;) + 
   facet_wrap(~element) +
   theme_bw()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-08-06-bob/index_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;Aparentemente Bob Ross pera bem consistente em suas pinturas. Também dá pra perceber a maior presença de plantas de climas mais frios (coníferas, decíduas) com maior frequência que aquelas de climas quentes (palmeiras, cactos). Isso continua nos mostrando como suas pinturas geralmente retratavam paisagens mais frias.&lt;/p&gt;
-&lt;p&gt;Dá pra notar uma diminuição do número de arbustos e árvores decíduas e um aumento das coníferas. Bob parece ter ido para climas ainda mais frios conforme o tempo passou.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://edgarcutar.github.io/post/2019-08-06-bob/index_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Aparentemente Bob Ross era bem consistente em suas pinturas. Também dá pra perceber a maior presença de plantas de climas mais frios (coníferas, decíduas) comparada à frequência daquelas de climas quentes (palmeiras, cactos). Isso continua nos mostrando como suas pinturas geralmente retratavam paisagens mais frias.&lt;/p&gt;
+&lt;p&gt;Dá pra notar uma diminuição do número de arbustos e árvores decíduas e um aumento das coníferas. Bob parece ter ido para climas ainda mais frios conforme o tempo passou!&lt;/p&gt;
 &lt;p&gt;Abraços!&lt;/p&gt;
 </description>
     </item>
