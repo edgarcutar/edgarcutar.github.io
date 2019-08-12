@@ -2,29 +2,29 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories | Edgar Cutar Junior</title>
-    <link>https://edgarcutar.github.io/categories/</link>
-      <atom:link href="https://edgarcutar.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <link>/categories/</link>
+      <atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
     <description>Categories</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 11 Aug 2019 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://edgarcutar.github.io/img/edgar.jpg</url>
+      <url>/img/edgar.jpg</url>
       <title>Categories</title>
-      <link>https://edgarcutar.github.io/categories/</link>
+      <link>/categories/</link>
     </image>
     
     <item>
       <title>Estatística</title>
-      <link>https://edgarcutar.github.io/categories/estatistica/</link>
+      <link>/categories/estatistica/</link>
       <pubDate>Sun, 11 Aug 2019 00:00:00 +0000</pubDate>
-      <guid>https://edgarcutar.github.io/categories/estatistica/</guid>
+      <guid>/categories/estatistica/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Pareamento</title>
-      <link>https://edgarcutar.github.io/categories/pareamento/</link>
+      <link>/categories/pareamento/</link>
       <pubDate>Sun, 11 Aug 2019 00:00:00 +0000</pubDate>
-      <guid>https://edgarcutar.github.io/categories/pareamento/</guid>
+      <guid>/categories/pareamento/</guid>
       <description></description>
     </item>
     

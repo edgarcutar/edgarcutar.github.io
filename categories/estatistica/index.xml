@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Estatística | Edgar Cutar Junior</title>
-    <link>https://edgarcutar.github.io/categories/estatistica/</link>
-      <atom:link href="https://edgarcutar.github.io/categories/estatistica/index.xml" rel="self" type="application/rss+xml" />
+    <link>/categories/estatistica/</link>
+      <atom:link href="/categories/estatistica/index.xml" rel="self" type="application/rss+xml" />
     <description>Estatística</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 11 Aug 2019 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://edgarcutar.github.io/img/edgar.jpg</url>
+      <url>/img/edgar.jpg</url>
       <title>Estatística</title>
-      <link>https://edgarcutar.github.io/categories/estatistica/</link>
+      <link>/categories/estatistica/</link>
     </image>
     
     <item>
       <title>Lidando com dados longitudinais e pareamento de dados</title>
-      <link>https://edgarcutar.github.io/post/2019-08-11-longitudinal/longitudinal/</link>
+      <link>/post/2019-08-11-longitudinal/longitudinal/</link>
       <pubDate>Sun, 11 Aug 2019 00:00:00 +0000</pubDate>
-      <guid>https://edgarcutar.github.io/post/2019-08-11-longitudinal/longitudinal/</guid>
+      <guid>/post/2019-08-11-longitudinal/longitudinal/</guid>
       <description>
 
 
