@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>crescimento | Edgar Cutar Junior</title>
-    <link>/tags/crescimento/</link>
-      <atom:link href="/tags/crescimento/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://edgarcutar.github.io/tags/crescimento/</link>
+      <atom:link href="https://edgarcutar.github.io/tags/crescimento/index.xml" rel="self" type="application/rss+xml" />
     <description>crescimento</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 11 Aug 2019 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>/img/edgar.jpg</url>
+      <url>https://edgarcutar.github.io/img/edgar.jpg</url>
       <title>crescimento</title>
-      <link>/tags/crescimento/</link>
+      <link>https://edgarcutar.github.io/tags/crescimento/</link>
     </image>
     
     <item>
       <title>Lidando com dados longitudinais e pareamento de dados</title>
-      <link>/post/2019-08-11-longitudinal/longitudinal/</link>
+      <link>https://edgarcutar.github.io/post/2019-08-11-longitudinal/longitudinal/</link>
       <pubDate>Sun, 11 Aug 2019 00:00:00 +0000</pubDate>
-      <guid>/post/2019-08-11-longitudinal/longitudinal/</guid>
+      <guid>https://edgarcutar.github.io/post/2019-08-11-longitudinal/longitudinal/</guid>
       <description>
 
 
@@ -44,8 +44,8 @@ dplyr::starwars&lt;/code&gt;&lt;/pre&gt;
 ## # ... with 77 more rows, and 5 more variables: homeworld &amp;lt;chr&amp;gt;,
 ## #   species &amp;lt;chr&amp;gt;, films &amp;lt;list&amp;gt;, vehicles &amp;lt;list&amp;gt;, starships &amp;lt;list&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Essa base mostra uma série de dados (altura, peso, cor de cabelo, pele e olhos) de diversos personagens da franquia Star Wars. Cada personagem aparece apenas uma vez (com exceção de Anakin Skywalker/Darth Vader, que aparece como dois personagens, mas divago).&lt;/p&gt;
-&lt;p&gt;O outro tipo de dado é o “transversal”. Nesse tipo de estudo, os dados são coletados repetidamente para ao mesmo indivíduo. Olhando para a base do Star Wars, se tivessemos dados da vida dos personagens, ela se tornaria transversal. Por exemplo, teríamos dados do Luke Skywalker com seu peso e altura em diversas fases da sua vida.&lt;/p&gt;
-&lt;p&gt;Uma base transversal, como você deve imaginar, é muito mais complicada de se obter, mas permite análises também mais complexas. É possível determinar tipos de crescimento, entender comportamentos antes/depois de certos acontecimentos (resposta a um remédio, sobrevida depois de uma cirurgia, medições de variáveis climáticas ao redor do globo). Conseguir uma base longitudinal leva tempo e custa caro, mas existem determinadas aplicações que necessitam desse tipo de dado.&lt;/p&gt;
+&lt;p&gt;O outro tipo de dado é o “longitudinal”. Nesse tipo de estudo, os dados são coletados repetidamente para ao mesmo indivíduo. Olhando para a base do Star Wars, se tivessemos dados da vida dos personagens, ela se tornaria longitudinal Por exemplo, teríamos dados do Luke Skywalker com seu peso e altura em diversas fases da sua vida.&lt;/p&gt;
+&lt;p&gt;Uma base longitudinal, como você deve imaginar, é muito mais complicada de se obter, mas permite análises também mais complexas. É possível determinar tipos de crescimento, entender comportamentos antes/depois de certos acontecimentos (resposta a um remédio, sobrevida depois de uma cirurgia, medições de variáveis climáticas ao redor do globo). Conseguir uma base longitudinal leva tempo e custa caro, mas existem determinadas aplicações que necessitam desse tipo de dado.&lt;/p&gt;
 &lt;p&gt;Dentro da área florestal, existe um uso específico que exige dados longitudinais: os modelos de crescimento florestal. Para que seja possível entender os padrões de crescimento de um povoamento florestal, é preciso que sejam coletadas amostras de um determinado conjunto de árvores repetidamente ao longo do tempo.&lt;/p&gt;
 &lt;p&gt;Dessa forma, ficamos com uma base de dados como a abaixo:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;parcela &amp;lt;- read_csv2(&amp;quot;https://raw.githubusercontent.com/edgarcutar/example_data/master/parcelas.csv&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
