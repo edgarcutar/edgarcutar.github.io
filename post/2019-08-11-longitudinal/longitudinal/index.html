@@ -471,9 +471,9 @@ pareamento &lt;- function(table, id, idade){
   
   expand.grid.df &lt;- function(...) Reduce(function(...) merge(..., by=NULL), list(...)) #Cria Função combinatória
   
-  id_ &lt;- sym(deparse(substitute(id))) #transforma inputs em strings e depois em objetos
-  idade1 &lt;- sym(str_c(deparse(substitute(idade)), &quot;.x&quot;))
-  idade2 &lt;- sym(str_c(deparse(substitute(idade)), &quot;.y&quot;))
+  id_ &lt;- sym(ensym(id)) #transforma inputs em strings e depois em objetos
+  idade1 &lt;- sym(str_c(ensym(idade), &quot;.x&quot;))
+  idade2 &lt;- sym(str_c(ensym(idade), &quot;.y&quot;))
   
   par_unique &lt;- unique(table %&gt;%
                          pull(!!id_))
@@ -520,6 +520,7 @@ parcela %&gt;%
 <p>Pode parecer um processo trivial pra uma função tão longa, mas já vi muita gente quebrando cabeça e fazendo macros enormes pra chegar nesse resultado.</p>
 <p>Falei alguma groselha ou tem algum jeito menos maluco de fazer isso? Me avise no <a href="http://twitter.com/edgar_cutar">twitter</a>!</p>
 <p>Abraços!</p>
+<p>EDIT: Seguindo a dica do amigo <a href="https://italocegatta.github.io">Ítalo Cegatta</a>, substituí as funções <code>deparse(substitute(args))</code> pela função <code>ensym()</code>, que é condizente com a <code>tidyeval</code>, a <em>tidy evaluation</em> proposta por Hadley Wickham e Lionel Henry, que vocês podem conferir melhor <a href="https://tidyeval.tidyverse.org/">aqui</a> e <a href="https://adv-r.hadley.nz/quasiquotation.html">aqui</a>.</p>
 
     </div>
 

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>tidy | Edgar Cutar Junior</title>
+    <link>https://edgarcutar.github.io/tags/tidy/</link>
+      <atom:link href="https://edgarcutar.github.io/tags/tidy/index.xml" rel="self" type="application/rss+xml" />
+    <description>tidy</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Mon, 29 Jul 2019 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://edgarcutar.github.io/img/edgar.jpg</url>
+      <title>tidy</title>
+      <link>https://edgarcutar.github.io/tags/tidy/</link>
+    </image>
+    
+    <item>
+      <title>Mulheres no Parlamento ao redor do mundo</title>
+      <link>https://edgarcutar.github.io/post/2019-07-29-mulheres/mulheres-no-parlamento-ao-redor-do-mundo/</link>
+      <pubDate>Mon, 29 Jul 2019 00:00:00 +0000</pubDate>
+      <guid>https://edgarcutar.github.io/post/2019-07-29-mulheres/mulheres-no-parlamento-ao-redor-do-mundo/</guid>
+      <description>
+
+
+&lt;p&gt;Perdido no Twitter há alguns dias, &lt;a href=&#34;https://twitter.com/ilustat/status/1154401034183352321&#34;&gt;trombei&lt;/a&gt; com a base de dados &lt;a href=&#34;https://github.com/saghirb/Women-in-Parliament-Hex-Sticker&#34;&gt;“Women in Parliament”&lt;/a&gt; do &lt;a href=&#34;https://data.worldbank.org/indicator/SG.GEN.PARL.ZS&#34;&gt;World Bank Data&lt;/a&gt;, uma base imensa de dados mantida pelo Banco Mundial. Existe até um pacote para R, o &lt;code&gt;wbstats&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;A base que queremos está disponível via &lt;code&gt;wbstats&lt;/code&gt; e tem o código “SG.GEN.PARL.ZS”. Então vamos buscá-la através do pacote, puxando os dados desde 1997 (quando os dados começaram a ser coletados).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;if (!require(&amp;quot;pacman&amp;quot;)) install.packages(&amp;quot;pacman&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Carregando pacotes exigidos: pacman&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pacman::p_load(tidyverse, scales,wbstats)
+
+women &amp;lt;- wbstats::wb(indicator = &amp;quot;SG.GEN.PARL.ZS&amp;quot;, 
+                     startdate = 1997, 
+                     enddate = 2018,
+                     country = &amp;quot;countries_only&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Vamos dar uma olhada em como os dados estão estruturados:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;women %&amp;gt;% glimpse()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Observations: 3,971
+## Variables: 7
+## $ iso3c       &amp;lt;chr&amp;gt; &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;...
+## $ date        &amp;lt;chr&amp;gt; &amp;quot;2018&amp;quot;, &amp;quot;2017&amp;quot;, &amp;quot;2016&amp;quot;, &amp;quot;2015&amp;quot;, &amp;quot;2014&amp;quot;, &amp;quot;2013&amp;quot;, &amp;quot;2...
+## $ value       &amp;lt;dbl&amp;gt; 27.7, 27.7, 27.7, 27.7, 27.7, 27.7, 27.7, 27.7, 27...
+## $ indicatorID &amp;lt;chr&amp;gt; &amp;quot;SG.GEN.PARL.ZS&amp;quot;, &amp;quot;SG.GEN.PARL.ZS&amp;quot;, &amp;quot;SG.GEN.PARL.Z...
+## $ indicator   &amp;lt;chr&amp;gt; &amp;quot;Proportion of seats held by women in national par...
+## $ iso2c       &amp;lt;chr&amp;gt; &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;A...
+## $ country     &amp;lt;chr&amp;gt; &amp;quot;Afghanistan&amp;quot;, &amp;quot;Afghanistan&amp;quot;, &amp;quot;Afghanistan&amp;quot;, &amp;quot;Afgh...&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ok, cada país possui 22 linhas, de 1997 a 2018.&lt;/p&gt;
+&lt;p&gt;Em primeiro lugar, eu gostaria de ver como a média mundial está se comportando desde 1997:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;media_mundo &amp;lt;- women %&amp;gt;% 
+  group_by(date) %&amp;gt;% 
+  summarise(media = mean(value)) 
+
+media_mundo %&amp;gt;% 
+  ggplot(aes(x = date, 
+             y = media,
+             group = 1)) +
+  geom_line() +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 30)) +
+  labs(title = &amp;quot;Percentual Médio de Mulheres nos Parlamentos Nacionais ao redor do mundo&amp;quot;,
+       y = &amp;quot;%&amp;quot;,
+       x = &amp;quot;Ano&amp;quot;,
+       caption = &amp;quot;Fonte: Banco Mundial - Elaborado por Edgar Cutar Junior&amp;quot;) +
+  ylim(0,25) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://edgarcutar.github.io/post/2019-07-29-mulheres/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Bom, o resultado não é nada bom mas, pelo lado positivo, a média mais que dobrou em 20 anos.&lt;/p&gt;
+&lt;p&gt;Vamos ver a evolução dos mesmos dados usado o pacote &lt;code&gt;ggridges&lt;/code&gt;, de &lt;a href=&#34;https://twitter.com/ClausWilke&#34;&gt;Claus Wilke&lt;/a&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pacman::p_load(ggridges)
+
+women %&amp;gt;% 
+  mutate(date = factor(date, levels = 2018:1997)) %&amp;gt;% 
+  ggplot(aes(x = value, 
+             y = date,
+             group = date)) +
+  stat_density_ridges(bandwidth = 3, 
+                      quantile_lines = TRUE, 
+                      quantiles = 2,
+                      fill = &amp;quot;red&amp;quot;, 
+                      alpha = 0.7) +
+  labs(title = &amp;quot;Distribuição de Mulheres nos Parlamentos Nacionais ao redor do mundo&amp;quot;,
+       y = NULL,
+       x = &amp;quot;%&amp;quot;,
+       caption = &amp;quot;Fonte: Banco Mundial - Elaborado por Edgar Cutar Junior&amp;quot;) +
+  xlim(0,100) +
+  scale_x_continuous(breaks = (0:10)*10) +
+  theme_minimal()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Scale for &amp;#39;x&amp;#39; is already present. Adding another scale for &amp;#39;x&amp;#39;, which
+## will replace the existing scale.&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://edgarcutar.github.io/post/2019-07-29-mulheres/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Nesse segundo gráfico temos um novo panorama, até menos animador. Embora em boa parte do mundo a situação parlamentar tenha evoluído, ainda existe uma boa quantidade de países em que o percentual ainda é muito baixo, abaixo de 10% das cadeiras sendo ocupadas por mulheres.&lt;/p&gt;
+&lt;p&gt;Pra finalizar, vamos dar uma olhada na situação do Brasil frente ao resto do mundo. Pra isso, vamos isolar a participação tupininquim das demais.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;brasil &amp;lt;- women %&amp;gt;% 
+  group_by(date, isbrazil = country == &amp;quot;Brazil&amp;quot;) %&amp;gt;% 
+  summarise(media = mean(value))  
+
+brasil %&amp;gt;% 
+  ggplot(aes(x = date, 
+             y = media,
+             group = isbrazil,
+             color = isbrazil)) +
+  geom_line() +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 30)) +
+  scale_color_viridis_d(end = 0.5, label = c(&amp;quot;Mundo&amp;quot;,&amp;quot;Brasil&amp;quot;)) +
+  labs(title = &amp;quot;Percentual Médio de Mulheres nos Parlamentos Nacionais ao redor do mundo&amp;quot;,
+       subtitle = &amp;quot;Brasil vs. Mundo&amp;quot;,
+       color = NULL,
+       y = &amp;quot;%&amp;quot;,
+       x = &amp;quot;Ano&amp;quot;,
+       caption = &amp;quot;Fonte: Banco Mundial - Elaborado por Edgar Cutar Junior&amp;quot;) +
+  ylim(0,25) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://edgarcutar.github.io/post/2019-07-29-mulheres/index_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Lembra que existiam países muito ruins no último gráfico? Infelizmente vivemos em um deles.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;women %&amp;gt;% 
+  filter(date == &amp;quot;2018&amp;quot;) %&amp;gt;% 
+  mutate(posicao = row_number(-value),
+         percentil = ntile(value, 100),
+         numero_de_paises = n()) %&amp;gt;% 
+  filter(country == &amp;quot;Brazil&amp;quot;) %&amp;gt;% 
+  select(country, posicao, percentil, numero_de_paises, value)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##   country posicao percentil numero_de_paises value
+## 1  Brazil     157        19              193  10.7&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;O Brasil ocupa a 157ª posição de 193 países quando o assunto é a representatividade feminina nos parlamentos nacionais. Isso nos deixa no percentil 19, dentro do pior quartil.&lt;/p&gt;
+&lt;p&gt;Não sei vocês, mas achei essa situação até pior do que eu achava que seria.&lt;/p&gt;
+&lt;p&gt;Espero que isso leve todo mundo a refletir um pouco sobre o assunto.&lt;/p&gt;
+&lt;p&gt;Até!&lt;/p&gt;
+&lt;p&gt;EDIT: Resolvi plotar num mapa os dados de 2018… Tive que fazer alguns ajustes com nomes que não batiam, mas ficou assim:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world &amp;lt;- map_data(&amp;quot;world&amp;quot;) %&amp;gt;%
+  mutate(region = case_when(region == &amp;quot;USA&amp;quot; ~ &amp;quot;United States&amp;quot;,
+                            region == &amp;quot;Russia&amp;quot; ~ &amp;quot;Russian Federation&amp;quot;,
+                            region == &amp;quot;Egypt&amp;quot; ~ &amp;quot;Egypt, Arab Rep.&amp;quot;,
+                            region == &amp;quot;Venezuela&amp;quot; ~ &amp;quot;Venezuela, RB&amp;quot;,
+                            region == &amp;quot;Democratic Republic of the Congo&amp;quot; ~ &amp;quot;Congo, Rep.&amp;quot;,
+                            region == &amp;quot;Iran&amp;quot; ~ &amp;quot;Iran, Islamic Rep.&amp;quot;,
+                            region == &amp;quot;Syria&amp;quot; ~ &amp;quot;Syrian Arab Republic&amp;quot;,
+                            region == &amp;quot;Yemen&amp;quot; ~ &amp;quot;Yemen, Rep.&amp;quot;,
+                            TRUE ~ region)) %&amp;gt;% 
+  left_join(women %&amp;gt;%  filter(date == 2018), 
+            by = c(&amp;quot;region&amp;quot; = &amp;quot;country&amp;quot;)) 
+
+ggplot(world) +
+  geom_polygon(aes(x = long, y = lat, group = group, fill = value)) +
+  scale_fill_viridis_c(direction = -1) +
+  coord_quickmap() +
+  theme_minimal() +
+  labs(x = NULL,
+       y = NULL, 
+       fill = &amp;quot;% de Mulheres no Parlamento Nacional&amp;quot;,
+       caption = &amp;quot;Fonte: Banco Mundial - Elaborado por Edgar Cutar Junior&amp;quot;) +
+  theme(legend.position = &amp;quot;bottom&amp;quot;,
+        axis.text = element_blank()) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://edgarcutar.github.io/post/2019-07-29-mulheres/index_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

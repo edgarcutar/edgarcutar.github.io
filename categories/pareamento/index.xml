@@ -88,9 +88,9 @@ pareamento &amp;lt;- function(table, id, idade){
   
   expand.grid.df &amp;lt;- function(...) Reduce(function(...) merge(..., by=NULL), list(...)) #Cria Função combinatória
   
-  id_ &amp;lt;- sym(deparse(substitute(id))) #transforma inputs em strings e depois em objetos
-  idade1 &amp;lt;- sym(str_c(deparse(substitute(idade)), &amp;quot;.x&amp;quot;))
-  idade2 &amp;lt;- sym(str_c(deparse(substitute(idade)), &amp;quot;.y&amp;quot;))
+  id_ &amp;lt;- sym(ensym(id)) #transforma inputs em strings e depois em objetos
+  idade1 &amp;lt;- sym(str_c(ensym(idade), &amp;quot;.x&amp;quot;))
+  idade2 &amp;lt;- sym(str_c(ensym(idade), &amp;quot;.y&amp;quot;))
   
   par_unique &amp;lt;- unique(table %&amp;gt;%
                          pull(!!id_))
@@ -137,6 +137,7 @@ parcela %&amp;gt;%
 &lt;p&gt;Pode parecer um processo trivial pra uma função tão longa, mas já vi muita gente quebrando cabeça e fazendo macros enormes pra chegar nesse resultado.&lt;/p&gt;
 &lt;p&gt;Falei alguma groselha ou tem algum jeito menos maluco de fazer isso? Me avise no &lt;a href=&#34;http://twitter.com/edgar_cutar&#34;&gt;twitter&lt;/a&gt;!&lt;/p&gt;
 &lt;p&gt;Abraços!&lt;/p&gt;
+&lt;p&gt;EDIT: Seguindo a dica do amigo &lt;a href=&#34;https://italocegatta.github.io&#34;&gt;Ítalo Cegatta&lt;/a&gt;, substituí as funções &lt;code&gt;deparse(substitute(args))&lt;/code&gt; pela função &lt;code&gt;ensym()&lt;/code&gt;, que é condizente com a &lt;code&gt;tidyeval&lt;/code&gt;, a &lt;em&gt;tidy evaluation&lt;/em&gt; proposta por Hadley Wickham e Lionel Henry, que vocês podem conferir melhor &lt;a href=&#34;https://tidyeval.tidyverse.org/&#34;&gt;aqui&lt;/a&gt; e &lt;a href=&#34;https://adv-r.hadley.nz/quasiquotation.html&#34;&gt;aqui&lt;/a&gt;.&lt;/p&gt;
 </description>
     </item>
     
