@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>women | Edgar Cutar Junior</title>
-    <link>/tags/women/</link>
-      <atom:link href="/tags/women/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://edgarcutar.github.io/tags/women/</link>
+      <atom:link href="https://edgarcutar.github.io/tags/women/index.xml" rel="self" type="application/rss+xml" />
     <description>women</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Mon, 29 Jul 2019 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>/img/edgar.jpg</url>
+      <url>https://edgarcutar.github.io/img/edgar.jpg</url>
       <title>women</title>
-      <link>/tags/women/</link>
+      <link>https://edgarcutar.github.io/tags/women/</link>
     </image>
     
     <item>
       <title>Mulheres no Parlamento ao redor do mundo</title>
-      <link>/post/2019-07-29-mulheres/mulheres-no-parlamento-ao-redor-do-mundo/</link>
+      <link>https://edgarcutar.github.io/post/2019-07-29-mulheres/mulheres-no-parlamento-ao-redor-do-mundo/</link>
       <pubDate>Mon, 29 Jul 2019 00:00:00 +0000</pubDate>
-      <guid>/post/2019-07-29-mulheres/mulheres-no-parlamento-ao-redor-do-mundo/</guid>
+      <guid>https://edgarcutar.github.io/post/2019-07-29-mulheres/mulheres-no-parlamento-ao-redor-do-mundo/</guid>
       <description>
 
 
@@ -59,7 +59,7 @@ media_mundo %&amp;gt;%
        x = &amp;quot;Ano&amp;quot;,
        caption = &amp;quot;Fonte: Banco Mundial - Elaborado por Edgar Cutar Junior&amp;quot;) +
   ylim(0,25) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-mulheres/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://edgarcutar.github.io/post/2019-07-29-mulheres/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Bom, o resultado não é nada bom mas, pelo lado positivo, a média mais que dobrou em 20 anos.&lt;/p&gt;
 &lt;p&gt;Vamos ver a evolução dos mesmos dados usado o pacote &lt;code&gt;ggridges&lt;/code&gt;, de &lt;a href=&#34;https://twitter.com/ClausWilke&#34;&gt;Claus Wilke&lt;/a&gt;.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pacman::p_load(ggridges)
@@ -83,7 +83,7 @@ women %&amp;gt;%
   theme_minimal()&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## Scale for &amp;#39;x&amp;#39; is already present. Adding another scale for &amp;#39;x&amp;#39;, which
 ## will replace the existing scale.&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-mulheres/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://edgarcutar.github.io/post/2019-07-29-mulheres/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Nesse segundo gráfico temos um novo panorama, até menos animador. Embora em boa parte do mundo a situação parlamentar tenha evoluído, ainda existe uma boa quantidade de países em que o percentual ainda é muito baixo, abaixo de 10% das cadeiras sendo ocupadas por mulheres.&lt;/p&gt;
 &lt;p&gt;Pra finalizar, vamos dar uma olhada na situação do Brasil frente ao resto do mundo. Pra isso, vamos isolar a participação tupininquim das demais.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;brasil &amp;lt;- women %&amp;gt;% 
@@ -106,7 +106,7 @@ brasil %&amp;gt;%
        x = &amp;quot;Ano&amp;quot;,
        caption = &amp;quot;Fonte: Banco Mundial - Elaborado por Edgar Cutar Junior&amp;quot;) +
   ylim(0,25) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-mulheres/index_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://edgarcutar.github.io/post/2019-07-29-mulheres/index_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Lembra que existiam países muito ruins no último gráfico? Infelizmente vivemos em um deles.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;women %&amp;gt;% 
   filter(date == &amp;quot;2018&amp;quot;) %&amp;gt;% 
@@ -147,7 +147,7 @@ ggplot(world) +
        caption = &amp;quot;Fonte: Banco Mundial - Elaborado por Edgar Cutar Junior&amp;quot;) +
   theme(legend.position = &amp;quot;bottom&amp;quot;,
         axis.text = element_blank()) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-mulheres/index_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://edgarcutar.github.io/post/2019-07-29-mulheres/index_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 </description>
     </item>
     

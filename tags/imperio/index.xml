@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>imperio | Edgar Cutar Junior</title>
-    <link>/tags/imperio/</link>
-      <atom:link href="/tags/imperio/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://edgarcutar.github.io/tags/imperio/</link>
+      <atom:link href="https://edgarcutar.github.io/tags/imperio/index.xml" rel="self" type="application/rss+xml" />
     <description>imperio</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Tue, 13 Aug 2019 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>/img/edgar.jpg</url>
+      <url>https://edgarcutar.github.io/img/edgar.jpg</url>
       <title>imperio</title>
-      <link>/tags/imperio/</link>
+      <link>https://edgarcutar.github.io/tags/imperio/</link>
     </image>
     
     <item>
       <title>Vida e (principalmente) morte dos Imperadores Romanos</title>
-      <link>/post/2019-08-13-roma/roma/</link>
+      <link>https://edgarcutar.github.io/post/2019-08-13-roma/roma/</link>
       <pubDate>Tue, 13 Aug 2019 00:00:00 +0000</pubDate>
-      <guid>/post/2019-08-13-roma/roma/</guid>
+      <guid>https://edgarcutar.github.io/post/2019-08-13-roma/roma/</guid>
       <description>
 
 
@@ -79,7 +79,7 @@ resumo_causas %&amp;gt;%
        title = &amp;quot;Causas de Morte dos Imperadores Romanos&amp;quot;,
        caption = &amp;quot;Fonte: Tidy Tuesday - Elaborado por Edgar Cutar Junior&amp;quot;) +
   theme_bw() &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;
+&lt;p&gt;&lt;img src=&#34;https://edgarcutar.github.io/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;
 Realmente não era uma vida tranquila.&lt;/p&gt;
 &lt;p&gt;Agora vou usar &lt;code&gt;fct_collapse&lt;/code&gt; para unir as mortes violentas em um grupo só.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;resumo_coll &amp;lt;- resumo_causas  %&amp;gt;% 
@@ -102,8 +102,54 @@ resumo_coll %&amp;gt;%
        caption = &amp;quot;Fonte: Tidy Tuesday - Elaborado por Edgar Cutar Junior&amp;quot;) +
   scale_fill_viridis_d() +
   scale_x_discrete(labels = c(&amp;quot;Mortes Violentas&amp;quot;, &amp;quot;Causas Naturais&amp;quot;, &amp;quot;Outros&amp;quot;)) +
-  theme_bw() &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+  theme_bw()  +
+  theme(text = element_text(family = &amp;quot;RomanT&amp;quot;)) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
+## family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
+## family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
+## x$y, : font family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://edgarcutar.github.io/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Pelo menos 65% dos imperadores romanos morreram violentamente. Isso me leva a curiosidade de saber quantos golpes de Estado ocorreram em Roma e com qual frequência eles aconteceram.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;golpes &amp;lt;- imperadores %&amp;gt;% 
   filter(rise == &amp;quot;Seized Power&amp;quot;) %&amp;gt;% 
@@ -174,22 +220,24 @@ imperadores %&amp;gt;%
                    yend = ..y..), 
                size = 1.5, 
                lineend = &amp;quot;round&amp;quot;) +
+  geom_point(aes(x = reign_start, fill = &amp;quot;Reinado&amp;quot;), color = &amp;quot;red&amp;quot;) +
   geom_segment(aes(x = reign_start, 
                    xend = reign_end, 
                    yend = ..y..,
                    color = &amp;quot;Reinado&amp;quot;), 
                color = &amp;quot;red&amp;quot;, vjust= -2,
-               size = 0.2, lineend = &amp;quot;round&amp;quot;) +
+               size = 1, lineend = &amp;quot;round&amp;quot;) +
   scale_color_viridis_d() +
   scale_x_date(labels = function(x) str_glue(&amp;quot;{year(x)} DC&amp;quot;)) +
   labs(title = &amp;quot;Nascimento, Reinado e Morte\ndos Imperadores Romanos&amp;quot;,
        color = &amp;quot;Causa Mortis&amp;quot;,
        caption = &amp;quot;Fonte: Tidy Tuesday - Elaborado por Edgar Cutar Junior&amp;quot;,
+       fill = NULL,
        x = NULL,
        y = NULL) +
   theme_bw() +
   theme(text = element_text(family = &amp;quot;RomanT&amp;quot;)) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://edgarcutar.github.io/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;O que mais impressiona é que depois da morte de Septimus Severus, em 211, houve 13 imperadores seguidos mortos de forma violenta. Depois dos 13, Hostilian assumiu por apenas 105 dias antes de morrer de causas naturais. Depois dele, mais 4 imperadores morreram de causas violentas.&lt;/p&gt;
 &lt;p&gt;Pra quem sentiu falta de Julio César, aquele do “Até tu, Brutus?”, ele foi um dos últimos ícones da República Romana, e um dos que ajudou a formar o império, que começou 18 anos após sua morte.&lt;/p&gt;
 &lt;p&gt;Tem alguma crítica, sugestão, ou quer bater um papo? Me chama no &lt;a href=&#34;http://twitter.com/edgar_cutar&#34;&gt;Twitter&lt;/a&gt;!&lt;/p&gt;

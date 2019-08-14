@@ -31,7 +31,7 @@
   <meta name="description" content="A Tidy Tuesday dessa semana trás uma base de dados com a vida e morte dos imperadores romanos. Vamos começar importando e usando glimpse para dar aquela olhadela nos dados. Para melhor mexer nesses dados, vamos usar o pacote lubridate, criado para lidar com tempo e datas, o que nunca é uma tarefa trivial. Com isso, vamos usar as funçõestime_length() e interval() para transformar as datas em intervalos e a função case_when() para corrigir as datas anteriores ao nascimento de Cristo (essa informação está na coluna notes).">
 
   
-  <link rel="alternate" hreflang="en-us" href="/post/2019-08-13-roma/roma/">
+  <link rel="alternate" hreflang="en-us" href="https://edgarcutar.github.io/post/2019-08-13-roma/roma/">
 
   
 
@@ -113,7 +113,7 @@
   <link rel="icon" type="image/png" href="/img/icon.png">
   <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
 
-  <link rel="canonical" href="/post/2019-08-13-roma/roma/">
+  <link rel="canonical" href="https://edgarcutar.github.io/post/2019-08-13-roma/roma/">
 
   
   
@@ -128,10 +128,10 @@
   <meta property="twitter:creator" content="@edgar_cutar">
   
   <meta property="og:site_name" content="Edgar Cutar Junior">
-  <meta property="og:url" content="/post/2019-08-13-roma/roma/">
+  <meta property="og:url" content="https://edgarcutar.github.io/post/2019-08-13-roma/roma/">
   <meta property="og:title" content="Vida e (principalmente) morte dos Imperadores Romanos | Edgar Cutar Junior">
-  <meta property="og:description" content="A Tidy Tuesday dessa semana trás uma base de dados com a vida e morte dos imperadores romanos. Vamos começar importando e usando glimpse para dar aquela olhadela nos dados. Para melhor mexer nesses dados, vamos usar o pacote lubridate, criado para lidar com tempo e datas, o que nunca é uma tarefa trivial. Com isso, vamos usar as funçõestime_length() e interval() para transformar as datas em intervalos e a função case_when() para corrigir as datas anteriores ao nascimento de Cristo (essa informação está na coluna notes)."><meta property="og:image" content="/post/2019-08-13-roma/roma/featured.jpg">
-  <meta property="twitter:image" content="/post/2019-08-13-roma/roma/featured.jpg"><meta property="og:locale" content="en-us">
+  <meta property="og:description" content="A Tidy Tuesday dessa semana trás uma base de dados com a vida e morte dos imperadores romanos. Vamos começar importando e usando glimpse para dar aquela olhadela nos dados. Para melhor mexer nesses dados, vamos usar o pacote lubridate, criado para lidar com tempo e datas, o que nunca é uma tarefa trivial. Com isso, vamos usar as funçõestime_length() e interval() para transformar as datas em intervalos e a função case_when() para corrigir as datas anteriores ao nascimento de Cristo (essa informação está na coluna notes)."><meta property="og:image" content="https://edgarcutar.github.io/post/2019-08-13-roma/roma/featured.jpg">
+  <meta property="twitter:image" content="https://edgarcutar.github.io/post/2019-08-13-roma/roma/featured.jpg"><meta property="og:locale" content="en-us">
   
     
       <meta property="article:published_time" content="2019-08-13T00:00:00&#43;00:00">
@@ -254,7 +254,7 @@
         
 
         <li class="nav-item">
-          <a class="nav-link " href="https://edgarcutar.github.io/curso_suzano/" target="_blank" rel="noopener"><span>Curso R - Módulo 1</span></a>
+          <a class="nav-link " href="/curso_suzano/" target="_blank" rel="noopener"><span>Curso R - Módulo 1</span></a>
         </li>
 
         
@@ -348,7 +348,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    6 min read
+    8 min read
   </span>
   
 
@@ -481,7 +481,53 @@ resumo_coll %&gt;%
        caption = &quot;Fonte: Tidy Tuesday - Elaborado por Edgar Cutar Junior&quot;) +
   scale_fill_viridis_d() +
   scale_x_discrete(labels = c(&quot;Mortes Violentas&quot;, &quot;Causas Naturais&quot;, &quot;Outros&quot;)) +
-  theme_bw() </code></pre>
+  theme_bw()  +
+  theme(text = element_text(family = &quot;RomanT&quot;)) </code></pre>
+<pre><code>## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
+## family not found in Windows font database</code></pre>
+<pre><code>## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database</code></pre>
+<pre><code>## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
+## family not found in Windows font database</code></pre>
+<pre><code>## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database</code></pre>
+<pre><code>## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
+## x$y, : font family not found in Windows font database</code></pre>
+<pre><code>## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database</code></pre>
 <p><img src="/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>Pelo menos 65% dos imperadores romanos morreram violentamente. Isso me leva a curiosidade de saber quantos golpes de Estado ocorreram em Roma e com qual frequência eles aconteceram.</p>
 <pre class="r"><code>golpes &lt;- imperadores %&gt;% 
@@ -553,17 +599,19 @@ imperadores %&gt;%
                    yend = ..y..), 
                size = 1.5, 
                lineend = &quot;round&quot;) +
+  geom_point(aes(x = reign_start, fill = &quot;Reinado&quot;), color = &quot;red&quot;) +
   geom_segment(aes(x = reign_start, 
                    xend = reign_end, 
                    yend = ..y..,
                    color = &quot;Reinado&quot;), 
                color = &quot;red&quot;, vjust= -2,
-               size = 0.2, lineend = &quot;round&quot;) +
+               size = 1, lineend = &quot;round&quot;) +
   scale_color_viridis_d() +
   scale_x_date(labels = function(x) str_glue(&quot;{year(x)} DC&quot;)) +
   labs(title = &quot;Nascimento, Reinado e Morte\ndos Imperadores Romanos&quot;,
        color = &quot;Causa Mortis&quot;,
        caption = &quot;Fonte: Tidy Tuesday - Elaborado por Edgar Cutar Junior&quot;,
+       fill = NULL,
        x = NULL,
        y = NULL) +
   theme_bw() +
@@ -621,7 +669,7 @@ imperadores %&gt;%
     
 
     <div class="media-body">
-      <h5 class="card-title" itemprop="name"><a href="/">Edgar Cutar Junior</a></h5>
+      <h5 class="card-title" itemprop="name"><a href="https://edgarcutar.github.io/">Edgar Cutar Junior</a></h5>
       
       
       <ul class="network-icon" aria-hidden="true">
@@ -821,16 +869,6 @@ imperadores %&gt;%
   
   <div class="container">
     <footer class="site-footer">
-  
-  <p class="powered-by">
-    
-      <a href="/privacy/">Privacy Policy</a>
-    
-    
-       &middot; 
-      <a href="/terms/">Terms</a>
-        
-  </p>
   
 
   <p class="powered-by">
