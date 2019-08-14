@@ -3,141 +3,131 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/</loc>
+    <loc>https://edgarcutar.github.io/</loc>
     <lastmod>2019-08-13T09:27:22-03:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/post/</loc>
+    <loc>https://edgarcutar.github.io/post/</loc>
     <lastmod>2019-08-13T09:27:22-03:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/tags/</loc>
+    <loc>https://edgarcutar.github.io/tags/</loc>
     <lastmod>2019-08-13T09:27:22-03:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/post/2019-08-13-roma/roma/</loc>
+    <loc>https://edgarcutar.github.io/post/2019-08-13-roma/roma/</loc>
     <lastmod>2019-08-13T09:27:22-03:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/imperio/</loc>
-    <lastmod>2019-08-13T09:27:22-03:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/roma/</loc>
+    <loc>https://edgarcutar.github.io/tags/imperio/</loc>
     <lastmod>2019-08-13T09:27:22-03:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/tags/tidytuesday/</loc>
+    <loc>https://edgarcutar.github.io/tags/roma/</loc>
     <lastmod>2019-08-13T09:27:22-03:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/categories/</loc>
+    <loc>https://edgarcutar.github.io/tags/tidytuesday/</loc>
+    <lastmod>2019-08-13T09:27:22-03:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://edgarcutar.github.io/categories/</loc>
     <lastmod>2019-08-11T18:49:30-03:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/categories/estatistica/</loc>
+    <loc>https://edgarcutar.github.io/categories/estatistica/</loc>
     <lastmod>2019-08-11T18:49:30-03:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/post/2019-08-11-longitudinal/longitudinal/</loc>
+    <loc>https://edgarcutar.github.io/post/2019-08-11-longitudinal/longitudinal/</loc>
     <lastmod>2019-08-11T18:49:30-03:00</lastmod>
   </url>
   
   <url>
-    <loc>/categories/pareamento/</loc>
-    <lastmod>2019-08-11T18:49:30-03:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/crescimento/</loc>
+    <loc>https://edgarcutar.github.io/categories/pareamento/</loc>
     <lastmod>2019-08-11T18:49:30-03:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/tags/forestry/</loc>
+    <loc>https://edgarcutar.github.io/tags/crescimento/</loc>
     <lastmod>2019-08-11T18:49:30-03:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/tags/longitudinal/</loc>
+    <loc>https://edgarcutar.github.io/tags/forestry/</loc>
     <lastmod>2019-08-11T18:49:30-03:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/post/2019-08-06-bob/</loc>
+    <loc>https://edgarcutar.github.io/tags/longitudinal/</loc>
+    <lastmod>2019-08-11T18:49:30-03:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://edgarcutar.github.io/post/2019-08-06-bob/</loc>
     <lastmod>2019-08-06T08:54:32-03:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/bob-ross/</loc>
+    <loc>https://edgarcutar.github.io/tags/bob-ross/</loc>
     <lastmod>2019-08-06T08:54:32-03:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/post/2019-07-29-mulheres/mulheres-no-parlamento-ao-redor-do-mundo/</loc>
+    <loc>https://edgarcutar.github.io/post/2019-07-29-mulheres/mulheres-no-parlamento-ao-redor-do-mundo/</loc>
     <lastmod>2019-07-29T09:57:36-03:00</lastmod>
   </url>
   
   <url>
-    <loc>/post/2019-07-29-sobre/sobre-este-blog-e-a-tidytuesday/</loc>
+    <loc>https://edgarcutar.github.io/post/2019-07-29-sobre/sobre-este-blog-e-a-tidytuesday/</loc>
     <lastmod>2019-07-29T07:32:52-03:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/tidy/</loc>
+    <loc>https://edgarcutar.github.io/tags/tidy/</loc>
     <lastmod>2019-07-29T09:57:36-03:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/tags/women/</loc>
+    <loc>https://edgarcutar.github.io/tags/women/</loc>
     <lastmod>2019-07-29T09:57:36-03:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/privacy/</loc>
-    <lastmod>2018-06-28T00:00:00+01:00</lastmod>
+    <loc>https://edgarcutar.github.io/authors/admin/</loc>
   </url>
   
   <url>
-    <loc>/terms/</loc>
-    <lastmod>2018-06-28T00:00:00+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/authors/admin/</loc>
-  </url>
-  
-  <url>
-    <loc>/authors/</loc>
+    <loc>https://edgarcutar.github.io/authors/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/publication_types/</loc>
+    <loc>https://edgarcutar.github.io/publication_types/</loc>
     <priority>0</priority>
   </url>
   

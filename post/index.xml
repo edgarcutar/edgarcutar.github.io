@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts | Edgar Cutar Junior</title>
-    <link>/post/</link>
-      <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://edgarcutar.github.io/post/</link>
+      <atom:link href="https://edgarcutar.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Tue, 13 Aug 2019 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>/img/edgar.jpg</url>
+      <url>https://edgarcutar.github.io/img/edgar.jpg</url>
       <title>Posts</title>
-      <link>/post/</link>
+      <link>https://edgarcutar.github.io/post/</link>
     </image>
     
     <item>
       <title>Vida e (principalmente) morte dos Imperadores Romanos</title>
-      <link>/post/2019-08-13-roma/roma/</link>
+      <link>https://edgarcutar.github.io/post/2019-08-13-roma/roma/</link>
       <pubDate>Tue, 13 Aug 2019 00:00:00 +0000</pubDate>
-      <guid>/post/2019-08-13-roma/roma/</guid>
+      <guid>https://edgarcutar.github.io/post/2019-08-13-roma/roma/</guid>
       <description>
 
 
@@ -83,7 +83,7 @@ resumo_causas %&amp;gt;%
   theme_bw() +
   theme(text = element_text(family = &amp;quot;RomanT&amp;quot;),
         axis.text.x = element_text(angle = -5, vjust = -0.5)) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://edgarcutar.github.io/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Realmente não era uma vida tranquila.&lt;/p&gt;
 &lt;p&gt;Agora, para unir as mortes violentas em um grupo só, podemos usar &lt;code&gt;fct_collapse()&lt;/code&gt;, também do pacote &lt;code&gt;forcats&lt;/code&gt;.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;resumo_coll &amp;lt;- resumo_causas  %&amp;gt;% 
@@ -108,7 +108,7 @@ resumo_coll %&amp;gt;%
   scale_x_discrete(labels = c(&amp;quot;Mortes Violentas&amp;quot;, &amp;quot;Causas Naturais&amp;quot;, &amp;quot;Outros&amp;quot;)) +
   theme_bw() +
   theme(text = element_text(family = &amp;quot;RomanT&amp;quot;)) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://edgarcutar.github.io/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Pelo menos 65% dos imperadores romanos morreram violentamente. Isso me deixa curioso para saber quantos golpes de Estado ocorreram em Roma e com qual frequência eles aconteceram.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;golpes &amp;lt;- imperadores %&amp;gt;% 
   filter(rise == &amp;quot;Seized Power&amp;quot;) %&amp;gt;% 
@@ -175,7 +175,7 @@ golpes %&amp;gt;%
        y = NULL) +
   theme_bw() +
   theme(text = element_text(family = &amp;quot;RomanT&amp;quot;)) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://edgarcutar.github.io/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;O que mais impressiona é que depois da morte de Septimus Severus, em 211, houve 13 imperadores seguidos mortos de forma violenta. Depois dos 13, Hostilian assumiu por apenas 105 dias antes de morrer de causas naturais. Depois dele, mais 4 imperadores morreram de causas violentas.&lt;/p&gt;
 &lt;p&gt;Pra quem sentiu falta de Julio César, aquele do “Até tu, Brutus?”, ele foi um dos últimos ícones da República Romana, e um dos que ajudou a formar o império, que começou 18 anos após sua morte.&lt;/p&gt;
 &lt;p&gt;Tem alguma crítica, sugestão, ou quer bater um papo? Me chama no &lt;a href=&#34;http://twitter.com/edgar_cutar&#34;&gt;Twitter&lt;/a&gt;!&lt;/p&gt;
@@ -184,9 +184,9 @@ golpes %&amp;gt;%
     
     <item>
       <title>Lidando com dados longitudinais e pareamento de dados</title>
-      <link>/post/2019-08-11-longitudinal/longitudinal/</link>
+      <link>https://edgarcutar.github.io/post/2019-08-11-longitudinal/longitudinal/</link>
       <pubDate>Sun, 11 Aug 2019 00:00:00 +0000</pubDate>
-      <guid>/post/2019-08-11-longitudinal/longitudinal/</guid>
+      <guid>https://edgarcutar.github.io/post/2019-08-11-longitudinal/longitudinal/</guid>
       <description>
 
 
@@ -316,9 +316,9 @@ parcela %&amp;gt;%
     
     <item>
       <title>Uma Análise (Quase) Estatística De Bob Ross</title>
-      <link>/post/2019-08-06-bob/</link>
+      <link>https://edgarcutar.github.io/post/2019-08-06-bob/</link>
       <pubDate>Tue, 06 Aug 2019 08:54:32 -0300</pubDate>
-      <guid>/post/2019-08-06-bob/</guid>
+      <guid>https://edgarcutar.github.io/post/2019-08-06-bob/</guid>
       <description>
 
 
@@ -399,7 +399,7 @@ top_elements %&amp;gt;%
        caption = &amp;quot;Fonte: Tidy Tuesday (https://github.com/rfordatascience/tidytuesday)&amp;quot;) + 
   coord_flip() +
   theme_bw()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-08-06-bob/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://edgarcutar.github.io/post/2019-08-06-bob/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Em primeiro lugar, chamam atenção as árvores: 89% de suas pinturas contém ao menos uma árvore, e quase 84% delas possuem mais de uma. Curiosidade: uma vez que Bob pintasse a primeira árvore, ele não pintava a segunda, ele pintava uma “amiga” da primeira. Os dois próximos elementos da lista tratam dos tipos de árvores pintadas, decíduas e coníferas. Para os leigos: árvores que perdem folhas no inverno e pinheiros.&lt;/p&gt;
 &lt;p&gt;Essa paisagem de coníferas e decíduas remete ao segundo tema mais constante da obra de Bob Ross, o inverno. Bob Ross ingressou na Força Aérea aos 17 anos (uma coisa que temos em comum). Diferente de mim, no entanto, ele continuou por lá, passando 20 anos na Base Aérea de Eielson, no Alasca. Isso parece ter permeado sua arte, uma vez que pinturas de áreas congeladas parece ter sido um &lt;em&gt;trend&lt;/em&gt; em sua carreira. Montanhas nevadas, neve, inverno, são outros elementos constantes em sua obra.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;cold.jpg&#34; /&gt;&lt;/p&gt;
@@ -427,7 +427,7 @@ bob_ross_veg %&amp;gt;%
        caption = &amp;quot;Fonte: Tidy Tuesday (https://github.com/rfordatascience/tidytuesday)&amp;quot;) + 
   coord_flip() +
   theme_bw()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-08-06-bob/index_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://edgarcutar.github.io/post/2019-08-06-bob/index_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Vamos dar uma olhada se algum desses elementos teve alguma grande alteração ao longo dos anos.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bob_ross_veg %&amp;gt;%
   group_by(element, season) %&amp;gt;% 
@@ -442,7 +442,7 @@ bob_ross_veg %&amp;gt;%
        caption = &amp;quot;Fonte: Tidy Tuesday (https://github.com/rfordatascience/tidytuesday)&amp;quot;) + 
   facet_wrap(~element) +
   theme_bw()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-08-06-bob/index_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://edgarcutar.github.io/post/2019-08-06-bob/index_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Aparentemente Bob Ross era bem consistente em suas pinturas. Também dá pra perceber a maior presença de plantas de climas mais frios (coníferas, decíduas) comparada à frequência daquelas de climas quentes (palmeiras, cactos). Isso continua nos mostrando como suas pinturas geralmente retratavam paisagens mais frias.&lt;/p&gt;
 &lt;p&gt;Dá pra notar uma diminuição do número de arbustos e árvores decíduas e um aumento das coníferas. Bob parece ter ido para climas ainda mais frios conforme o tempo passou!&lt;/p&gt;
 &lt;p&gt;Abraços!&lt;/p&gt;
@@ -451,9 +451,9 @@ bob_ross_veg %&amp;gt;%
     
     <item>
       <title>Mulheres no Parlamento ao redor do mundo</title>
-      <link>/post/2019-07-29-mulheres/mulheres-no-parlamento-ao-redor-do-mundo/</link>
+      <link>https://edgarcutar.github.io/post/2019-07-29-mulheres/mulheres-no-parlamento-ao-redor-do-mundo/</link>
       <pubDate>Mon, 29 Jul 2019 00:00:00 +0000</pubDate>
-      <guid>/post/2019-07-29-mulheres/mulheres-no-parlamento-ao-redor-do-mundo/</guid>
+      <guid>https://edgarcutar.github.io/post/2019-07-29-mulheres/mulheres-no-parlamento-ao-redor-do-mundo/</guid>
       <description>
 
 
@@ -496,7 +496,7 @@ media_mundo %&amp;gt;%
        x = &amp;quot;Ano&amp;quot;,
        caption = &amp;quot;Fonte: Banco Mundial - Elaborado por Edgar Cutar Junior&amp;quot;) +
   ylim(0,25) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-mulheres/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://edgarcutar.github.io/post/2019-07-29-mulheres/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Bom, o resultado não é nada bom mas, pelo lado positivo, a média mais que dobrou em 20 anos.&lt;/p&gt;
 &lt;p&gt;Vamos ver a evolução dos mesmos dados usado o pacote &lt;code&gt;ggridges&lt;/code&gt;, de &lt;a href=&#34;https://twitter.com/ClausWilke&#34;&gt;Claus Wilke&lt;/a&gt;.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pacman::p_load(ggridges)
@@ -520,7 +520,7 @@ women %&amp;gt;%
   theme_minimal()&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## Scale for &amp;#39;x&amp;#39; is already present. Adding another scale for &amp;#39;x&amp;#39;, which
 ## will replace the existing scale.&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-mulheres/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://edgarcutar.github.io/post/2019-07-29-mulheres/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Nesse segundo gráfico temos um novo panorama, até menos animador. Embora em boa parte do mundo a situação parlamentar tenha evoluído, ainda existe uma boa quantidade de países em que o percentual ainda é muito baixo, abaixo de 10% das cadeiras sendo ocupadas por mulheres.&lt;/p&gt;
 &lt;p&gt;Pra finalizar, vamos dar uma olhada na situação do Brasil frente ao resto do mundo. Pra isso, vamos isolar a participação tupininquim das demais.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;brasil &amp;lt;- women %&amp;gt;% 
@@ -543,7 +543,7 @@ brasil %&amp;gt;%
        x = &amp;quot;Ano&amp;quot;,
        caption = &amp;quot;Fonte: Banco Mundial - Elaborado por Edgar Cutar Junior&amp;quot;) +
   ylim(0,25) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-mulheres/index_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://edgarcutar.github.io/post/2019-07-29-mulheres/index_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Lembra que existiam países muito ruins no último gráfico? Infelizmente vivemos em um deles.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;women %&amp;gt;% 
   filter(date == &amp;quot;2018&amp;quot;) %&amp;gt;% 
@@ -584,15 +584,15 @@ ggplot(world) +
        caption = &amp;quot;Fonte: Banco Mundial - Elaborado por Edgar Cutar Junior&amp;quot;) +
   theme(legend.position = &amp;quot;bottom&amp;quot;,
         axis.text = element_blank()) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-mulheres/index_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://edgarcutar.github.io/post/2019-07-29-mulheres/index_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>Sobre este blog e a #tidytuesday</title>
-      <link>/post/2019-07-29-sobre/sobre-este-blog-e-a-tidytuesday/</link>
+      <link>https://edgarcutar.github.io/post/2019-07-29-sobre/sobre-este-blog-e-a-tidytuesday/</link>
       <pubDate>Mon, 29 Jul 2019 00:00:00 +0000</pubDate>
-      <guid>/post/2019-07-29-sobre/sobre-este-blog-e-a-tidytuesday/</guid>
+      <guid>https://edgarcutar.github.io/post/2019-07-29-sobre/sobre-este-blog-e-a-tidytuesday/</guid>
       <description>
 
 
