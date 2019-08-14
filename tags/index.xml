@@ -2,85 +2,85 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags | Edgar Cutar Junior</title>
-    <link>https://edgarcutar.github.io/tags/</link>
-      <atom:link href="https://edgarcutar.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <link>/tags/</link>
+      <atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     <description>Tags</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Tue, 13 Aug 2019 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://edgarcutar.github.io/img/edgar.jpg</url>
+      <url>/img/edgar.jpg</url>
       <title>Tags</title>
-      <link>https://edgarcutar.github.io/tags/</link>
+      <link>/tags/</link>
     </image>
     
     <item>
       <title>imperio</title>
-      <link>https://edgarcutar.github.io/tags/imperio/</link>
+      <link>/tags/imperio/</link>
       <pubDate>Tue, 13 Aug 2019 00:00:00 +0000</pubDate>
-      <guid>https://edgarcutar.github.io/tags/imperio/</guid>
+      <guid>/tags/imperio/</guid>
       <description></description>
     </item>
     
     <item>
       <title>roma</title>
-      <link>https://edgarcutar.github.io/tags/roma/</link>
+      <link>/tags/roma/</link>
       <pubDate>Tue, 13 Aug 2019 00:00:00 +0000</pubDate>
-      <guid>https://edgarcutar.github.io/tags/roma/</guid>
+      <guid>/tags/roma/</guid>
       <description></description>
     </item>
     
     <item>
       <title>tidytuesday</title>
-      <link>https://edgarcutar.github.io/tags/tidytuesday/</link>
+      <link>/tags/tidytuesday/</link>
       <pubDate>Tue, 13 Aug 2019 00:00:00 +0000</pubDate>
-      <guid>https://edgarcutar.github.io/tags/tidytuesday/</guid>
+      <guid>/tags/tidytuesday/</guid>
       <description></description>
     </item>
     
     <item>
       <title>crescimento</title>
-      <link>https://edgarcutar.github.io/tags/crescimento/</link>
+      <link>/tags/crescimento/</link>
       <pubDate>Sun, 11 Aug 2019 00:00:00 +0000</pubDate>
-      <guid>https://edgarcutar.github.io/tags/crescimento/</guid>
+      <guid>/tags/crescimento/</guid>
       <description></description>
     </item>
     
     <item>
       <title>forestry</title>
-      <link>https://edgarcutar.github.io/tags/forestry/</link>
+      <link>/tags/forestry/</link>
       <pubDate>Sun, 11 Aug 2019 00:00:00 +0000</pubDate>
-      <guid>https://edgarcutar.github.io/tags/forestry/</guid>
+      <guid>/tags/forestry/</guid>
       <description></description>
     </item>
     
     <item>
       <title>longitudinal</title>
-      <link>https://edgarcutar.github.io/tags/longitudinal/</link>
+      <link>/tags/longitudinal/</link>
       <pubDate>Sun, 11 Aug 2019 00:00:00 +0000</pubDate>
-      <guid>https://edgarcutar.github.io/tags/longitudinal/</guid>
+      <guid>/tags/longitudinal/</guid>
       <description></description>
     </item>
     
     <item>
       <title>bob-ross</title>
-      <link>https://edgarcutar.github.io/tags/bob-ross/</link>
+      <link>/tags/bob-ross/</link>
       <pubDate>Tue, 06 Aug 2019 08:54:32 -0300</pubDate>
-      <guid>https://edgarcutar.github.io/tags/bob-ross/</guid>
+      <guid>/tags/bob-ross/</guid>
       <description></description>
     </item>
     
     <item>
       <title>tidy</title>
-      <link>https://edgarcutar.github.io/tags/tidy/</link>
+      <link>/tags/tidy/</link>
       <pubDate>Mon, 29 Jul 2019 00:00:00 +0000</pubDate>
-      <guid>https://edgarcutar.github.io/tags/tidy/</guid>
+      <guid>/tags/tidy/</guid>
       <description></description>
     </item>
     
     <item>
       <title>women</title>
-      <link>https://edgarcutar.github.io/tags/women/</link>
+      <link>/tags/women/</link>
       <pubDate>Mon, 29 Jul 2019 00:00:00 +0000</pubDate>
-      <guid>https://edgarcutar.github.io/tags/women/</guid>
+      <guid>/tags/women/</guid>
       <description></description>
     </item>
     

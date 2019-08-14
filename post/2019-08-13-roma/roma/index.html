@@ -28,10 +28,11 @@
   
     
   
-  <meta name="description" content="A Tidy Tuesday dessa semana trás uma base de dados com a vida e morte dos imperadores romanos. Vamos começar importando e usando glimpse para dar aquela olhadela nos dados. Para melhor mexer nesses dados, vamos usar o pacote lubridate, criado para lidar com tempo e datas, o que nunca é uma tarefa trivial. Com isso, vamos usar as funçõestime_length() e interval() para transformar as datas em intervalos e a função case_when() para corrigir as datas anteriores ao nascimento de Cristo (essa informação está na coluna notes).">
+  <meta name="description" content="A Tidy Tuesday dessa semana trás uma base de dados com a vida e morte dos imperadores romanos. Vamos começar importando os dados e usando glimpse para dar aquela olhadela nos dados. Para manipular os dados com maior facilidade, vamos usar o pacote lubridate, criado para lidar com tempo e datas, o que nunca é uma tarefa trivial.
+if (!require(&quot;pacman&quot;)) install.packages(&quot;pacman&quot;)pacman::p_load(tidyverse, janitor, lubridate, extrafont)#font_import() #Necessário rodar essa linha uma vez na vida para importar as fontes de seu computador para o Rloadfonts(device = &quot;win&quot;)imperadores &lt;- readr::read_csv(&quot;https://raw.">
 
   
-  <link rel="alternate" hreflang="en-us" href="https://edgarcutar.github.io/post/2019-08-13-roma/roma/">
+  <link rel="alternate" hreflang="en-us" href="/post/2019-08-13-roma/roma/">
 
   
 
@@ -113,7 +114,7 @@
   <link rel="icon" type="image/png" href="/img/icon.png">
   <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
 
-  <link rel="canonical" href="https://edgarcutar.github.io/post/2019-08-13-roma/roma/">
+  <link rel="canonical" href="/post/2019-08-13-roma/roma/">
 
   
   
@@ -128,10 +129,11 @@
   <meta property="twitter:creator" content="@edgar_cutar">
   
   <meta property="og:site_name" content="Edgar Cutar Junior">
-  <meta property="og:url" content="https://edgarcutar.github.io/post/2019-08-13-roma/roma/">
+  <meta property="og:url" content="/post/2019-08-13-roma/roma/">
   <meta property="og:title" content="Vida e (principalmente) morte dos Imperadores Romanos | Edgar Cutar Junior">
-  <meta property="og:description" content="A Tidy Tuesday dessa semana trás uma base de dados com a vida e morte dos imperadores romanos. Vamos começar importando e usando glimpse para dar aquela olhadela nos dados. Para melhor mexer nesses dados, vamos usar o pacote lubridate, criado para lidar com tempo e datas, o que nunca é uma tarefa trivial. Com isso, vamos usar as funçõestime_length() e interval() para transformar as datas em intervalos e a função case_when() para corrigir as datas anteriores ao nascimento de Cristo (essa informação está na coluna notes)."><meta property="og:image" content="https://edgarcutar.github.io/post/2019-08-13-roma/roma/featured.jpg">
-  <meta property="twitter:image" content="https://edgarcutar.github.io/post/2019-08-13-roma/roma/featured.jpg"><meta property="og:locale" content="en-us">
+  <meta property="og:description" content="A Tidy Tuesday dessa semana trás uma base de dados com a vida e morte dos imperadores romanos. Vamos começar importando os dados e usando glimpse para dar aquela olhadela nos dados. Para manipular os dados com maior facilidade, vamos usar o pacote lubridate, criado para lidar com tempo e datas, o que nunca é uma tarefa trivial.
+if (!require(&quot;pacman&quot;)) install.packages(&quot;pacman&quot;)pacman::p_load(tidyverse, janitor, lubridate, extrafont)#font_import() #Necessário rodar essa linha uma vez na vida para importar as fontes de seu computador para o Rloadfonts(device = &quot;win&quot;)imperadores &lt;- readr::read_csv(&quot;https://raw."><meta property="og:image" content="/post/2019-08-13-roma/roma/featured.jpg">
+  <meta property="twitter:image" content="/post/2019-08-13-roma/roma/featured.jpg"><meta property="og:locale" content="en-us">
   
     
       <meta property="article:published_time" content="2019-08-13T00:00:00&#43;00:00">
@@ -254,7 +256,7 @@
         
 
         <li class="nav-item">
-          <a class="nav-link " href="/curso_suzano/" target="_blank" rel="noopener"><span>Curso R - Módulo 1</span></a>
+          <a class="nav-link " href="https://edgarcutar.github.io/curso_suzano/" target="_blank" rel="noopener"><span>Curso R - Módulo 1</span></a>
         </li>
 
         
@@ -399,7 +401,7 @@
       
 
 
-<p>A <a href="https://github.com/rfordatascience/tidytuesday">Tidy Tuesday</a> dessa semana trás uma base de dados com a vida e morte dos imperadores romanos. Vamos começar importando e usando <code>glimpse</code> para dar aquela olhadela nos dados. Para melhor mexer nesses dados, vamos usar o pacote <code>lubridate</code>, criado para lidar com tempo e datas, o que nunca é uma tarefa trivial. Com isso, vamos usar as funções<code>time_length()</code> e <code>interval()</code> para transformar as datas em intervalos e a função <code>case_when()</code> para corrigir as datas anteriores ao nascimento de Cristo (essa informação está na coluna <code>notes</code>).</p>
+<p>A <a href="https://github.com/rfordatascience/tidytuesday">Tidy Tuesday</a> dessa semana trás uma base de dados com a vida e morte dos imperadores romanos. Vamos começar importando os dados e usando <code>glimpse</code> para dar aquela olhadela nos dados. Para manipular os dados com maior facilidade, vamos usar o pacote <code>lubridate</code>, criado para lidar com tempo e datas, o que nunca é uma tarefa trivial.</p>
 <pre class="r"><code>if (!require(&quot;pacman&quot;)) install.packages(&quot;pacman&quot;)
 pacman::p_load(tidyverse, janitor, lubridate, extrafont)
 
@@ -420,7 +422,7 @@ imperadores &lt;- readr::read_csv(&quot;https://raw.githubusercontent.com/rforda
          reign_duration = lubridate::time_length(lubridate::interval(start = reign_start,
                                                                      end = reign_end),
                                                  unit = &quot;year&quot;))</code></pre>
-<p>Criei uma coluna com a idade da morte de cada imperador. Como alguns deles (dois pra ser preciso) nasceram antes e morreram depois do ano 0, usei <code>case_when</code> pra corrigir a conta da idade pra esses casos.</p>
+<p>Criei uma coluna com a idade da morte e duração do reino de cada imperador. Como alguns deles (dois, pra ser preciso) nasceram antes e morreram depois do ano 0, usei <code>case_when()</code> pra corrigir a conta da idade pra esses casos. Note o uso das funções <code>time_length()</code> e <code>interval()</code> do pacote <code>lubridate</code> para extrair o valor (numérico) do intervalo em anos entre duas datas.</p>
 <pre class="r"><code>imperadores %&gt;% glimpse()</code></pre>
 <pre><code>## Observations: 68
 ## Variables: 18
@@ -442,12 +444,11 @@ imperadores &lt;- readr::read_csv(&quot;https://raw.githubusercontent.com/rforda
 ## $ verif_who      &lt;chr&gt; &quot;Reddit user zonination&quot;, &quot;Reddit user zoninati...
 ## $ age_death      &lt;dbl&gt; 75.90411, 77.32877, 28.40000, 63.20000, 30.4836...
 ## $ reign_duration &lt;dbl&gt; 40.5890411, 22.4904110, 3.8547945, 13.7150685, ...</code></pre>
-<p>A primeira coisa que eu gostaria de ver é uma distribuição das causas de morte dos imperadores. Tenho impressão que não era um trabalho fácil.</p>
+<p>A primeira coisa que eu gostaria de ver é uma distribuição das causas de morte dos imperadores. Tenho impressão que não era um trabalho fácil. A função <code>fct_reorder()</code>, do pacote <code>forcats</code>, nos ajuda a deixar os fatores na ordem decrescente que quero para gráfico.</p>
 <pre class="r"><code>resumo_causas &lt;- imperadores %&gt;%
   group_by(cause) %&gt;% 
   summarise(contar = n()) %&gt;% 
-  arrange(-contar) %&gt;% 
-  mutate(cause = factor(cause, levels = cause)) #mantendo a ordem decrescente
+  mutate(cause = forcats::fct_reorder(cause, -contar)) #mantendo a ordem decrescente
 
 resumo_causas %&gt;% 
   ggplot(aes(x = cause, y = contar/sum(contar))) +
@@ -463,9 +464,9 @@ resumo_causas %&gt;%
   theme_bw() +
   theme(text = element_text(family = &quot;RomanT&quot;),
         axis.text.x = element_text(angle = -5, vjust = -0.5)) </code></pre>
-<p><img src="/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-3-1.png" width="672" />
-Realmente não era uma vida tranquila.</p>
-<p>Agora, para unir as mortes violentas em um grupo só, podemos usar <code>fct_collapse()</code> .</p>
+<p><img src="/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>Realmente não era uma vida tranquila.</p>
+<p>Agora, para unir as mortes violentas em um grupo só, podemos usar <code>fct_collapse()</code>, também do pacote <code>forcats</code>.</p>
 <pre class="r"><code>resumo_coll &lt;- resumo_causas  %&gt;% 
   mutate(cause2 = fct_collapse(cause, 
                                mortes_violentas = c(&quot;Assassination&quot;, &quot;Execution&quot;, 
@@ -608,7 +609,7 @@ golpes %&gt;%
     
 
     <div class="media-body">
-      <h5 class="card-title" itemprop="name"><a href="https://edgarcutar.github.io/">Edgar Cutar Junior</a></h5>
+      <h5 class="card-title" itemprop="name"><a href="/">Edgar Cutar Junior</a></h5>
       
       
       <ul class="network-icon" aria-hidden="true">
@@ -808,6 +809,16 @@ golpes %&gt;%
   
   <div class="container">
     <footer class="site-footer">
+  
+  <p class="powered-by">
+    
+      <a href="/privacy/">Privacy Policy</a>
+    
+    
+       &middot; 
+      <a href="/terms/">Terms</a>
+        
+  </p>
   
 
   <p class="powered-by">

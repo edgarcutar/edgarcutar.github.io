@@ -2,25 +2,25 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>roma | Edgar Cutar Junior</title>
-    <link>https://edgarcutar.github.io/tags/roma/</link>
-      <atom:link href="https://edgarcutar.github.io/tags/roma/index.xml" rel="self" type="application/rss+xml" />
+    <link>/tags/roma/</link>
+      <atom:link href="/tags/roma/index.xml" rel="self" type="application/rss+xml" />
     <description>roma</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Tue, 13 Aug 2019 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://edgarcutar.github.io/img/edgar.jpg</url>
+      <url>/img/edgar.jpg</url>
       <title>roma</title>
-      <link>https://edgarcutar.github.io/tags/roma/</link>
+      <link>/tags/roma/</link>
     </image>
     
     <item>
       <title>Vida e (principalmente) morte dos Imperadores Romanos</title>
-      <link>https://edgarcutar.github.io/post/2019-08-13-roma/roma/</link>
+      <link>/post/2019-08-13-roma/roma/</link>
       <pubDate>Tue, 13 Aug 2019 00:00:00 +0000</pubDate>
-      <guid>https://edgarcutar.github.io/post/2019-08-13-roma/roma/</guid>
+      <guid>/post/2019-08-13-roma/roma/</guid>
       <description>
 
 
-&lt;p&gt;A &lt;a href=&#34;https://github.com/rfordatascience/tidytuesday&#34;&gt;Tidy Tuesday&lt;/a&gt; dessa semana trás uma base de dados com a vida e morte dos imperadores romanos. Vamos começar importando e usando &lt;code&gt;glimpse&lt;/code&gt; para dar aquela olhadela nos dados. Para melhor mexer nesses dados, vamos usar o pacote &lt;code&gt;lubridate&lt;/code&gt;, criado para lidar com tempo e datas, o que nunca é uma tarefa trivial. Com isso, vamos usar as funções&lt;code&gt;time_length()&lt;/code&gt; e &lt;code&gt;interval()&lt;/code&gt; para transformar as datas em intervalos e a função &lt;code&gt;case_when()&lt;/code&gt; para corrigir as datas anteriores ao nascimento de Cristo (essa informação está na coluna &lt;code&gt;notes&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;A &lt;a href=&#34;https://github.com/rfordatascience/tidytuesday&#34;&gt;Tidy Tuesday&lt;/a&gt; dessa semana trás uma base de dados com a vida e morte dos imperadores romanos. Vamos começar importando os dados e usando &lt;code&gt;glimpse&lt;/code&gt; para dar aquela olhadela nos dados. Para manipular os dados com maior facilidade, vamos usar o pacote &lt;code&gt;lubridate&lt;/code&gt;, criado para lidar com tempo e datas, o que nunca é uma tarefa trivial.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;if (!require(&amp;quot;pacman&amp;quot;)) install.packages(&amp;quot;pacman&amp;quot;)
 pacman::p_load(tidyverse, janitor, lubridate, extrafont)
 
@@ -41,7 +41,7 @@ imperadores &amp;lt;- readr::read_csv(&amp;quot;https://raw.githubusercontent.co
          reign_duration = lubridate::time_length(lubridate::interval(start = reign_start,
                                                                      end = reign_end),
                                                  unit = &amp;quot;year&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Criei uma coluna com a idade da morte de cada imperador. Como alguns deles (dois pra ser preciso) nasceram antes e morreram depois do ano 0, usei &lt;code&gt;case_when&lt;/code&gt; pra corrigir a conta da idade pra esses casos.&lt;/p&gt;
+&lt;p&gt;Criei uma coluna com a idade da morte e duração do reino de cada imperador. Como alguns deles (dois, pra ser preciso) nasceram antes e morreram depois do ano 0, usei &lt;code&gt;case_when()&lt;/code&gt; pra corrigir a conta da idade pra esses casos. Note o uso das funções &lt;code&gt;time_length()&lt;/code&gt; e &lt;code&gt;interval()&lt;/code&gt; do pacote &lt;code&gt;lubridate&lt;/code&gt; para extrair o valor (numérico) do intervalo em anos entre duas datas.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;imperadores %&amp;gt;% glimpse()&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## Observations: 68
 ## Variables: 18
@@ -63,12 +63,11 @@ imperadores &amp;lt;- readr::read_csv(&amp;quot;https://raw.githubusercontent.co
 ## $ verif_who      &amp;lt;chr&amp;gt; &amp;quot;Reddit user zonination&amp;quot;, &amp;quot;Reddit user zoninati...
 ## $ age_death      &amp;lt;dbl&amp;gt; 75.90411, 77.32877, 28.40000, 63.20000, 30.4836...
 ## $ reign_duration &amp;lt;dbl&amp;gt; 40.5890411, 22.4904110, 3.8547945, 13.7150685, ...&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;A primeira coisa que eu gostaria de ver é uma distribuição das causas de morte dos imperadores. Tenho impressão que não era um trabalho fácil.&lt;/p&gt;
+&lt;p&gt;A primeira coisa que eu gostaria de ver é uma distribuição das causas de morte dos imperadores. Tenho impressão que não era um trabalho fácil. A função &lt;code&gt;fct_reorder()&lt;/code&gt;, do pacote &lt;code&gt;forcats&lt;/code&gt;, nos ajuda a deixar os fatores na ordem decrescente que quero para gráfico.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;resumo_causas &amp;lt;- imperadores %&amp;gt;%
   group_by(cause) %&amp;gt;% 
   summarise(contar = n()) %&amp;gt;% 
-  arrange(-contar) %&amp;gt;% 
-  mutate(cause = factor(cause, levels = cause)) #mantendo a ordem decrescente
+  mutate(cause = forcats::fct_reorder(cause, -contar)) #mantendo a ordem decrescente
 
 resumo_causas %&amp;gt;% 
   ggplot(aes(x = cause, y = contar/sum(contar))) +
@@ -84,9 +83,9 @@ resumo_causas %&amp;gt;%
   theme_bw() +
   theme(text = element_text(family = &amp;quot;RomanT&amp;quot;),
         axis.text.x = element_text(angle = -5, vjust = -0.5)) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://edgarcutar.github.io/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;
-Realmente não era uma vida tranquila.&lt;/p&gt;
-&lt;p&gt;Agora, para unir as mortes violentas em um grupo só, podemos usar &lt;code&gt;fct_collapse()&lt;/code&gt; .&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Realmente não era uma vida tranquila.&lt;/p&gt;
+&lt;p&gt;Agora, para unir as mortes violentas em um grupo só, podemos usar &lt;code&gt;fct_collapse()&lt;/code&gt;, também do pacote &lt;code&gt;forcats&lt;/code&gt;.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;resumo_coll &amp;lt;- resumo_causas  %&amp;gt;% 
   mutate(cause2 = fct_collapse(cause, 
                                mortes_violentas = c(&amp;quot;Assassination&amp;quot;, &amp;quot;Execution&amp;quot;, 
@@ -109,7 +108,7 @@ resumo_coll %&amp;gt;%
   scale_x_discrete(labels = c(&amp;quot;Mortes Violentas&amp;quot;, &amp;quot;Causas Naturais&amp;quot;, &amp;quot;Outros&amp;quot;)) +
   theme_bw() +
   theme(text = element_text(family = &amp;quot;RomanT&amp;quot;)) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://edgarcutar.github.io/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Pelo menos 65% dos imperadores romanos morreram violentamente. Isso me deixa curioso para saber quantos golpes de Estado ocorreram em Roma e com qual frequência eles aconteceram.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;golpes &amp;lt;- imperadores %&amp;gt;% 
   filter(rise == &amp;quot;Seized Power&amp;quot;) %&amp;gt;% 
@@ -176,7 +175,7 @@ golpes %&amp;gt;%
        y = NULL) +
   theme_bw() +
   theme(text = element_text(family = &amp;quot;RomanT&amp;quot;)) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://edgarcutar.github.io/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;768&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;O que mais impressiona é que depois da morte de Septimus Severus, em 211, houve 13 imperadores seguidos mortos de forma violenta. Depois dos 13, Hostilian assumiu por apenas 105 dias antes de morrer de causas naturais. Depois dele, mais 4 imperadores morreram de causas violentas.&lt;/p&gt;
 &lt;p&gt;Pra quem sentiu falta de Julio César, aquele do “Até tu, Brutus?”, ele foi um dos últimos ícones da República Romana, e um dos que ajudou a formar o império, que começou 18 anos após sua morte.&lt;/p&gt;
 &lt;p&gt;Tem alguma crítica, sugestão, ou quer bater um papo? Me chama no &lt;a href=&#34;http://twitter.com/edgar_cutar&#34;&gt;Twitter&lt;/a&gt;!&lt;/p&gt;
