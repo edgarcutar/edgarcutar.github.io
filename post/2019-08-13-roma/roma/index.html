@@ -348,7 +348,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    8 min read
+    6 min read
   </span>
   
 
@@ -399,9 +399,12 @@
       
 
 
-<p>A <a href="https://github.com/rfordatascience/tidytuesday">Tidy Tuesday</a> dessa semana trás uma base de dados com a vida e morte dos imperadores romanos. Vamos começar importando e usando <code>glimpse</code> para dar aquela olhadela nos dados. Para melhor mexer nesses dados, vamos usar o pacote <code>lubridate</code>, criado para lidar com tempo e datas, o que nunca é uma tarefa trivial. Com isso, vamos usar as funções<code>time_length()</code> e <code>interval()</code> para transformar as datas em intervalos e a função <code>case_when()</code> para corrigir as datas anteriores ao nascimento de Cristo (essa informação está na coluna <code>notes)</code>.</p>
+<p>A <a href="https://github.com/rfordatascience/tidytuesday">Tidy Tuesday</a> dessa semana trás uma base de dados com a vida e morte dos imperadores romanos. Vamos começar importando e usando <code>glimpse</code> para dar aquela olhadela nos dados. Para melhor mexer nesses dados, vamos usar o pacote <code>lubridate</code>, criado para lidar com tempo e datas, o que nunca é uma tarefa trivial. Com isso, vamos usar as funções<code>time_length()</code> e <code>interval()</code> para transformar as datas em intervalos e a função <code>case_when()</code> para corrigir as datas anteriores ao nascimento de Cristo (essa informação está na coluna <code>notes</code>).</p>
 <pre class="r"><code>if (!require(&quot;pacman&quot;)) install.packages(&quot;pacman&quot;)
-pacman::p_load(tidyverse, janitor, lubridate)
+pacman::p_load(tidyverse, janitor, lubridate, extrafont)
+
+#font_import() #Necessário rodar essa linha uma vez na vida para importar as fontes de seu computador para o R
+loadfonts(device = &quot;win&quot;)
 
 imperadores &lt;- readr::read_csv(&quot;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-08-13/emperors.csv&quot;) %&gt;% 
   mutate(birth = case_when(str_detect(notes, 
@@ -452,15 +455,17 @@ resumo_causas %&gt;%
   geom_text(aes(label = scales::percent(contar/sum(contar), accuracy = 1)),
             color = &quot;white&quot;, fontface  = &quot;bold&quot;, vjust = 1) +
   scale_y_continuous(&quot;% de Mortes&quot;,
-                     breaks = 0.05*0:8,
-                     labels = scales::percent(0.05*0:8)) +
+                     breaks = 0.05 * 0:8,
+                     labels = scales::percent(0.05 * 0:8, accuracy = 1)) +
   labs(x = NULL,
        title = &quot;Causas de Morte dos Imperadores Romanos&quot;,
        caption = &quot;Fonte: Tidy Tuesday - Elaborado por Edgar Cutar Junior&quot;) +
-  theme_bw() </code></pre>
+  theme_bw() +
+  theme(text = element_text(family = &quot;RomanT&quot;),
+        axis.text.x = element_text(angle = -5, vjust = -0.5)) </code></pre>
 <p><img src="/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-3-1.png" width="672" />
 Realmente não era uma vida tranquila.</p>
-<p>Agora vou usar <code>fct_collapse</code> para unir as mortes violentas em um grupo só.</p>
+<p>Agora, para unir as mortes violentas em um grupo só, podemos usar <code>fct_collapse()</code> .</p>
 <pre class="r"><code>resumo_coll &lt;- resumo_causas  %&gt;% 
   mutate(cause2 = fct_collapse(cause, 
                                mortes_violentas = c(&quot;Assassination&quot;, &quot;Execution&quot;, 
@@ -481,55 +486,10 @@ resumo_coll %&gt;%
        caption = &quot;Fonte: Tidy Tuesday - Elaborado por Edgar Cutar Junior&quot;) +
   scale_fill_viridis_d() +
   scale_x_discrete(labels = c(&quot;Mortes Violentas&quot;, &quot;Causas Naturais&quot;, &quot;Outros&quot;)) +
-  theme_bw()  +
+  theme_bw() +
   theme(text = element_text(family = &quot;RomanT&quot;)) </code></pre>
-<pre><code>## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
-## family not found in Windows font database
-
-## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
-## family not found in Windows font database</code></pre>
-<pre><code>## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database</code></pre>
-<pre><code>## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
-## family not found in Windows font database</code></pre>
-<pre><code>## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database</code></pre>
-<pre><code>## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x,
-## x$y, : font family not found in Windows font database</code></pre>
-<pre><code>## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font family not found in Windows font database</code></pre>
 <p><img src="/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<p>Pelo menos 65% dos imperadores romanos morreram violentamente. Isso me leva a curiosidade de saber quantos golpes de Estado ocorreram em Roma e com qual frequência eles aconteceram.</p>
+<p>Pelo menos 65% dos imperadores romanos morreram violentamente. Isso me deixa curioso para saber quantos golpes de Estado ocorreram em Roma e com qual frequência eles aconteceram.</p>
 <pre class="r"><code>golpes &lt;- imperadores %&gt;% 
   filter(rise == &quot;Seized Power&quot;) %&gt;% 
   mutate(imperadores_entre_golpes = ifelse(is.na(lag(index)),
@@ -542,32 +502,15 @@ resumo_coll %&gt;%
                                     anos_entre_golpes,
                                     time_length(interval(start = imperadores$reign_start[1],
                                                          end = reign_start),
-                                                unit = &quot;year&quot;))) %&gt;% 
-  print()</code></pre>
-<pre><code>## # A tibble: 10 x 20
-##    index name  name_full birth      death      birth_cty birth_prv rise 
-##    &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;     &lt;date&gt;     &lt;date&gt;     &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;
-##  1     6 Galba SERVIVS ~ -002-12-24 0069-01-15 Terracina Italia    Seiz~
-##  2     8 Vite~ AVLVS VI~ 0015-09-24 0069-12-20 Rome      Italia    Seiz~
-##  3     9 Vesp~ TITVS FL~ 0009-11-17 0079-06-24 Falacrine Italia    Seiz~
-##  4    21 Sept~ CAESAR L~ 0145-04-11 0211-02-04 Leptis M~ Libya     Seiz~
-##  5    24 Macr~ MARCVS O~ 0165-01-01 0218-06-08 Iol Caes~ Mauretan~ Seiz~
-##  6    33 Phil~ CAESAR M~ 0204-01-01 0249-10-01 Shahba    Syria     Seiz~
-##  7    40 Clau~ CAESAR M~ 0213-05-10 0270-01-15 Sirmium   Pannonia  Seiz~
-##  8    46 Carus CAESAR M~ 0230-01-01 0283-08-01 Narbo     Gallia N~ Seiz~
-##  9    49 Dioc~ CAESAR G~ 0244-12-22 0311-12-03 Salona    Dalmatian Seiz~
-## 10    61 Vetr~ CAESAR F~ NA         0356-01-01 &lt;NA&gt;      Moesia    Seiz~
-## # ... with 12 more variables: reign_start &lt;date&gt;, reign_end &lt;date&gt;,
-## #   cause &lt;chr&gt;, killer &lt;chr&gt;, dynasty &lt;chr&gt;, era &lt;chr&gt;, notes &lt;chr&gt;,
-## #   verif_who &lt;chr&gt;, age_death &lt;dbl&gt;, reign_duration &lt;dbl&gt;,
-## #   imperadores_entre_golpes &lt;dbl&gt;, anos_entre_golpes &lt;dbl&gt;</code></pre>
-<pre class="r"><code>golpes %&gt;% 
+                                                unit = &quot;year&quot;)))
+
+golpes %&gt;% 
   summarise(max_imper = max(imperadores_entre_golpes),
             med_imper = mean(imperadores_entre_golpes),
             min_imper = min(imperadores_entre_golpes),
             max_anos = max(anos_entre_golpes),
             med_anos = mean(anos_entre_golpes),
-            min_anos = min(anos_entre_golpes))</code></pre>
+            min_anos = min(anos_entre_golpes)) </code></pre>
 <pre><code>## # A tibble: 1 x 6
 ##   max_imper med_imper min_imper max_anos med_anos min_anos
 ##       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
@@ -578,12 +521,8 @@ resumo_coll %&gt;%
 <li><p>69 DC ficou conhecido como “O ano dos 4 imperadores”. Foram Galba, Otho, Vitélio e Vespasiano, que se consolidou no poder, onde ficou até falecer, 10 anos depois, como o 4º imperador mais velho a falecer.</p></li>
 <li><p>Vitélio consagra seu império o período mais curto entre golpes, tomou o poder em abril e foi deposto (e executado) em dezembro.</p></li>
 </ol>
-<p>Por fim, vamos usar <code>geom_errorbar()</code> para fazer um gráfico mostrando todos os imperadores de Roma.</p>
-<pre class="r"><code>pacman::p_load(extrafont)
-#font_import() #Necessário rodar essa linha uma vez para importar as fontes de seu computador
-loadfonts(device = &quot;win&quot;)
-
-imperadores %&gt;% 
+<p>Por fim, vamos usar <code>geom_segment()</code> para fazer um gráfico mostrando todos os imperadores de Roma, com suas vidas, mortes e reinados.</p>
+<pre class="r"><code>imperadores %&gt;% 
   mutate(cause2 = fct_collapse(cause, 
                                `Mortes Violentas` = c(&quot;Assassination&quot;, &quot;Execution&quot;, 
                                                     &quot;Died in Battle&quot;, &quot;Suicide&quot;,
@@ -604,7 +543,7 @@ imperadores %&gt;%
                    xend = reign_end, 
                    yend = ..y..,
                    color = &quot;Reinado&quot;), 
-               color = &quot;red&quot;, vjust= -2,
+               color = &quot;red&quot;,
                size = 1, lineend = &quot;round&quot;) +
   scale_color_viridis_d() +
   scale_x_date(labels = function(x) str_glue(&quot;{year(x)} DC&quot;)) +
