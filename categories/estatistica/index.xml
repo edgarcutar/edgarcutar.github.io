@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Estatística | Edgar Cutar Junior</title>
-    <link>https://edgarcutar.github.io/categories/estatistica/</link>
-      <atom:link href="https://edgarcutar.github.io/categories/estatistica/index.xml" rel="self" type="application/rss+xml" />
+    <link>/categories/estatistica/</link>
+      <atom:link href="/categories/estatistica/index.xml" rel="self" type="application/rss+xml" />
     <description>Estatística</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 11 Aug 2019 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://edgarcutar.github.io/img/edgar.jpg</url>
+      <url>/img/edgar.jpg</url>
       <title>Estatística</title>
-      <link>https://edgarcutar.github.io/categories/estatistica/</link>
+      <link>/categories/estatistica/</link>
     </image>
     
     <item>
       <title>Lidando com dados longitudinais e pareamento de dados</title>
-      <link>https://edgarcutar.github.io/post/2019-08-11-longitudinal/longitudinal/</link>
+      <link>/post/2019-08-11-longitudinal/longitudinal/</link>
       <pubDate>Sun, 11 Aug 2019 00:00:00 +0000</pubDate>
-      <guid>https://edgarcutar.github.io/post/2019-08-11-longitudinal/longitudinal/</guid>
+      <guid>/post/2019-08-11-longitudinal/longitudinal/</guid>
       <description>
 
 
@@ -81,7 +81,10 @@ dplyr::starwars&lt;/code&gt;&lt;/pre&gt;
 &lt;li&gt;A idade 2 deve ser maior que a idade 1;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Para fazer essa combinatória, elaborei uma função de pareamento, apresentada abaixo e aplicada aos dados do nosso exemplo. Apesar de ter pensado ela para dados florestais, a mesma pode ser usada com poucas modificações para quaisquer origem de dados.&lt;/p&gt;
-&lt;p&gt;A função terá 3 argumentos: - &lt;strong&gt;table&lt;/strong&gt;: o data frame a ser pareado - &lt;strong&gt;id&lt;/strong&gt;: o identificador único de sua parcela amostral - &lt;strong&gt;idade&lt;/strong&gt;: sua variável indicando o tempo de medição. Pode ser idade, ano, mês… a coluna que indica QUANDO a medição foi feita, em relação ao &lt;span class=&#34;math inline&#34;&gt;\(t_0\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;A função terá 3 argumentos:
+- &lt;strong&gt;table&lt;/strong&gt;: o data frame a ser pareado
+- &lt;strong&gt;id&lt;/strong&gt;: o identificador único de sua parcela amostral
+- &lt;strong&gt;idade&lt;/strong&gt;: sua variável indicando o tempo de medição. Pode ser idade, ano, mês… a coluna que indica QUANDO a medição foi feita, em relação ao &lt;span class=&#34;math inline&#34;&gt;\(t_0\)&lt;/span&gt;.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pacman::p_load(dplyr)
 
 pareamento &amp;lt;- function(table, id, idade){

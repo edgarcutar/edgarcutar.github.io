@@ -32,7 +32,7 @@
 Dados transversais (também chamados de cross-section) são o tipo de dado mais comum encontrado em qualquer área de estudo. Nesse tipo de base, existe uma observação para cada “indivíduo”. Como uma fotografia, ou um recorte, da população a ser estudada, um dado transversal tenta captar as variações que ocorrem na população através de uma imagem estática.">
 
   
-  <link rel="alternate" hreflang="en-us" href="https://edgarcutar.github.io/post/2019-08-11-longitudinal/longitudinal/">
+  <link rel="alternate" hreflang="en-us" href="/post/2019-08-11-longitudinal/longitudinal/">
 
   
 
@@ -114,7 +114,7 @@ Dados transversais (também chamados de cross-section) são o tipo de dado mais 
   <link rel="icon" type="image/png" href="/img/icon.png">
   <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
 
-  <link rel="canonical" href="https://edgarcutar.github.io/post/2019-08-11-longitudinal/longitudinal/">
+  <link rel="canonical" href="/post/2019-08-11-longitudinal/longitudinal/">
 
   
   
@@ -129,11 +129,11 @@ Dados transversais (também chamados de cross-section) são o tipo de dado mais 
   <meta property="twitter:creator" content="@edgar_cutar">
   
   <meta property="og:site_name" content="Edgar Cutar Junior">
-  <meta property="og:url" content="https://edgarcutar.github.io/post/2019-08-11-longitudinal/longitudinal/">
+  <meta property="og:url" content="/post/2019-08-11-longitudinal/longitudinal/">
   <meta property="og:title" content="Lidando com dados longitudinais e pareamento de dados | Edgar Cutar Junior">
   <meta property="og:description" content="Quando falamos em bases de dados, existem basicamente dois grandes tipos de dados: Transversais e Longitudinais.
-Dados transversais (também chamados de cross-section) são o tipo de dado mais comum encontrado em qualquer área de estudo. Nesse tipo de base, existe uma observação para cada “indivíduo”. Como uma fotografia, ou um recorte, da população a ser estudada, um dado transversal tenta captar as variações que ocorrem na população através de uma imagem estática."><meta property="og:image" content="https://edgarcutar.github.io/post/2019-08-11-longitudinal/longitudinal/featured.png">
-  <meta property="twitter:image" content="https://edgarcutar.github.io/post/2019-08-11-longitudinal/longitudinal/featured.png"><meta property="og:locale" content="en-us">
+Dados transversais (também chamados de cross-section) são o tipo de dado mais comum encontrado em qualquer área de estudo. Nesse tipo de base, existe uma observação para cada “indivíduo”. Como uma fotografia, ou um recorte, da população a ser estudada, um dado transversal tenta captar as variações que ocorrem na população através de uma imagem estática."><meta property="og:image" content="/post/2019-08-11-longitudinal/longitudinal/featured.png">
+  <meta property="twitter:image" content="/post/2019-08-11-longitudinal/longitudinal/featured.png"><meta property="og:locale" content="en-us">
   
     
       <meta property="article:published_time" content="2019-08-11T00:00:00&#43;00:00">
@@ -256,7 +256,7 @@ Dados transversais (também chamados de cross-section) são o tipo de dado mais 
         
 
         <li class="nav-item">
-          <a class="nav-link " href="/curso_suzano/" target="_blank" rel="noopener"><span>Curso R - Módulo 1</span></a>
+          <a class="nav-link " href="https://edgarcutar.github.io/curso_suzano/" target="_blank" rel="noopener"><span>Curso R - Módulo 1</span></a>
         </li>
 
         
@@ -464,7 +464,10 @@ dplyr::starwars</code></pre>
 <li>A idade 2 deve ser maior que a idade 1;</li>
 </ul>
 <p>Para fazer essa combinatória, elaborei uma função de pareamento, apresentada abaixo e aplicada aos dados do nosso exemplo. Apesar de ter pensado ela para dados florestais, a mesma pode ser usada com poucas modificações para quaisquer origem de dados.</p>
-<p>A função terá 3 argumentos: - <strong>table</strong>: o data frame a ser pareado - <strong>id</strong>: o identificador único de sua parcela amostral - <strong>idade</strong>: sua variável indicando o tempo de medição. Pode ser idade, ano, mês… a coluna que indica QUANDO a medição foi feita, em relação ao <span class="math inline">\(t_0\)</span>.</p>
+<p>A função terá 3 argumentos:
+- <strong>table</strong>: o data frame a ser pareado
+- <strong>id</strong>: o identificador único de sua parcela amostral
+- <strong>idade</strong>: sua variável indicando o tempo de medição. Pode ser idade, ano, mês… a coluna que indica QUANDO a medição foi feita, em relação ao <span class="math inline">\(t_0\)</span>.</p>
 <pre class="r"><code>pacman::p_load(dplyr)
 
 pareamento &lt;- function(table, id, idade){
@@ -570,7 +573,7 @@ parcela %&gt;%
     
 
     <div class="media-body">
-      <h5 class="card-title" itemprop="name"><a href="https://edgarcutar.github.io/">Edgar Cutar Junior</a></h5>
+      <h5 class="card-title" itemprop="name"><a href="/">Edgar Cutar Junior</a></h5>
       
       
       <ul class="network-icon" aria-hidden="true">
@@ -760,6 +763,16 @@ parcela %&gt;%
   
   <div class="container">
     <footer class="site-footer">
+  
+  <p class="powered-by">
+    
+      <a href="/privacy/">Privacy Policy</a>
+    
+    
+       &middot; 
+      <a href="/terms/">Terms</a>
+        
+  </p>
   
 
   <p class="powered-by">
