@@ -20,7 +20,7 @@
       <description>
 
 
-&lt;p&gt;A &lt;a href=&#34;https://github.com/rfordatascience/tidytuesday&#34;&gt;Tidy Tuesday&lt;/a&gt; dessa semana trás uma base de dados com a vida e morte dos imperadores romanos. Vamos começar importando os dados e usando &lt;code&gt;glimpse&lt;/code&gt; para dar aquela olhadela nos dados. Para manipular os dados com maior facilidade, vamos usar o pacote &lt;code&gt;lubridate&lt;/code&gt;, criado para lidar com tempo e datas, o que nunca é uma tarefa trivial.&lt;/p&gt;
+&lt;p&gt;A &lt;a href=&#34;https://github.com/rfordatascience/tidytuesday&#34;&gt;Tidy Tuesday&lt;/a&gt; dessa semana trás uma base de dados com a vida e morte dos imperadores romanos. Vamos começar importando os dados e usando &lt;code&gt;glimpse&lt;/code&gt; para dar aquela olhadela em como eles estão estruturados. Para manipulação desse database com maior facilidade, vamos usar o pacote &lt;code&gt;lubridate&lt;/code&gt;, &lt;a href=&#34;https://lubridate.tidyverse.org/&#34;&gt;criado para lidar com tempo e datas&lt;/a&gt;, o que nunca é uma tarefa trivial.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;if (!require(&amp;quot;pacman&amp;quot;)) install.packages(&amp;quot;pacman&amp;quot;)
 pacman::p_load(tidyverse, janitor, lubridate, extrafont)
 
@@ -63,7 +63,7 @@ imperadores &amp;lt;- readr::read_csv(&amp;quot;https://raw.githubusercontent.co
 ## $ verif_who      &amp;lt;chr&amp;gt; &amp;quot;Reddit user zonination&amp;quot;, &amp;quot;Reddit user zoninati...
 ## $ age_death      &amp;lt;dbl&amp;gt; 75.90411, 77.32877, 28.40000, 63.20000, 30.4836...
 ## $ reign_duration &amp;lt;dbl&amp;gt; 40.5890411, 22.4904110, 3.8547945, 13.7150685, ...&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;A primeira coisa que eu gostaria de ver é uma distribuição das causas de morte dos imperadores. Tenho impressão que não era um trabalho fácil. A função &lt;code&gt;fct_reorder()&lt;/code&gt;, do pacote &lt;code&gt;forcats&lt;/code&gt;, nos ajuda a deixar os fatores na ordem decrescente que quero para gráfico.&lt;/p&gt;
+&lt;p&gt;A primeira coisa que eu gostaria de ver é uma distribuição das causas de morte dos imperadores. Tenho impressão que não era um trabalho fácil. A função &lt;code&gt;fct_reorder()&lt;/code&gt;, do pacote &lt;code&gt;forcats&lt;/code&gt;, &lt;a href=&#34;https://forcats.tidyverse.org/&#34;&gt;pacote feito para manipulação de fatores&lt;/a&gt;, nos ajuda a deixar os fatores na ordem decrescente que queremos para gráfico.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;resumo_causas &amp;lt;- imperadores %&amp;gt;%
   group_by(cause) %&amp;gt;% 
   summarise(contar = n()) %&amp;gt;% 
