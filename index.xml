@@ -249,7 +249,7 @@ ggplot(world_sf) +
           alpha = 0.45) +
   labs(size = &amp;quot;Quilotons&amp;quot;,
        color = &amp;quot;País&amp;quot;,
-       title = &amp;quot;Explosões Nucleares de 1945 a 1988&amp;quot;) +
+       title = &amp;quot;Explosões Nucleares de 1945 a 1998&amp;quot;) +
   scale_x_continuous(name = NULL, breaks = seq(-120, 120, by = 60)) +
   scale_y_continuous(name = NULL, breaks = seq(-60, 60, by = 30)) +
   coord_sf(xlim = 0.95*xlim, ylim = 0.95*ylim, expand = FALSE, crs = crs_goode, ndiscr = 1000) + 
