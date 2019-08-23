@@ -4,19 +4,54 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2019-08-13T09:27:22-03:00</lastmod>
+    <lastmod>2019-08-21T14:43:41-03:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
+    <loc>/post/2019-08-21-nuclear/nuclear/</loc>
+    <lastmod>2019-08-21T14:43:41-03:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/post/</loc>
-    <lastmod>2019-08-13T09:27:22-03:00</lastmod>
+    <lastmod>2019-08-21T14:43:41-03:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/</loc>
-    <lastmod>2019-08-13T09:27:22-03:00</lastmod>
+    <lastmod>2019-08-21T14:43:41-03:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/datavis/</loc>
+    <lastmod>2019-08-21T14:43:41-03:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/goode/</loc>
+    <lastmod>2019-08-21T14:43:41-03:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/maps/</loc>
+    <lastmod>2019-08-21T14:43:41-03:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/sf/</loc>
+    <lastmod>2019-08-21T14:43:41-03:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/tidytuesday/</loc>
+    <lastmod>2019-08-21T14:43:41-03:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -33,12 +68,6 @@
   
   <url>
     <loc>/tags/roma/</loc>
-    <lastmod>2019-08-13T09:27:22-03:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/tidytuesday/</loc>
     <lastmod>2019-08-13T09:27:22-03:00</lastmod>
     <priority>0</priority>
   </url>

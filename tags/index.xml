@@ -5,12 +5,52 @@
     <link>/tags/</link>
       <atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     <description>Tags</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Tue, 13 Aug 2019 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Wed, 21 Aug 2019 00:00:00 +0000</lastBuildDate>
     <image>
       <url>/img/edgar.jpg</url>
       <title>Tags</title>
       <link>/tags/</link>
     </image>
+    
+    <item>
+      <title>datavis</title>
+      <link>/tags/datavis/</link>
+      <pubDate>Wed, 21 Aug 2019 00:00:00 +0000</pubDate>
+      <guid>/tags/datavis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>goode</title>
+      <link>/tags/goode/</link>
+      <pubDate>Wed, 21 Aug 2019 00:00:00 +0000</pubDate>
+      <guid>/tags/goode/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>maps</title>
+      <link>/tags/maps/</link>
+      <pubDate>Wed, 21 Aug 2019 00:00:00 +0000</pubDate>
+      <guid>/tags/maps/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>sf</title>
+      <link>/tags/sf/</link>
+      <pubDate>Wed, 21 Aug 2019 00:00:00 +0000</pubDate>
+      <guid>/tags/sf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tidytuesday</title>
+      <link>/tags/tidytuesday/</link>
+      <pubDate>Wed, 21 Aug 2019 00:00:00 +0000</pubDate>
+      <guid>/tags/tidytuesday/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>imperio</title>
@@ -25,14 +65,6 @@
       <link>/tags/roma/</link>
       <pubDate>Tue, 13 Aug 2019 00:00:00 +0000</pubDate>
       <guid>/tags/roma/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>tidytuesday</title>
-      <link>/tags/tidytuesday/</link>
-      <pubDate>Tue, 13 Aug 2019 00:00:00 +0000</pubDate>
-      <guid>/tags/tidytuesday/</guid>
       <description></description>
     </item>
     
