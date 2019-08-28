@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.4.0">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Edgar Cutar Junior">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="A Tidy Tuesday dessa semana trás uma base de dados com a vida e morte dos imperadores romanos. Vamos começar importando os dados e usando glimpse para dar aquela olhadela em como eles estão estruturados. Para manipulação desse database com maior facilidade, vamos usar o pacote lubridate, criado para lidar com tempo e datas, o que nunca é uma tarefa trivial.
+if (!require(&quot;pacman&quot;)) install.packages(&quot;pacman&quot;)pacman::p_load(tidyverse, janitor, lubridate, extrafont)#font_import() #Necessário rodar essa linha uma vez na vida para importar as fontes de seu computador para o Rloadfonts(device = &quot;win&quot;)imperadores &lt;- readr::read_csv(&quot;https://raw.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="/post/roma/">
+
+  
+
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="hsl(339, 90%, 68%)">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css" crossorigin="anonymous" title="hl-light" disabled>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark">
+        
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.css" integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ==" crossorigin="anonymous">
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono&display=swap">
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.min.ad3b6b564eecf3bded7ab4274cd100b7.css">
+
+  
+
+  
+  
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-144596672-2', 'auto');
+      
+      ga('require', 'eventTracker');
+      ga('require', 'outboundLinkTracker');
+      ga('require', 'urlChangeTracker');
+      ga('send', 'pageview');
+    </script>
+    <script async src="https://www.google-analytics.com/analytics.js"></script>
+    
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/autotrack/2.4.1/autotrack.js" integrity="sha512-HUmooslVKj4m6OBu0OgzjXXr+QuFYy/k7eLI5jdeEy/F4RSgMn6XRWRGkFi5IFaFgy7uFTkegp3Z0XnJf3Jq+g==" crossorigin="anonymous"></script>
+    
+  
+  
+
+  
+
+  
+
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="/post/roma/">
+
+  
+  
+  
+  
+    
+  
+  
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="twitter:site" content="@edgar_cutar">
+  <meta property="twitter:creator" content="@edgar_cutar">
+  
+  <meta property="og:site_name" content="Edgar Cutar Junior">
+  <meta property="og:url" content="/post/roma/">
+  <meta property="og:title" content="Vida e (principalmente) morte dos Imperadores Romanos | Edgar Cutar Junior">
+  <meta property="og:description" content="A Tidy Tuesday dessa semana trás uma base de dados com a vida e morte dos imperadores romanos. Vamos começar importando os dados e usando glimpse para dar aquela olhadela em como eles estão estruturados. Para manipulação desse database com maior facilidade, vamos usar o pacote lubridate, criado para lidar com tempo e datas, o que nunca é uma tarefa trivial.
+if (!require(&quot;pacman&quot;)) install.packages(&quot;pacman&quot;)pacman::p_load(tidyverse, janitor, lubridate, extrafont)#font_import() #Necessário rodar essa linha uma vez na vida para importar as fontes de seu computador para o Rloadfonts(device = &quot;win&quot;)imperadores &lt;- readr::read_csv(&quot;https://raw."><meta property="og:image" content="/post/roma/featured.jpg">
+  <meta property="twitter:image" content="/post/roma/featured.jpg"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2019-08-13T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2019-08-13T09:27:22-03:00">
+  
+
+  
+
+
+  
+
+
+
+
+
+  <title>Vida e (principalmente) morte dos Imperadores Romanos | Edgar Cutar Junior</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="dark">
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0 compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="/">Edgar Cutar Junior</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav ml-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+        </li>
+        
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+  <article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+
+<div class="article-container pt-3">
+  <h1 itemprop="name">Vida e (principalmente) morte dos Imperadores Romanos</h1>
+
+  
+
+  
+
+
+
+<meta content="2019-08-13 00:00:00 &#43;0000 UTC" itemprop="datePublished">
+<meta content="2019-08-13 09:27:22 -0300 -03" itemprop="dateModified">
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+          Last updated on
+      
+    
+    <time>Aug 13, 2019</time>
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    6 min read
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+
+  
+    
+
+  
+
+</div>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+<div class="article-header article-container featured-image-wrapper mt-4 mb-4" style="max-width: 720px; max-height: 442px;">
+  <div style="position: relative">
+    <img src="/post/roma/featured_hu9520273b6319dbfb8aa93b814493c891_536258_720x0_resize_q90_lanczos.jpg" alt="" class="featured-image">
+    
+  </div>
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      
+
+
+<p>A <a href="https://github.com/rfordatascience/tidytuesday">Tidy Tuesday</a> dessa semana trás uma base de dados com a vida e morte dos imperadores romanos. Vamos começar importando os dados e usando <code>glimpse</code> para dar aquela olhadela em como eles estão estruturados. Para manipulação desse database com maior facilidade, vamos usar o pacote <code>lubridate</code>, <a href="https://lubridate.tidyverse.org/">criado para lidar com tempo e datas</a>, o que nunca é uma tarefa trivial.</p>
+<pre class="r"><code>if (!require(&quot;pacman&quot;)) install.packages(&quot;pacman&quot;)
+pacman::p_load(tidyverse, janitor, lubridate, extrafont)
+
+#font_import() #Necessário rodar essa linha uma vez na vida para importar as fontes de seu computador para o R
+loadfonts(device = &quot;win&quot;)
+
+imperadores &lt;- readr::read_csv(&quot;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-08-13/emperors.csv&quot;) %&gt;% 
+  mutate(birth = case_when(str_detect(notes, 
+                                      &quot;BCE&quot;) ~ birth - years(2*year(birth)),
+                           TRUE ~ birth),
+         reign_start = case_when(
+           str_detect(notes, 
+                      &quot;reign.start are BCE&quot;) ~ reign_start - years(2*year(reign_start)),
+           TRUE ~ reign_start),
+         age_death = lubridate::time_length(lubridate::interval(start = birth,
+                                                                end = death),
+                                            unit = &quot;year&quot;),
+         reign_duration = lubridate::time_length(lubridate::interval(start = reign_start,
+                                                                     end = reign_end),
+                                                 unit = &quot;year&quot;))</code></pre>
+<p>Criei uma coluna com a idade da morte e duração do reino de cada imperador. Como alguns deles (dois, pra ser preciso) nasceram antes e morreram depois do ano 0, usei <code>case_when()</code> pra corrigir a conta da idade pra esses casos. Note o uso das funções <code>time_length()</code> e <code>interval()</code> do pacote <code>lubridate</code> para extrair o valor (numérico) do intervalo em anos entre duas datas.</p>
+<pre class="r"><code>imperadores %&gt;% glimpse()</code></pre>
+<pre><code>## Observations: 68
+## Variables: 18
+## $ index          &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, ...
+## $ name           &lt;chr&gt; &quot;Augustus&quot;, &quot;Tiberius&quot;, &quot;Caligula&quot;, &quot;Claudius&quot;,...
+## $ name_full      &lt;chr&gt; &quot;IMPERATOR CAESAR DIVI FILIVS AVGVSTVS&quot;, &quot;TIBER...
+## $ birth          &lt;date&gt; -062-09-23, -041-11-16, 0012-08-31, -009-08-01...
+## $ death          &lt;date&gt; 0014-08-19, 0037-03-16, 0041-01-24, 0054-10-13...
+## $ birth_cty      &lt;chr&gt; &quot;Rome&quot;, &quot;Rome&quot;, &quot;Antitum&quot;, &quot;Lugdunum&quot;, &quot;Antitum...
+## $ birth_prv      &lt;chr&gt; &quot;Italia&quot;, &quot;Italia&quot;, &quot;Italia&quot;, &quot;Gallia Lugdunens...
+## $ rise           &lt;chr&gt; &quot;Birthright&quot;, &quot;Birthright&quot;, &quot;Birthright&quot;, &quot;Birt...
+## $ reign_start    &lt;date&gt; -026-01-16, 0014-09-18, 0037-03-18, 0041-01-25...
+## $ reign_end      &lt;date&gt; 0014-08-19, 0037-03-16, 0041-01-24, 0054-10-13...
+## $ cause          &lt;chr&gt; &quot;Assassination&quot;, &quot;Assassination&quot;, &quot;Assassinatio...
+## $ killer         &lt;chr&gt; &quot;Wife&quot;, &quot;Other Emperor&quot;, &quot;Senate&quot;, &quot;Wife&quot;, &quot;Sen...
+## $ dynasty        &lt;chr&gt; &quot;Julio-Claudian&quot;, &quot;Julio-Claudian&quot;, &quot;Julio-Clau...
+## $ era            &lt;chr&gt; &quot;Principate&quot;, &quot;Principate&quot;, &quot;Principate&quot;, &quot;Prin...
+## $ notes          &lt;chr&gt; &quot;birth, reign.start are BCE. Assign negative fo...
+## $ verif_who      &lt;chr&gt; &quot;Reddit user zonination&quot;, &quot;Reddit user zoninati...
+## $ age_death      &lt;dbl&gt; 75.90411, 77.32877, 28.40000, 63.20000, 30.4836...
+## $ reign_duration &lt;dbl&gt; 40.5890411, 22.4904110, 3.8547945, 13.7150685, ...</code></pre>
+<p>A primeira coisa que eu gostaria de ver é uma distribuição das causas de morte dos imperadores. Tenho impressão que não era um trabalho fácil. A função <code>fct_reorder()</code>, do pacote <code>forcats</code>, <a href="https://forcats.tidyverse.org/">pacote feito para manipulação de fatores</a>, nos ajuda a deixar os fatores na ordem decrescente que queremos para gráfico.</p>
+<pre class="r"><code>resumo_causas &lt;- imperadores %&gt;%
+  group_by(cause) %&gt;% 
+  summarise(contar = n()) %&gt;% 
+  mutate(cause = forcats::fct_reorder(cause, -contar)) #mantendo a ordem decrescente
+
+resumo_causas %&gt;% 
+  ggplot(aes(x = cause, y = contar/sum(contar))) +
+  geom_col() +
+  geom_text(aes(label = scales::percent(contar/sum(contar), accuracy = 1)),
+            color = &quot;white&quot;, fontface  = &quot;bold&quot;, vjust = 1) +
+  scale_y_continuous(&quot;% de Mortes&quot;,
+                     breaks = 0.05 * 0:8,
+                     labels = scales::percent(0.05 * 0:8, accuracy = 1)) +
+  labs(x = NULL,
+       title = &quot;Causas de Morte dos Imperadores Romanos&quot;,
+       caption = &quot;Fonte: Tidy Tuesday - Elaborado por Edgar Cutar Junior&quot;) +
+  theme_bw() +
+  theme(text = element_text(family = &quot;RomanT&quot;),
+        axis.text.x = element_text(angle = -5, vjust = -0.5)) </code></pre>
+<p><img src="/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>Realmente não era uma vida tranquila.</p>
+<p>Agora, para unir as mortes violentas em um grupo só, podemos usar <code>fct_collapse()</code>, também do pacote <code>forcats</code>.</p>
+<pre class="r"><code>resumo_coll &lt;- resumo_causas  %&gt;% 
+  mutate(cause2 = fct_collapse(cause, 
+                               mortes_violentas = c(&quot;Assassination&quot;, &quot;Execution&quot;, 
+                                                    &quot;Died in Battle&quot;, &quot;Suicide&quot;,
+                                                    &quot;Captivity&quot;),
+                               causas_naturais = c(&quot;Natural Causes&quot;),
+                               outros = &quot;Unknown&quot;))
+
+resumo_coll %&gt;% 
+  ggplot(aes(x = cause2, y = contar/sum(contar))) +
+  geom_col(aes(fill = cause)) +
+  scale_y_continuous(&quot;% de Mortes&quot;,
+                     breaks = 0.05*0:16,
+                     labels = scales::percent(0.05*0:16)) +
+  labs(x = NULL,
+       fill = NULL, 
+       title = &quot;Causas de Morte dos Imperadores Romanos&quot;,
+       caption = &quot;Fonte: Tidy Tuesday - Elaborado por Edgar Cutar Junior&quot;) +
+  scale_fill_viridis_d() +
+  scale_x_discrete(labels = c(&quot;Mortes Violentas&quot;, &quot;Causas Naturais&quot;, &quot;Outros&quot;)) +
+  theme_bw() +
+  theme(text = element_text(family = &quot;RomanT&quot;)) </code></pre>
+<p><img src="/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Pelo menos 65% dos imperadores romanos morreram violentamente. Isso me deixa curioso para saber quantos golpes de Estado ocorreram em Roma e com qual frequência eles aconteceram.</p>
+<pre class="r"><code>golpes &lt;- imperadores %&gt;% 
+  filter(rise == &quot;Seized Power&quot;) %&gt;% 
+  mutate(imperadores_entre_golpes = ifelse(is.na(lag(index)),
+                                           index,
+                                           index - lag(index)),
+         anos_entre_golpes = time_length(interval(start = lag(reign_start),
+                                                  end = reign_start),
+                                         unit = &quot;year&quot;),
+         anos_entre_golpes = ifelse(!is.na(anos_entre_golpes), #corrigindo primeiro período
+                                    anos_entre_golpes,
+                                    time_length(interval(start = imperadores$reign_start[1],
+                                                         end = reign_start),
+                                                unit = &quot;year&quot;)))
+
+golpes %&gt;% 
+  summarise(max_imper = max(imperadores_entre_golpes),
+            med_imper = mean(imperadores_entre_golpes),
+            min_imper = min(imperadores_entre_golpes),
+            max_anos = max(anos_entre_golpes),
+            med_anos = mean(anos_entre_golpes),
+            min_anos = min(anos_entre_golpes)) </code></pre>
+<pre><code>## # A tibble: 1 x 6
+##   max_imper med_imper min_imper max_anos med_anos min_anos
+##       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1        12       6.1         1     123.     37.6    0.679</code></pre>
+<p>Algumas pílulas saídas desse resumo:</p>
+<ol style="list-style-type: decimal">
+<li><p>Na média, houve um golpe a cada 37 anos. O maior período sem golpe foi após o golpe de Vespasiano, em 79 DC. Foram 123 anos sem golpes de estado. De origem humilde, Vespasiano ganhou poder no exército após o Suicídio de Nero em 68 DC. Nas convulsões políticas que tomaram Roma nessa época, ele foi aclamado Imperador pelo exército e marchou contra Roma e Vitélio, que também havia subido ao poder pela força, ainda naquele ano.</p></li>
+<li><p>69 DC ficou conhecido como “O ano dos 4 imperadores”. Foram Galba, Otho, Vitélio e Vespasiano, que se consolidou no poder, onde ficou até falecer, 10 anos depois, como o 4º imperador mais velho a falecer.</p></li>
+<li><p>Vitélio consagra seu império o período mais curto entre golpes, tomou o poder em abril e foi deposto (e executado) em dezembro.</p></li>
+</ol>
+<p>Por fim, vamos usar <code>geom_segment()</code> para fazer um gráfico mostrando todos os imperadores de Roma, com suas vidas, mortes e reinados.</p>
+<pre class="r"><code>imperadores %&gt;% 
+  mutate(cause2 = fct_collapse(cause, 
+                               `Mortes Violentas` = c(&quot;Assassination&quot;, &quot;Execution&quot;, 
+                                                    &quot;Died in Battle&quot;, &quot;Suicide&quot;,
+                                                    &quot;Captivity&quot;),
+                               `Causas Naturais` = c(&quot;Natural Causes&quot;),
+                               `Outros` = &quot;Unknown&quot;),
+         name = fct_reorder(name, -index)) %&gt;% 
+  ggplot(aes(x = reign_start,
+             y = name,
+             color = cause2)) +
+  geom_segment(aes(x = birth, 
+                   xend = reign_end, 
+                   yend = ..y..), 
+               size = 1.5, 
+               lineend = &quot;round&quot;) +
+  geom_point(aes(x = reign_start, fill = &quot;Reinado&quot;), color = &quot;red&quot;) +
+  geom_segment(aes(x = reign_start, 
+                   xend = reign_end, 
+                   yend = ..y..,
+                   color = &quot;Reinado&quot;), 
+               color = &quot;red&quot;,
+               size = 1, lineend = &quot;round&quot;) +
+  scale_color_viridis_d() +
+  scale_x_date(labels = function(x) str_glue(&quot;{year(x)} DC&quot;)) +
+  labs(title = &quot;Nascimento, Reinado e Morte\ndos Imperadores Romanos&quot;,
+       color = &quot;Causa Mortis&quot;,
+       caption = &quot;Fonte: Tidy Tuesday - Elaborado por Edgar Cutar Junior&quot;,
+       fill = NULL,
+       x = NULL,
+       y = NULL) +
+  theme_bw() +
+  theme(text = element_text(family = &quot;RomanT&quot;)) </code></pre>
+<p><img src="/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-6-1.png" width="768" /></p>
+<p>O que mais impressiona é que depois da morte de Septimus Severus, em 211, houve 13 imperadores seguidos mortos de forma violenta. Depois dos 13, Hostilian assumiu por apenas 105 dias antes de morrer de causas naturais. Depois dele, mais 4 imperadores morreram de causas violentas.</p>
+<p>Pra quem sentiu falta de Julio César, aquele do “Até tu, Brutus?”, ele foi um dos últimos ícones da República Romana, e um dos que ajudou a formar o império, que começou 18 anos após sua morte.</p>
+<p>Tem alguma crítica, sugestão, ou quer bater um papo? Me chama no <a href="http://twitter.com/edgar_cutar">Twitter</a>!</p>
+
+    </div>
+
+    
+
+
+    
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/tidytuesday/">tidytuesday</a>
+  
+  <a class="badge badge-light" href="/tags/roma/">roma</a>
+  
+  <a class="badge badge-light" href="/tags/imperio/">imperio</a>
+  
+</div>
+
+
+
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  <div class="media author-card" itemscope itemtype="http://schema.org/Person">
+    
+      
+      <img class="portrait mr-3" src="/authors/admin/avatar_hue0081ed01cf7870b31222544075fac03_48912_250x250_fill_q90_lanczos_center.jpg" itemprop="image" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title" itemprop="name"><a href="/">Edgar Cutar Junior</a></h5>
+      
+      
+      <ul class="network-icon" aria-hidden="true">
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+          <li>
+            <a itemprop="sameAs" href="mailto:e.cutar@gmail.com" >
+              <i class="fas fa-envelope"></i>
+            </a>
+          </li>
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="https://twitter.com/edgar_cutar" target="_blank" rel="noopener">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </li>
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="https://github.com/edgarcutar" target="_blank" rel="noopener">
+              <i class="fab fa-github"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+
+      
+      
+      <div class="article-widget">
+        <div class="hr-light"></div>
+        <h3>Related</h3>
+        <ul>
+          
+          <li><a href="/post/2019-08-06-bob/">Uma Análise (Quase) Estatística De Bob Ross</a></li>
+          
+        </ul>
+      </div>
+      
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+    
+    <script src="/js/mathjax-config.js"></script>
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js" integrity="sha256-aYTdUrn6Ow1DDgh5JTc3aDGnnju48y/1c8s1dgkYPQ8=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/languages/r.min.js"></script>
+        
+      
+
+      
+      
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_CHTML-full" integrity="sha256-GhM+5JHb6QUzOQPXSJLEWP7R73CbkisjzK5Eyij4U9w=" crossorigin="anonymous" async></script>
+      
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.js" integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log==" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "results found",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.16bbb3750feb7244c9bc409a5a4fe678.js"></script>
+
+    
+
+
+
+
+
+
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+  <p class="powered-by">
+    
+      <a href="/privacy/">Privacy Policy</a>
+    
+    
+       &middot; 
+      <a href="/terms/">Terms</a>
+        
+  </p>
+  
+
+  <p class="powered-by">
+    
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

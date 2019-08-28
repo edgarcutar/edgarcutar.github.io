@@ -5,7 +5,7 @@
     <link>/tags/tidytuesday/</link>
       <atom:link href="/tags/tidytuesday/index.xml" rel="self" type="application/rss+xml" />
     <description>tidytuesday</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Wed, 21 Aug 2019 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Tue, 27 Aug 2019 00:00:00 +0000</lastBuildDate>
     <image>
       <url>/img/edgar.jpg</url>
       <title>tidytuesday</title>
@@ -13,10 +13,120 @@
     </image>
     
     <item>
+      <title>Convidados e Representatividade nos Simpsons</title>
+      <link>/post/simpsons/</link>
+      <pubDate>Tue, 27 Aug 2019 00:00:00 +0000</pubDate>
+      <guid>/post/simpsons/</guid>
+      <description>
+
+
+&lt;p&gt;A &lt;a href=&#34;https://github.com/rfordatascience/tidytuesday&#34;&gt;Tidy Tuesday&lt;/a&gt; dessa semana nos trás um dataset com os personagens secundários de todos os episódios dos Simpsons!
+Quero aproveitar a oportunidade de usar usar o &lt;a href=&#34;https://ryo-n7.github.io/2019-05-16-introducing-tvthemes-package/&#34;&gt;maravilhoso pacote &lt;code&gt;tvthemes&lt;/code&gt;&lt;/a&gt; de &lt;a href=&#34;https://github.com/Ryo-N7/tvthemes&#34;&gt;Ryo Nakagawara&lt;/a&gt; só pra fazer um par de gráficos divertidos.&lt;/p&gt;
+&lt;p&gt;Vamos baixar os dados. Detalhe que dessa vez é necessário usar a função &lt;code&gt;read_delim()&lt;/code&gt;, pois nosso csv está com “|” como separador das colunas.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;if (!require(&amp;quot;pacman&amp;quot;)) install.packages(&amp;quot;pacman&amp;quot;)
+pacman::p_load(tidyverse, extrafont, jpeg, ggpubr, recipes, scales) 
+pacman::p_load_gh(&amp;quot;Ryo-N7/tvthemes&amp;quot;)
+
+#Carregar Fonte dos Simpsons (uma similar não paga, no caso)
+import_simpsons() # Talvez seja necessário isntalar o arquivo .ttf. 
+                  # Se for o caso você verá um aviso
+#font_import()     # necessário apenas uma vez
+loadfonts(device = &amp;quot;win&amp;quot;)
+
+#Ler arquivo
+simpsons &amp;lt;- readr::read_delim(&amp;quot;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-08-27/simpsons-guests.csv&amp;quot;, 
+                              delim = &amp;quot;|&amp;quot;, 
+                              quote = &amp;quot;&amp;quot;) %&amp;gt;% 
+  separate(number, into = c(&amp;quot;episode_ordinal&amp;quot;, &amp;quot;season_episode&amp;quot;), sep = &amp;quot;–&amp;quot;) %&amp;gt;% 
+  mutate_at(vars(season, episode_ordinal, season_episode), as.numeric)
+
+# Olhadela
+simpsons %&amp;gt;% glimpse()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Observations: 1,386
+## Variables: 7
+## $ season          &amp;lt;dbl&amp;gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2...
+## $ episode_ordinal &amp;lt;dbl&amp;gt; 2, 3, 3, 6, 6, 7, 8, 9, 10, 11, 12, 13, 13, 13...
+## $ season_episode  &amp;lt;dbl&amp;gt; 102, 103, 103, 106, 106, 107, 108, 109, 110, 1...
+## $ production_code &amp;lt;chr&amp;gt; &amp;quot;7G02&amp;quot;, &amp;quot;7G03&amp;quot;, &amp;quot;7G03&amp;quot;, &amp;quot;7G06&amp;quot;, &amp;quot;7G06&amp;quot;, &amp;quot;7G09&amp;quot;...
+## $ episode_title   &amp;lt;chr&amp;gt; &amp;quot;Bart the Genius&amp;quot;, &amp;quot;Homer&amp;#39;s Odyssey&amp;quot;, &amp;quot;Homer&amp;#39;s...
+## $ guest_star      &amp;lt;chr&amp;gt; &amp;quot;Marcia Wallace&amp;quot;, &amp;quot;Sam McMurray&amp;quot;, &amp;quot;Marcia Wall...
+## $ role            &amp;lt;chr&amp;gt; &amp;quot;Edna Krabappel;  Ms. Melon&amp;quot;, &amp;quot;Worker&amp;quot;, &amp;quot;Edna ...&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;No primeiro gráfico gostaria de usar a função &lt;code&gt;step_other()&lt;/code&gt; do pacote &lt;code&gt;recipes&lt;/code&gt; para unir todos os &lt;code&gt;roles&lt;/code&gt; com menos de 1% de frequência na base. O pacote &lt;a href=&#34;https://tidymodels.github.io/recipes/&#34;&gt;&lt;code&gt;recipes&lt;/code&gt;&lt;/a&gt; é idealizado para pré-processamento de dados pelo &lt;a href=&#34;https://twitter.com/topepos&#34;&gt;Max Kuhn&lt;/a&gt;(Software Engineer do RStudio e mago da modelagem preditiva). Vale a pena dar uma olhada nas funções disponíveis nesse pacote.&lt;/p&gt;
+&lt;p&gt;Também é usada a função &lt;code&gt;background_image()&lt;/code&gt; do pacote &lt;code&gt;ggpubr&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;springfield &amp;lt;- readJPEG(&amp;quot;img/spring.jpg&amp;quot;)
+
+most_frequent &amp;lt;- simpsons %&amp;gt;% 
+  recipe() %&amp;gt;% #começa aqui a receita
+  step_other(role, threshold = 0.01) %&amp;gt;% # unir &amp;quot;outros&amp;quot;
+  prep() %&amp;gt;% #preparar a receita
+  juice() %&amp;gt;% #&amp;quot;espremer&amp;quot;
+  mutate(role = fct_collapse(role,
+           `Celebrities as Themselves` = c(&amp;quot;Himself&amp;quot;, &amp;quot;Herself&amp;quot;, &amp;quot;Themselves&amp;quot;)),
+         role = fct_infreq(role, ordered = TRUE),) 
+
+most_frequent %&amp;gt;% 
+  ggplot(aes(x = episode_ordinal, fill = role)) +
+  background_image(springfield) +
+  geom_histogram(position = &amp;quot;fill&amp;quot;, alpha = 0.8, binwidth = 15) +
+  scale_fill_simpsons(reverse = TRUE) +
+  scale_y_continuous(labels = scales::percent(0:4*0.25)) +
+  labs(title = &amp;quot;Co-estrelas mais comuns nos Simpsons&amp;quot;,
+       caption = &amp;quot;Fonte: #TidyTuesday - Elaborado por Edgar Cutar Junior&amp;quot;,
+       x = &amp;quot;Numero do Episodio&amp;quot;,
+       y = &amp;quot;% de aparicoes&amp;quot;) +
+  theme_simpsons(title.font = &amp;quot;Akbar&amp;quot;,
+                 text.font = &amp;quot;Akbar&amp;quot;,
+                 axis.text.size = 8)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-08-27-simpsons/index_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Bacana, né?&lt;/p&gt;
+&lt;p&gt;Seguindo uma baita ideia de layout do &lt;a href=&#34;https://twitter.com/_Gil_Henriques&#34;&gt;Gil Henriques&lt;/a&gt; e uma dica que vi na internet e não lembro quem deu, gostaria de fazer outro gráfico: entre os convidados que interpretaram a si mesmos, qual o percentual de participação de homens e mulheres?&lt;/p&gt;
+&lt;p&gt;Dessa vez vou usar o pacote &lt;code&gt;ggimage&lt;/code&gt; pra colocar uma imagem ocupando todo o fundo do gráfico.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pacman::p_load(ggimage, patternplot)
+
+man_vs_women &amp;lt;- simpsons %&amp;gt;% 
+  filter(role %in% c(&amp;quot;Himself&amp;quot;, &amp;quot;Herself&amp;quot;)) %&amp;gt;% 
+  group_by(season = round(season/2)*2, role) %&amp;gt;% 
+  summarise(number = n())
+
+plot &amp;lt;- man_vs_women %&amp;gt;% 
+  ggplot(aes(x = season, y = number, fill = role)) +
+  geom_col(position = &amp;quot;fill&amp;quot;, color = &amp;quot;white&amp;quot;, 
+           width = 1.4, size = 1) +
+  scale_fill_manual(name = NULL,
+                    values = c(&amp;quot;white&amp;quot;, NA),
+                    labels = c(&amp;quot;Mulheres&amp;quot;, &amp;quot;Homens&amp;quot;),
+                    ) +
+  ggtitle(&amp;quot;Celebridades nos Simpsons&amp;quot;) +
+  scale_x_continuous(name = &amp;quot;Temporada&amp;quot;,
+                     breaks = 0:6 * 5) +
+  scale_y_continuous(name = &amp;quot;Percentual de participacao&amp;quot;,
+                     labels = scales::percent(0:4 * 0.25)) +
+  theme(text = element_text(family = &amp;quot;Akbar&amp;quot;),
+        axis.text = element_text(size = 15, color = &amp;quot;white&amp;quot;),
+        legend.title = element_text(size = 15, color = &amp;quot;white&amp;quot;),
+        legend.text = element_text(size = 12, color = &amp;quot;white&amp;quot;),
+        axis.title = element_text(size = 20, color = &amp;quot;white&amp;quot;),
+        plot.title = element_text(size = 25, face = &amp;quot;bold&amp;quot;, 
+                                  color = &amp;quot;white&amp;quot;, hjust = 0.5),
+        plot.caption = element_text(color = &amp;quot;white&amp;quot;),
+        plot.margin = margin(t = 1, r = 3, b = 1, l = 1, &amp;quot;cm&amp;quot;),
+        axis.title.y = element_text(angle = 90),
+        panel.grid.minor = element_blank(),
+        panel.grid.major.x = element_blank()) 
+  
+plot_back &amp;lt;- ggbackground(plot, &amp;quot;img/quadro_simpsons.gif&amp;quot;, by = &amp;quot;height&amp;quot;)
+plot_back&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-08-27-simpsons/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Parece que a dica estava certa. Por algum motivo as mulheres são inacreditavelmente subrepresentadas como convidadas nos Simpsons, e não tem nenhum indicativo que esta situação esteja melhorando ao longo dos anos. Porra, Fox!&lt;/p&gt;
+&lt;p&gt;Gostou? Tem alguma dúvida? Me chama no &lt;a href=&#34;https://twitter.com/edgar_cutar&#34;&gt;Twitter&lt;/a&gt;!&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Mapeando Explosões Nucleares</title>
-      <link>/post/2019-08-21-nuclear/nuclear/</link>
+      <link>/post/nuclear/</link>
       <pubDate>Wed, 21 Aug 2019 00:00:00 +0000</pubDate>
-      <guid>/post/2019-08-21-nuclear/nuclear/</guid>
+      <guid>/post/nuclear/</guid>
       <description>
 &lt;script src=&#34;/rmarkdown-libs/htmlwidgets/htmlwidgets.js&#34;&gt;&lt;/script&gt;
 &lt;script src=&#34;/rmarkdown-libs/jquery/jquery.min.js&#34;&gt;&lt;/script&gt;
@@ -288,9 +398,9 @@ world_sf %&amp;gt;%
     
     <item>
       <title>Vida e (principalmente) morte dos Imperadores Romanos</title>
-      <link>/post/2019-08-13-roma/roma/</link>
+      <link>/post/roma/</link>
       <pubDate>Tue, 13 Aug 2019 00:00:00 +0000</pubDate>
-      <guid>/post/2019-08-13-roma/roma/</guid>
+      <guid>/post/roma/</guid>
       <description>
 
 

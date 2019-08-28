@@ -84,7 +84,7 @@
   
   
   
-  <link rel="stylesheet" href="/css/academic.min.ef95877d47e309682d2f04bdaf1ed0ed.css">
+  <link rel="stylesheet" href="/css/academic.min.ad3b6b564eecf3bded7ab4274cd100b7.css">
 
   
 
@@ -137,7 +137,7 @@
   <meta property="og:description" content=""><meta property="og:image" content="/img/edgar.jpg">
   <meta property="twitter:image" content="/img/edgar.jpg"><meta property="og:locale" content="en-us">
   
-    <meta property="og:updated_time" content="2019-08-21T00:00:00&#43;00:00">
+    <meta property="og:updated_time" content="2019-08-27T00:00:00&#43;00:00">
   
 
   
@@ -298,7 +298,18 @@
   
   
   <div>
-    <h2><a href="/post/2019-08-21-nuclear/nuclear/">Mapeando Explosões Nucleares</a></h2>
+    <h2><a href="/post/simpsons/">Convidados e Representatividade nos Simpsons</a></h2>
+    <div class="article-style">
+      
+      A Tidy Tuesday dessa semana nos trás um dataset com os personagens secundários de todos os episódios dos Simpsons!Quero aproveitar a oportunidade de usar usar o maravilhoso pacote tvthemes de Ryo Nakagawara só pra fazer um par de gráficos divertidos.
+Vamos baixar os dados. Detalhe que dessa vez é necessário usar a função read_delim(), pois nosso csv está com “|” como separador das colunas.
+if (!require(&quot;pacman&quot;)) install.packages(&quot;pacman&quot;)pacman::p_load(tidyverse, extrafont, jpeg, ggpubr, recipes, scales) pacman::p_load_gh(&quot;Ryo-N7/tvthemes&quot;)#Carregar Fonte dos Simpsons (uma similar não paga, no caso)import_simpsons() # Talvez seja necessário isntalar o arquivo .
+      
+    </div>
+  </div>
+  
+  <div>
+    <h2><a href="/post/nuclear/">Mapeando Explosões Nucleares</a></h2>
     <div class="article-style">
       
       Nessa semana a Tidy Tuesday trouxe uma base de dados de explosões nucleares e uma boa oportunidade de brincar com mapas! Como de praxe, vamos baixar e ver como estão os dados.
@@ -309,7 +320,7 @@
   </div>
   
   <div>
-    <h2><a href="/post/2019-08-13-roma/roma/">Vida e (principalmente) morte dos Imperadores Romanos</a></h2>
+    <h2><a href="/post/roma/">Vida e (principalmente) morte dos Imperadores Romanos</a></h2>
     <div class="article-style">
       
       A Tidy Tuesday dessa semana trás uma base de dados com a vida e morte dos imperadores romanos. Vamos começar importando os dados e usando glimpse para dar aquela olhadela em como eles estão estruturados. Para manipulação desse database com maior facilidade, vamos usar o pacote lubridate, criado para lidar com tempo e datas, o que nunca é uma tarefa trivial.
@@ -437,7 +448,7 @@ O dataset sobre o trabalho de Bob Ross foi fornecido para a #tidytuesday pelo si
     
     
     
-    <script src="/js/academic.min.4e51017b38c7ebaadd7e25fc9503f88c.js"></script>
+    <script src="/js/academic.min.16bbb3750feb7244c9bc409a5a4fe678.js"></script>
 
     
 
