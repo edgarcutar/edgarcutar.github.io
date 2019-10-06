@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.4.0">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Edgar Cutar Junior">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Técnicas de pré-processamento de dados, também chamadas de Feature Engineering são aquelas em que se adiciona, remove ou transforma a base de dados, tendo em vista a modelagem preditiva. Embora esse texto esteja primariamente preocupado com o como fazer, é muito importante entender o porquê de se fazer cada uma destas transformações. Recomendo bastante os livros do Max Kuhn, Software Engineer do RStudio e autor do pacote {recipes} de que vamos tratar hoje.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="/post/recipes/">
+
+  
+
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="hsl(339, 90%, 68%)">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css" crossorigin="anonymous" title="hl-light" disabled>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark">
+        
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.css" integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ==" crossorigin="anonymous">
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono&display=swap">
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.min.ad3b6b564eecf3bded7ab4274cd100b7.css">
+
+  
+
+  
+  
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-144596672-2', 'auto');
+      
+      ga('require', 'eventTracker');
+      ga('require', 'outboundLinkTracker');
+      ga('require', 'urlChangeTracker');
+      ga('send', 'pageview');
+    </script>
+    <script async src="https://www.google-analytics.com/analytics.js"></script>
+    
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/autotrack/2.4.1/autotrack.js" integrity="sha512-HUmooslVKj4m6OBu0OgzjXXr+QuFYy/k7eLI5jdeEy/F4RSgMn6XRWRGkFi5IFaFgy7uFTkegp3Z0XnJf3Jq+g==" crossorigin="anonymous"></script>
+    
+  
+  
+
+  
+
+  
+
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="/post/recipes/">
+
+  
+  
+  
+  
+    
+  
+  
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="twitter:site" content="@edgar_cutar">
+  <meta property="twitter:creator" content="@edgar_cutar">
+  
+  <meta property="og:site_name" content="Edgar Cutar Junior">
+  <meta property="og:url" content="/post/recipes/">
+  <meta property="og:title" content="Pré-processamento de dados com o pacote {recipes} | Edgar Cutar Junior">
+  <meta property="og:description" content="Técnicas de pré-processamento de dados, também chamadas de Feature Engineering são aquelas em que se adiciona, remove ou transforma a base de dados, tendo em vista a modelagem preditiva. Embora esse texto esteja primariamente preocupado com o como fazer, é muito importante entender o porquê de se fazer cada uma destas transformações. Recomendo bastante os livros do Max Kuhn, Software Engineer do RStudio e autor do pacote {recipes} de que vamos tratar hoje."><meta property="og:image" content="/post/recipes/featured.jpg">
+  <meta property="twitter:image" content="/post/recipes/featured.jpg"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2019-10-06T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2019-10-06T14:51:54-03:00">
+  
+
+  
+
+
+  
+
+
+
+
+
+  <title>Pré-processamento de dados com o pacote {recipes} | Edgar Cutar Junior</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="dark">
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0 compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="/">Edgar Cutar Junior</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav ml-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+        </li>
+        
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+  <article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+<div class="article-container pt-3">
+  <h1 itemprop="name">Pré-processamento de dados com o pacote {recipes}</h1>
+
+  
+
+  
+
+
+
+<meta content="2019-10-06 00:00:00 &#43;0000 UTC" itemprop="datePublished">
+<meta content="2019-10-06 14:51:54 -0300 -03" itemprop="dateModified">
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+          Last updated on
+      
+    
+    <time>Oct 6, 2019</time>
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    8 min read
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+
+  
+    
+
+  
+
+</div>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+<div class="article-header article-container featured-image-wrapper mt-4 mb-4" style="max-width: 696px; max-height: 392px;">
+  <div style="position: relative">
+    <img src="/post/recipes/featured.jpg" alt="" class="featured-image">
+    
+  </div>
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      
+
+
+<p>Técnicas de pré-processamento de dados, também chamadas de <em>Feature Engineering</em> são aquelas em que se adiciona, remove ou transforma a base de dados, tendo em vista a modelagem preditiva. Embora esse texto esteja primariamente preocupado com o <strong>como fazer</strong>, é muito importante entender o porquê de se fazer cada uma destas transformações. Recomendo bastante os livros do <a href="http://twitter.com/topepos">Max Kuhn</a>, Software Engineer do RStudio e autor do pacote <code>{recipes}</code> de que vamos tratar hoje. Disponível online gratuitamente está o <a href="http://www.feat.engineering/index.html"><em>Feature Engineering and Selection</em></a> e na ala paga está o maravilhoso <a href="appliedpredictivemodeling.com/"><em>Applied Predictive Modeling</em></a>, além da <a href="https://tidymodels.github.io/recipes">página do pacote <code>{recipes}</code></a> de onde muito desse post saiu.</p>
+<p>Cada tipo de modelo exige os dados mastigados de uma certa maneira. Modelos baseados em árvores (como <a href="https://en.wikipedia.org/wiki/Random_forest">Random Forests</a> e <a href="https://en.wikipedia.org/wiki/Gradient_boosting#Gradient_tree_boosting">Boosted Trees</a>) geralmente exigem pouco pré-processamento e podem lidar até com variáveis categóricas diretamente, enquanto outros algoritmos como <a href="https://en.wikipedia.org/wiki/Support-vector_machine">Support-Vector Machines</a> e <a href="https://en.wikipedia.org/wiki/Multivariate_adaptive_regression_spline">Multivariate Adaptive Regression Splines (MARS)</a> são mais exigentes com o formato com que recebem as variáveis preditoras para que funcionem corretamente. Um pré-processamento bem feito pode ser a diferença entre um modelo preditivo bem ou mal sucedido.</p>
+<div id="o-pacote-recipes" class="section level2">
+<h2>O pacote <code>{recipes}</code></h2>
+<p>No começo dos anos 2000, Max Kuhn lançou o pacote <code>{caret}</code> (caret é um anagrama para <em>Classification And REgression Training</em>) no <a href="https://cran.r-project.org">CRAN</a>. Esse pacote se propõe a fazer tudo dentro da modelagem preditiva, desde o pré processamento, treinamento, validação, validação cruzada e etc etc etc. <a href="https://player.fm/series/series-2098032/tidymodels-with-max-kuhn">O próprio Max já admitiu que dar manutenção neste pacote é um pesadelo</a>. A preocupação com a retrocompatibilidade e a quantidade de algoritmos presentes no <code>{caret}</code> tem impedido atualizações massivas no pacote. Desde que entrou para a equipe do Rstudio, no final de 2016, o objetivo de ambos (Max e RStudio) tem sido o de desenvolver uma interface integrada para modelos preditivos no R, condizente com a <a href="https://cran.r-project.org/web/packages/tidyverse/vignettes/manifesto.html">filosofia e o manifesto que norteiam o <code>tidyverse</code></a>.</p>
+<p>Ao invés de “refazer” o <code>{caret}</code>, a estratégia adotada foi o de construir uma nova <em>suit</em> de pacotes integrados voltados para modelagem preditiva, da mesma forma que o <code>tidyverse</code> é voltado para a <strong>Ciência de Dados</strong> num <a href="https://r4ds.had.co.nz/introduction.html">sentido mais amplo</a>, conforme mostrado pelo <strong>Diagrama de Hadley</strong>:</p>
+<p><img src="diagram.png" /></p>
+<p>Essa <em>suit</em> de pacotes integrados para modelagem preditiva se chama <code>tidymodels</code>. Dentro do <code>tidymodels</code> existem já <a href="https://www.tidyverse.org/articles/2018/08/tidymodels-0-0-1/">vários pacotes</a>, entre eles:</p>
+<ul>
+<li><code>rsamples</code>: voltado para criar e resumir diferentes tipos de amostragens.</li>
+<li><code>recipes</code>: uma <em>engine</em> de pré-processamento para gerar uma <em>design matrices</em> para modelagem ou visualização.</li>
+<li><code>parsnip</code>: uma interface unificada para treinamento de modelos na filosofia <em>tidy</em>.</li>
+<li><code>yardstick</code>: métodos para mensurar a performance de modelos;</li>
+<li><code>corrr</code>: um pacote para explorar correlações.</li>
+<li>entre diversos outros ainda em desenvolvimento. Dê uma olhada <a href="https://github.com/tidymodels">aqui</a>.</li>
+</ul>
+</div>
+<div id="criando-uma-receita" class="section level2">
+<h2>Criando uma receita</h2>
+<p>O <code>{recipes}</code> têm como objetivo principal entregar uma <a href="https://en.wikipedia.org/wiki/Design_matrix">matriz de design (<em>design matrix</em>)</a> pronta para ser utilizada no ajuste de modelos preditivos. Direto da <em>Wikipedia</em>:</p>
+<blockquote>
+<p>Na Estatística, uma <strong>matriz de design</strong>, também conhecida como <strong>matriz de modelo</strong> ou <strong>matriz regressora</strong> e também chamada de <strong>X</strong>, é uma matriz de valores de variáveis explanatórias de um conjunto de objetos.</p>
+</blockquote>
+<p>O R possui métodos já estabelecidos para gerar esses tipo de matrizes (como as <a href="https://www.rstudio.com/rviews/2017/02/01/the-r-formula-method-the-good-parts">fórmulas</a> e a função <code>model.matrix()</code>), mas existem <a href="https://rviews.rstudio.com/2017/03/01/the-r-formula-method-the-bad-parts/">algumas limitações sobre o que eles podem fazer</a>.</p>
+<p>A ideia do <code>recipes</code>, portanto é definir uma <strong>receita</strong> de pré-processamento que possa ser usada sequencialmente para definir a codificação e o pré-processamento dos dados.</p>
+<div id="criando-uma-receita-1" class="section level3">
+<h3>Criando uma receita</h3>
+<p>A receita é criada a partir da função <code>recipe()</code>. Um exemplo abaixo usando o dataset <code>Sonar</code> do pacote <code>mlbench</code>.</p>
+<pre class="r"><code>if (!require(&quot;pacman&quot;)) install.packages(&quot;pacman&quot;)</code></pre>
+<pre><code>## Carregando pacotes exigidos: pacman</code></pre>
+<pre class="r"><code>pacman::p_load(recipes, mlbench) 
+
+data(Sonar)
+
+Sonar %&gt;% 
+  recipe(formula = Class ~ .)</code></pre>
+<pre><code>## Data Recipe
+## 
+## Inputs:
+## 
+##       role #variables
+##    outcome          1
+##  predictor         60</code></pre>
+<p>Ao ativar a função, é necessário indicar quais as variáveis de entrada e saída do modelo.
+Existem algumas formas de fazer isso. Uma delas é o método da fórmula, usado acima.</p>
+<p>Esse modelo assume o formato <span class="math inline">\(Y \sim X_1 + X_2 + ... + X_n\)</span>.</p>
+<p>Acima, o <code>.</code> indica que todas as demais variáveis devem estar do lado direito da fórmula (é mais fácil que escrever as 60 variáveis uma a uma).</p>
+<p>Existem <a href="https://tidymodels.github.io/recipes/articles/Selecting_Variables.html">outras formas de selecionar variáveis dentro do pacote <code>{recipes}</code></a>, como a função <code>update_role()</code>. Essa função é útil especialmente quando sua tabela não contém apenas Abaixo um exemplo usando esta função:</p>
+<pre class="r"><code>data(biomass)
+
+biomass %&gt;% 
+  recipe() %&gt;% 
+  update_role(HHV, 
+              new_role = &quot;outcome&quot;) %&gt;% 
+  update_role(carbon, hydrogen, oxygen, nitrogen, sulfur,
+           new_role = &quot;predictor&quot;) %&gt;% 
+  update_role(sample, 
+              new_role = &quot;id variable&quot;) %&gt;% 
+  update_role(dataset, 
+              new_role = &quot;splitting indicator&quot;)</code></pre>
+<pre><code>## Data Recipe
+## 
+## Inputs:
+## 
+##                 role #variables
+##          id variable          1
+##              outcome          1
+##            predictor          5
+##  splitting indicator          1</code></pre>
+</div>
+<div id="acessando-variaveis-por-seu-papel" class="section level3">
+<h3>Acessando variáveis por seu papel</h3>
+<p>Estes “papéis” (roles), atribuídos nessa etapa, vão ser usados nas fases subsequentes. É possível indicar os seguintes papéis através de atalhos:</p>
+<ul>
+<li><code>has_role()</code>: acessa todas as variáveis com papéis determinados</li>
+<li><code>all_outcome()</code>: acessa a variável determinada como Y do modelo</li>
+<li><code>all_predictors()</code>: acessa todas as variáveis determinadas como preditoras</li>
+<li><code>all_numeric()</code>: acessa todas as variáveis numéricas</li>
+<li><code>all_nominal</code>: acessa todas as variáveis categóricas.</li>
+</ul>
+</div>
+<div id="steps" class="section level3">
+<h3>Steps</h3>
+<p>A partir da criação da receita e a determinação dos papéis, é hora do pré-processamento real. Cada <strong>passo</strong> do pré-processamento é adicionado através de, pasme, <strong>PASSOS</strong> (em inglês, <em>steps</em>).</p>
+<p>Os passos disponíveis, a grosso modo, podem ser divididos nos seguintes grupos (fica também como sugestão de ordem para realização dos mesmos):</p>
+<ul>
+<li>Imputação</li>
+<li>Transformações individuais para assimetria e outras questões</li>
+<li>Discretização (caso necessário e caso você não tenha outra opção)</li>
+<li>Criação de variáveis <em>dummy</em></li>
+<li>Criação de interações</li>
+<li>Passos de normalização (centralizar, escalar, etc)</li>
+<li>Transformações multivariadas (PCA, <em>spatial-sign</em>, etc)</li>
+</ul>
+<p>Abaixo, usando o primeiro exemplo, vamos criar centralizar e escalar nossa receita:</p>
+<pre class="r"><code>data(Sonar)
+
+Sonar %&gt;% 
+  recipe(formula = Class ~ .) %&gt;% 
+  step_center(all_predictors()) %&gt;% 
+  step_scale(all_predictors())</code></pre>
+<pre><code>## Data Recipe
+## 
+## Inputs:
+## 
+##       role #variables
+##    outcome          1
+##  predictor         60
+## 
+## Operations:
+## 
+## Centering for all_predictors
+## Scaling for all_predictors</code></pre>
+<p>Na atual versão (0.1.7), existem 74 passos possíveis, com mais sendo desenvolvidos e implementados a todo momento. Vale lembrar que o pacote recipes ainda se encontra em fase de “maturação”, ou seja, muita coisa bacana ainda vem por aí. Abaixo a lista dos passos disponíveis hoje.</p>
+<pre class="r"><code>ls(&quot;package:recipes&quot;, pattern = &quot;^step_&quot;)</code></pre>
+<pre><code>##  [1] &quot;step_arrange&quot;       &quot;step_bagimpute&quot;     &quot;step_bin2factor&quot;   
+##  [4] &quot;step_BoxCox&quot;        &quot;step_bs&quot;            &quot;step_center&quot;       
+##  [7] &quot;step_classdist&quot;     &quot;step_corr&quot;          &quot;step_count&quot;        
+## [10] &quot;step_date&quot;          &quot;step_depth&quot;         &quot;step_discretize&quot;   
+## [13] &quot;step_downsample&quot;    &quot;step_dummy&quot;         &quot;step_factor2string&quot;
+## [16] &quot;step_filter&quot;        &quot;step_geodist&quot;       &quot;step_holiday&quot;      
+## [19] &quot;step_hyperbolic&quot;    &quot;step_ica&quot;           &quot;step_integer&quot;      
+## [22] &quot;step_interact&quot;      &quot;step_intercept&quot;     &quot;step_inverse&quot;      
+## [25] &quot;step_invlogit&quot;      &quot;step_isomap&quot;        &quot;step_knnimpute&quot;    
+## [28] &quot;step_kpca&quot;          &quot;step_kpca_poly&quot;     &quot;step_kpca_rbf&quot;     
+## [31] &quot;step_lag&quot;           &quot;step_lincomb&quot;       &quot;step_log&quot;          
+## [34] &quot;step_logit&quot;         &quot;step_lowerimpute&quot;   &quot;step_meanimpute&quot;   
+## [37] &quot;step_medianimpute&quot;  &quot;step_modeimpute&quot;    &quot;step_mutate&quot;       
+## [40] &quot;step_mutate_at&quot;     &quot;step_naomit&quot;        &quot;step_nnmf&quot;         
+## [43] &quot;step_normalize&quot;     &quot;step_novel&quot;         &quot;step_ns&quot;           
+## [46] &quot;step_num2factor&quot;    &quot;step_nzv&quot;           &quot;step_ordinalscore&quot; 
+## [49] &quot;step_other&quot;         &quot;step_pca&quot;           &quot;step_pls&quot;          
+## [52] &quot;step_poly&quot;          &quot;step_profile&quot;       &quot;step_range&quot;        
+## [55] &quot;step_ratio&quot;         &quot;step_regex&quot;         &quot;step_relu&quot;         
+## [58] &quot;step_rename&quot;        &quot;step_rename_at&quot;     &quot;step_rm&quot;           
+## [61] &quot;step_rollimpute&quot;    &quot;step_sample&quot;        &quot;step_scale&quot;        
+## [64] &quot;step_shuffle&quot;       &quot;step_slice&quot;         &quot;step_spatialsign&quot;  
+## [67] &quot;step_sqrt&quot;          &quot;step_string2factor&quot; &quot;step_unknown&quot;      
+## [70] &quot;step_unorder&quot;       &quot;step_upsample&quot;      &quot;step_window&quot;       
+## [73] &quot;step_YeoJohnson&quot;    &quot;step_zv&quot;</code></pre>
+</div>
+<div id="finalizando-a-receita-e-aplicando-em-novos-dados" class="section level3">
+<h3>Finalizando a receita e aplicando em novos dados</h3>
+<p>Todos os passos, até agora, simplesmente foram enumerados, nenhum deles é efetivamente calculado até que você entre com a função <code>prep()</code>, que literalmente prepara sua receita.</p>
+<p>Após, é possível gerar os dados pré-processados a partir de duas funções:
+- função <code>juice()</code>: essa função “espreme” os dados usados para a criação da receita
+- função <code>bake()</code>: aplica a mesma série de passos em uma nova base de dados.</p>
+<p>Abaixo vamos separar a base de dados <code>credit_data</code> em uma base de treino e uma de teste para ver o funcionamento completo do pacote.</p>
+<pre class="r"><code>pacman::p_load(rsample)
+
+data(&quot;credit_data&quot;)
+
+set.seed(55)
+train_test_split &lt;- initial_split(credit_data, prop = 0.75)
+
+credit_train &lt;- training(train_test_split)
+credit_test &lt;- testing(train_test_split)</code></pre>
+<p>Criadas as bases de treino e teste, vamos criar uma receita simples. Perceba o uso do parâmetro <code>retain = TRUE</code>. Com isso, forçamos que a receita guarde a base de treino original, só assim podemos usar a função <code>juice()</code>. Em bases muito grandes, precisamos ter cuidado com o tamanho da receita.</p>
+<p>Vamos usar <code>step_knnimpute()</code> para preencher os <code>NAs</code> com seus vizinhos mais próximos e <code>step_dummy()</code> para transformar nossas variáveis categóricas em variáveis dummy.</p>
+<pre class="r"><code>rec &lt;- credit_train %&gt;%
+  recipe(Status ~ .) %&gt;%
+  step_knnimpute(all_predictors()) %&gt;% 
+  step_dummy(all_predictors(), -all_numeric()) %&gt;% 
+  step_center(all_predictors()) %&gt;% 
+  step_scale(all_predictors()) %&gt;%
+  prep(retain = TRUE)</code></pre>
+<p>Agora temos uma receita pronta para ser aplicada. A receita guarda o modelo k-nearest-neighbour criado, as médias e desvios padrões, assim como qualquer outro dado necessário para pré-processar sua base.</p>
+<p>Primeiro vamos retirar a base de treino pré-processada, para isso, basta usar a função <code>juice()</code> na receita. A seguir, vamos pré-processar a base de treino usando a função <code>bake()</code>.</p>
+<pre class="r"><code>train_data &lt;- rec %&gt;% juice()
+test_data &lt;- rec %&gt;% bake(credit_test)</code></pre>
+<p>Temos agora uma base pré-processada e pronta para uso, seja em modelagem, seja para visualização.</p>
+<pre class="r"><code>train_data</code></pre>
+<pre><code>## # A tibble: 3,341 x 23
+##    Seniority   Time      Age Expenses Income Assets    Debt  Amount   Price
+##        &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+##  1     0.133  0.921 -0.635      0.885 -0.171 -0.449 -0.273  -0.488  -0.996 
+##  2     1.12   0.921  1.92      -0.386 -0.146 -0.449 -0.273  -0.0646  0.343 
+##  3    -0.979  0.921 -1.18       0.377  0.492 -0.240 -0.273  -0.276  -0.206 
+##  4    -0.979 -0.706 -1.00      -0.488 -0.446 -0.449 -0.273  -1.53   -0.890 
+##  5    -0.856  0.921 -0.0873     0.987  0.893 -0.157 -0.273  -0.806   0.322 
+##  6    -0.979  0.921 -0.453      1.75  -0.446  0.804 -0.273   0.359   0.836 
+##  7    -0.979  0.108  0.369      1.75  -0.784 -0.449 -0.273   0.359   0.0299
+##  8    -0.238  0.108 -0.270      0.224 -0.221 -0.115 -0.273   0.253   0.210 
+##  9    -0.114 -0.706 -0.727      0.224 -0.271 -0.199 -0.273  -0.806  -0.882 
+## 10     1.37  -0.706  0.00402    0.987  0.342 -0.157 -0.0520 -0.912  -0.841 
+## # ... with 3,331 more rows, and 14 more variables: Status &lt;fct&gt;,
+## #   Home_other &lt;dbl&gt;, Home_owner &lt;dbl&gt;, Home_parents &lt;dbl&gt;,
+## #   Home_priv &lt;dbl&gt;, Home_rent &lt;dbl&gt;, Marital_married &lt;dbl&gt;,
+## #   Marital_separated &lt;dbl&gt;, Marital_single &lt;dbl&gt;, Marital_widow &lt;dbl&gt;,
+## #   Records_yes &lt;dbl&gt;, Job_freelance &lt;dbl&gt;, Job_others &lt;dbl&gt;,
+## #   Job_partime &lt;dbl&gt;</code></pre>
+<p>Basicamente é isso aí. Nos próximos posts, vou tentar mostrar um pouco mais dos demais pacotes do <code>tidymodels</code>.</p>
+<p>Achou algum erro? <a href="http://twitter.com/edgar_cutar">Me avise no twitter</a>!</p>
+</div>
+</div>
+
+    </div>
+
+    
+
+
+    
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/predictive/">predictive</a>
+  
+  <a class="badge badge-light" href="/tags/preprocessing/">preprocessing</a>
+  
+  <a class="badge badge-light" href="/tags/max/">max</a>
+  
+</div>
+
+
+
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  <div class="media author-card" itemscope itemtype="http://schema.org/Person">
+    
+      
+      <img class="portrait mr-3" src="/authors/admin/avatar_hue0081ed01cf7870b31222544075fac03_48912_250x250_fill_q90_lanczos_center.jpg" itemprop="image" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title" itemprop="name"><a href="/">Edgar Cutar Junior</a></h5>
+      
+      
+      <ul class="network-icon" aria-hidden="true">
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+          <li>
+            <a itemprop="sameAs" href="mailto:e.cutar@gmail.com" >
+              <i class="fas fa-envelope"></i>
+            </a>
+          </li>
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="https://twitter.com/edgar_cutar" target="_blank" rel="noopener">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </li>
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="https://github.com/edgarcutar" target="_blank" rel="noopener">
+              <i class="fab fa-github"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+
+      
+      
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+    
+    <script src="/js/mathjax-config.js"></script>
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js" integrity="sha256-aYTdUrn6Ow1DDgh5JTc3aDGnnju48y/1c8s1dgkYPQ8=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/languages/r.min.js"></script>
+        
+      
+
+      
+      
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_CHTML-full" integrity="sha256-GhM+5JHb6QUzOQPXSJLEWP7R73CbkisjzK5Eyij4U9w=" crossorigin="anonymous" async></script>
+      
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.js" integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log==" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "results found",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.16bbb3750feb7244c9bc409a5a4fe678.js"></script>
+
+    
+
+
+
+
+
+
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+  <p class="powered-by">
+    
+      <a href="/privacy/">Privacy Policy</a>
+    
+    
+       &middot; 
+      <a href="/terms/">Terms</a>
+        
+  </p>
+  
+
+  <p class="powered-by">
+    
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
