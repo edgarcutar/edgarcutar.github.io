@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>tidymodels | Edgar Cutar Junior</title>
+    <link>/tags/tidymodels/</link>
+      <atom:link href="/tags/tidymodels/index.xml" rel="self" type="application/rss+xml" />
+    <description>tidymodels</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 06 Oct 2019 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/img/edgar.jpg</url>
+      <title>tidymodels</title>
+      <link>/tags/tidymodels/</link>
+    </image>
+    
+    <item>
+      <title>Pré-processamento de dados com o pacote {recipes}</title>
+      <link>/post/recipes/</link>
+      <pubDate>Sun, 06 Oct 2019 00:00:00 +0000</pubDate>
+      <guid>/post/recipes/</guid>
+      <description>
+
+
+&lt;p&gt;Técnicas de pré-processamento de dados, também chamadas de &lt;em&gt;Feature Engineering&lt;/em&gt; são aquelas em que se adiciona, remove ou transforma a base de dados, tendo em vista a modelagem preditiva. Embora esse texto esteja primariamente preocupado com o &lt;strong&gt;como fazer&lt;/strong&gt;, é muito importante entender o porquê de se fazer cada uma destas transformações. Recomendo bastante os livros do &lt;a href=&#34;http://twitter.com/topepos&#34;&gt;Max Kuhn&lt;/a&gt;, Software Engineer do RStudio e autor do pacote &lt;code&gt;{recipes}&lt;/code&gt; de que vamos tratar hoje. Disponível online gratuitamente está o &lt;a href=&#34;http://www.feat.engineering/index.html&#34;&gt;&lt;em&gt;Feature Engineering and Selection&lt;/em&gt;&lt;/a&gt; e na ala paga está o maravilhoso &lt;a href=&#34;appliedpredictivemodeling.com/&#34;&gt;&lt;em&gt;Applied Predictive Modeling&lt;/em&gt;&lt;/a&gt;, além da &lt;a href=&#34;https://tidymodels.github.io/recipes&#34;&gt;página do pacote &lt;code&gt;{recipes}&lt;/code&gt;&lt;/a&gt; de onde muito desse post saiu.&lt;/p&gt;
+&lt;p&gt;Cada tipo de modelo exige os dados mastigados de uma certa maneira. Modelos baseados em árvores (como &lt;a href=&#34;https://en.wikipedia.org/wiki/Random_forest&#34;&gt;Random Forests&lt;/a&gt; e &lt;a href=&#34;https://en.wikipedia.org/wiki/Gradient_boosting#Gradient_tree_boosting&#34;&gt;Boosted Trees&lt;/a&gt;) geralmente exigem pouco pré-processamento e podem lidar até com variáveis categóricas diretamente, enquanto outros algoritmos como &lt;a href=&#34;https://en.wikipedia.org/wiki/Support-vector_machine&#34;&gt;Support-Vector Machines&lt;/a&gt; e &lt;a href=&#34;https://en.wikipedia.org/wiki/Multivariate_adaptive_regression_spline&#34;&gt;Multivariate Adaptive Regression Splines (MARS)&lt;/a&gt; são mais exigentes com o formato com que recebem as variáveis preditoras para que funcionem corretamente. Um pré-processamento bem feito pode ser a diferença entre um modelo preditivo bem ou mal sucedido.&lt;/p&gt;
+&lt;div id=&#34;o-pacote-recipes&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;O pacote &lt;code&gt;{recipes}&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;No começo dos anos 2000, Max Kuhn lançou o pacote &lt;code&gt;{caret}&lt;/code&gt; (caret é um anagrama para &lt;em&gt;Classification And REgression Training&lt;/em&gt;) no &lt;a href=&#34;https://cran.r-project.org&#34;&gt;CRAN&lt;/a&gt;. Esse pacote se propõe a fazer tudo dentro da modelagem preditiva, desde o pré processamento, treinamento, validação, validação cruzada e etc etc etc. &lt;a href=&#34;https://player.fm/series/series-2098032/tidymodels-with-max-kuhn&#34;&gt;O próprio Max já admitiu que dar manutenção neste pacote é um pesadelo&lt;/a&gt;. A preocupação com a retrocompatibilidade e a quantidade de algoritmos presentes no &lt;code&gt;{caret}&lt;/code&gt; tem impedido atualizações massivas no pacote. Desde que entrou para a equipe do Rstudio, no final de 2016, o objetivo de ambos (Max e RStudio) tem sido o de desenvolver uma interface integrada para modelos preditivos no R, condizente com a &lt;a href=&#34;https://cran.r-project.org/web/packages/tidyverse/vignettes/manifesto.html&#34;&gt;filosofia e o manifesto que norteiam o &lt;code&gt;tidyverse&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Ao invés de “refazer” o &lt;code&gt;{caret}&lt;/code&gt;, a estratégia adotada foi o de construir uma nova &lt;em&gt;suit&lt;/em&gt; de pacotes integrados voltados para modelagem preditiva, da mesma forma que o &lt;code&gt;tidyverse&lt;/code&gt; é voltado para a &lt;strong&gt;Ciência de Dados&lt;/strong&gt; num &lt;a href=&#34;https://r4ds.had.co.nz/introduction.html&#34;&gt;sentido mais amplo&lt;/a&gt;, conforme mostrado pelo &lt;strong&gt;Diagrama de Hadley&lt;/strong&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;diagram.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Essa &lt;em&gt;suit&lt;/em&gt; de pacotes integrados para modelagem preditiva se chama &lt;code&gt;tidymodels&lt;/code&gt;. Dentro do &lt;code&gt;tidymodels&lt;/code&gt; existem já &lt;a href=&#34;https://www.tidyverse.org/articles/2018/08/tidymodels-0-0-1/&#34;&gt;vários pacotes&lt;/a&gt;, entre eles:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;rsamples&lt;/code&gt;: voltado para criar e resumir diferentes tipos de amostragens.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;recipes&lt;/code&gt;: uma &lt;em&gt;engine&lt;/em&gt; de pré-processamento para gerar uma &lt;em&gt;design matrices&lt;/em&gt; para modelagem ou visualização.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;parsnip&lt;/code&gt;: uma interface unificada para treinamento de modelos na filosofia &lt;em&gt;tidy&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;yardstick&lt;/code&gt;: métodos para mensurar a performance de modelos;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;corrr&lt;/code&gt;: um pacote para explorar correlações.&lt;/li&gt;
+&lt;li&gt;entre diversos outros ainda em desenvolvimento. Dê uma olhada &lt;a href=&#34;https://github.com/tidymodels&#34;&gt;aqui&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;criando-uma-receita&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Criando uma receita&lt;/h2&gt;
+&lt;p&gt;O &lt;code&gt;{recipes}&lt;/code&gt; têm como objetivo principal entregar uma &lt;a href=&#34;https://en.wikipedia.org/wiki/Design_matrix&#34;&gt;matriz de design (&lt;em&gt;design matrix&lt;/em&gt;)&lt;/a&gt; pronta para ser utilizada no ajuste de modelos preditivos. Direto da &lt;em&gt;Wikipedia&lt;/em&gt;:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Na Estatística, uma &lt;strong&gt;matriz de design&lt;/strong&gt;, também conhecida como &lt;strong&gt;matriz de modelo&lt;/strong&gt; ou &lt;strong&gt;matriz regressora&lt;/strong&gt; e também chamada de &lt;strong&gt;X&lt;/strong&gt;, é uma matriz de valores de variáveis explanatórias de um conjunto de objetos.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;O R possui métodos já estabelecidos para gerar esses tipo de matrizes (como as &lt;a href=&#34;https://www.rstudio.com/rviews/2017/02/01/the-r-formula-method-the-good-parts&#34;&gt;fórmulas&lt;/a&gt; e a função &lt;code&gt;model.matrix()&lt;/code&gt;), mas existem &lt;a href=&#34;https://rviews.rstudio.com/2017/03/01/the-r-formula-method-the-bad-parts/&#34;&gt;algumas limitações sobre o que eles podem fazer&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;A ideia do &lt;code&gt;recipes&lt;/code&gt;, portanto é definir uma &lt;strong&gt;receita&lt;/strong&gt; de pré-processamento que possa ser usada sequencialmente para definir a codificação e o pré-processamento dos dados.&lt;/p&gt;
+&lt;div id=&#34;criando-uma-receita-1&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Criando uma receita&lt;/h3&gt;
+&lt;p&gt;A receita é criada a partir da função &lt;code&gt;recipe()&lt;/code&gt;. Um exemplo abaixo usando o dataset &lt;code&gt;Sonar&lt;/code&gt; do pacote &lt;code&gt;mlbench&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;if (!require(&amp;quot;pacman&amp;quot;)) install.packages(&amp;quot;pacman&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Carregando pacotes exigidos: pacman&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pacman::p_load(recipes, mlbench) 
+
+data(Sonar)
+
+Sonar %&amp;gt;% 
+  recipe(formula = Class ~ .)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Data Recipe
+## 
+## Inputs:
+## 
+##       role #variables
+##    outcome          1
+##  predictor         60&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ao ativar a função, é necessário indicar quais as variáveis de entrada e saída do modelo.
+Existem algumas formas de fazer isso. Uma delas é o método da fórmula, usado acima.&lt;/p&gt;
+&lt;p&gt;Esse modelo assume o formato &lt;span class=&#34;math inline&#34;&gt;\(Y \sim X_1 + X_2 + ... + X_n\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Acima, o &lt;code&gt;.&lt;/code&gt; indica que todas as demais variáveis devem estar do lado direito da fórmula (é mais fácil que escrever as 60 variáveis uma a uma).&lt;/p&gt;
+&lt;p&gt;Existem &lt;a href=&#34;https://tidymodels.github.io/recipes/articles/Selecting_Variables.html&#34;&gt;outras formas de selecionar variáveis dentro do pacote &lt;code&gt;{recipes}&lt;/code&gt;&lt;/a&gt;, como a função &lt;code&gt;update_role()&lt;/code&gt;. Essa função é útil especialmente quando sua tabela não contém apenas Abaixo um exemplo usando esta função:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;data(biomass)
+
+biomass %&amp;gt;% 
+  recipe() %&amp;gt;% 
+  update_role(HHV, 
+              new_role = &amp;quot;outcome&amp;quot;) %&amp;gt;% 
+  update_role(carbon, hydrogen, oxygen, nitrogen, sulfur,
+           new_role = &amp;quot;predictor&amp;quot;) %&amp;gt;% 
+  update_role(sample, 
+              new_role = &amp;quot;id variable&amp;quot;) %&amp;gt;% 
+  update_role(dataset, 
+              new_role = &amp;quot;splitting indicator&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Data Recipe
+## 
+## Inputs:
+## 
+##                 role #variables
+##          id variable          1
+##              outcome          1
+##            predictor          5
+##  splitting indicator          1&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;acessando-variaveis-por-seu-papel&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Acessando variáveis por seu papel&lt;/h3&gt;
+&lt;p&gt;Estes “papéis” (roles), atribuídos nessa etapa, vão ser usados nas fases subsequentes. É possível indicar os seguintes papéis através de atalhos:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;has_role()&lt;/code&gt;: acessa todas as variáveis com papéis determinados&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;all_outcome()&lt;/code&gt;: acessa a variável determinada como Y do modelo&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;all_predictors()&lt;/code&gt;: acessa todas as variáveis determinadas como preditoras&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;all_numeric()&lt;/code&gt;: acessa todas as variáveis numéricas&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;all_nominal&lt;/code&gt;: acessa todas as variáveis categóricas.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;steps&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Steps&lt;/h3&gt;
+&lt;p&gt;A partir da criação da receita e a determinação dos papéis, é hora do pré-processamento real. Cada &lt;strong&gt;passo&lt;/strong&gt; do pré-processamento é adicionado através de, pasme, &lt;strong&gt;PASSOS&lt;/strong&gt; (em inglês, &lt;em&gt;steps&lt;/em&gt;).&lt;/p&gt;
+&lt;p&gt;Os passos disponíveis, a grosso modo, podem ser divididos nos seguintes grupos (fica também como sugestão de ordem para realização dos mesmos):&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Imputação&lt;/li&gt;
+&lt;li&gt;Transformações individuais para assimetria e outras questões&lt;/li&gt;
+&lt;li&gt;Discretização (caso necessário e caso você não tenha outra opção)&lt;/li&gt;
+&lt;li&gt;Criação de variáveis &lt;em&gt;dummy&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;Criação de interações&lt;/li&gt;
+&lt;li&gt;Passos de normalização (centralizar, escalar, etc)&lt;/li&gt;
+&lt;li&gt;Transformações multivariadas (PCA, &lt;em&gt;spatial-sign&lt;/em&gt;, etc)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Abaixo, usando o primeiro exemplo, vamos criar centralizar e escalar nossa receita:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;data(Sonar)
+
+Sonar %&amp;gt;% 
+  recipe(formula = Class ~ .) %&amp;gt;% 
+  step_center(all_predictors()) %&amp;gt;% 
+  step_scale(all_predictors())&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Data Recipe
+## 
+## Inputs:
+## 
+##       role #variables
+##    outcome          1
+##  predictor         60
+## 
+## Operations:
+## 
+## Centering for all_predictors
+## Scaling for all_predictors&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Na atual versão (0.1.7), existem 74 passos possíveis, com mais sendo desenvolvidos e implementados a todo momento. Vale lembrar que o pacote recipes ainda se encontra em fase de “maturação”, ou seja, muita coisa bacana ainda vem por aí. Abaixo a lista dos passos disponíveis hoje.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ls(&amp;quot;package:recipes&amp;quot;, pattern = &amp;quot;^step_&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##  [1] &amp;quot;step_arrange&amp;quot;       &amp;quot;step_bagimpute&amp;quot;     &amp;quot;step_bin2factor&amp;quot;   
+##  [4] &amp;quot;step_BoxCox&amp;quot;        &amp;quot;step_bs&amp;quot;            &amp;quot;step_center&amp;quot;       
+##  [7] &amp;quot;step_classdist&amp;quot;     &amp;quot;step_corr&amp;quot;          &amp;quot;step_count&amp;quot;        
+## [10] &amp;quot;step_date&amp;quot;          &amp;quot;step_depth&amp;quot;         &amp;quot;step_discretize&amp;quot;   
+## [13] &amp;quot;step_downsample&amp;quot;    &amp;quot;step_dummy&amp;quot;         &amp;quot;step_factor2string&amp;quot;
+## [16] &amp;quot;step_filter&amp;quot;        &amp;quot;step_geodist&amp;quot;       &amp;quot;step_holiday&amp;quot;      
+## [19] &amp;quot;step_hyperbolic&amp;quot;    &amp;quot;step_ica&amp;quot;           &amp;quot;step_integer&amp;quot;      
+## [22] &amp;quot;step_interact&amp;quot;      &amp;quot;step_intercept&amp;quot;     &amp;quot;step_inverse&amp;quot;      
+## [25] &amp;quot;step_invlogit&amp;quot;      &amp;quot;step_isomap&amp;quot;        &amp;quot;step_knnimpute&amp;quot;    
+## [28] &amp;quot;step_kpca&amp;quot;          &amp;quot;step_kpca_poly&amp;quot;     &amp;quot;step_kpca_rbf&amp;quot;     
+## [31] &amp;quot;step_lag&amp;quot;           &amp;quot;step_lincomb&amp;quot;       &amp;quot;step_log&amp;quot;          
+## [34] &amp;quot;step_logit&amp;quot;         &amp;quot;step_lowerimpute&amp;quot;   &amp;quot;step_meanimpute&amp;quot;   
+## [37] &amp;quot;step_medianimpute&amp;quot;  &amp;quot;step_modeimpute&amp;quot;    &amp;quot;step_mutate&amp;quot;       
+## [40] &amp;quot;step_mutate_at&amp;quot;     &amp;quot;step_naomit&amp;quot;        &amp;quot;step_nnmf&amp;quot;         
+## [43] &amp;quot;step_normalize&amp;quot;     &amp;quot;step_novel&amp;quot;         &amp;quot;step_ns&amp;quot;           
+## [46] &amp;quot;step_num2factor&amp;quot;    &amp;quot;step_nzv&amp;quot;           &amp;quot;step_ordinalscore&amp;quot; 
+## [49] &amp;quot;step_other&amp;quot;         &amp;quot;step_pca&amp;quot;           &amp;quot;step_pls&amp;quot;          
+## [52] &amp;quot;step_poly&amp;quot;          &amp;quot;step_profile&amp;quot;       &amp;quot;step_range&amp;quot;        
+## [55] &amp;quot;step_ratio&amp;quot;         &amp;quot;step_regex&amp;quot;         &amp;quot;step_relu&amp;quot;         
+## [58] &amp;quot;step_rename&amp;quot;        &amp;quot;step_rename_at&amp;quot;     &amp;quot;step_rm&amp;quot;           
+## [61] &amp;quot;step_rollimpute&amp;quot;    &amp;quot;step_sample&amp;quot;        &amp;quot;step_scale&amp;quot;        
+## [64] &amp;quot;step_shuffle&amp;quot;       &amp;quot;step_slice&amp;quot;         &amp;quot;step_spatialsign&amp;quot;  
+## [67] &amp;quot;step_sqrt&amp;quot;          &amp;quot;step_string2factor&amp;quot; &amp;quot;step_unknown&amp;quot;      
+## [70] &amp;quot;step_unorder&amp;quot;       &amp;quot;step_upsample&amp;quot;      &amp;quot;step_window&amp;quot;       
+## [73] &amp;quot;step_YeoJohnson&amp;quot;    &amp;quot;step_zv&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;finalizando-a-receita-e-aplicando-em-novos-dados&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Finalizando a receita e aplicando em novos dados&lt;/h3&gt;
+&lt;p&gt;Todos os passos, até agora, simplesmente foram enumerados, nenhum deles é efetivamente calculado até que você entre com a função &lt;code&gt;prep()&lt;/code&gt;, que literalmente prepara sua receita.&lt;/p&gt;
+&lt;p&gt;Após, é possível gerar os dados pré-processados a partir de duas funções:
+- função &lt;code&gt;juice()&lt;/code&gt;: essa função “espreme” os dados usados para a criação da receita
+- função &lt;code&gt;bake()&lt;/code&gt;: aplica a mesma série de passos em uma nova base de dados.&lt;/p&gt;
+&lt;p&gt;Abaixo vamos separar a base de dados &lt;code&gt;credit_data&lt;/code&gt; em uma base de treino e uma de teste para ver o funcionamento completo do pacote.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pacman::p_load(rsample)
+
+data(&amp;quot;credit_data&amp;quot;)
+
+set.seed(55)
+train_test_split &amp;lt;- initial_split(credit_data, prop = 0.75)
+
+credit_train &amp;lt;- training(train_test_split)
+credit_test &amp;lt;- testing(train_test_split)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Criadas as bases de treino e teste, vamos criar uma receita simples. Perceba o uso do parâmetro &lt;code&gt;retain = TRUE&lt;/code&gt;. Com isso, forçamos que a receita guarde a base de treino original, só assim podemos usar a função &lt;code&gt;juice()&lt;/code&gt;. Em bases muito grandes, precisamos ter cuidado com o tamanho da receita.&lt;/p&gt;
+&lt;p&gt;Vamos usar &lt;code&gt;step_knnimpute()&lt;/code&gt; para preencher os &lt;code&gt;NAs&lt;/code&gt; com seus vizinhos mais próximos e &lt;code&gt;step_dummy()&lt;/code&gt; para transformar nossas variáveis categóricas em variáveis dummy.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;rec &amp;lt;- credit_train %&amp;gt;%
+  recipe(Status ~ .) %&amp;gt;%
+  step_knnimpute(all_predictors()) %&amp;gt;% 
+  step_dummy(all_predictors(), -all_numeric()) %&amp;gt;% 
+  step_center(all_predictors()) %&amp;gt;% 
+  step_scale(all_predictors()) %&amp;gt;%
+  prep(retain = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Agora temos uma receita pronta para ser aplicada. A receita guarda o modelo k-nearest-neighbour criado, as médias e desvios padrões, assim como qualquer outro dado necessário para pré-processar sua base.&lt;/p&gt;
+&lt;p&gt;Primeiro vamos retirar a base de treino pré-processada, para isso, basta usar a função &lt;code&gt;juice()&lt;/code&gt; na receita. A seguir, vamos pré-processar a base de treino usando a função &lt;code&gt;bake()&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;train_data &amp;lt;- rec %&amp;gt;% juice()
+test_data &amp;lt;- rec %&amp;gt;% bake(credit_test)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Temos agora uma base pré-processada e pronta para uso, seja em modelagem, seja para visualização.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;train_data&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 3,341 x 23
+##    Seniority   Time      Age Expenses Income Assets    Debt  Amount   Price
+##        &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt;    &amp;lt;dbl&amp;gt;    &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt;   &amp;lt;dbl&amp;gt;   &amp;lt;dbl&amp;gt;   &amp;lt;dbl&amp;gt;
+##  1     0.133  0.921 -0.635      0.885 -0.171 -0.449 -0.273  -0.488  -0.996 
+##  2     1.12   0.921  1.92      -0.386 -0.146 -0.449 -0.273  -0.0646  0.343 
+##  3    -0.979  0.921 -1.18       0.377  0.492 -0.240 -0.273  -0.276  -0.206 
+##  4    -0.979 -0.706 -1.00      -0.488 -0.446 -0.449 -0.273  -1.53   -0.890 
+##  5    -0.856  0.921 -0.0873     0.987  0.893 -0.157 -0.273  -0.806   0.322 
+##  6    -0.979  0.921 -0.453      1.75  -0.446  0.804 -0.273   0.359   0.836 
+##  7    -0.979  0.108  0.369      1.75  -0.784 -0.449 -0.273   0.359   0.0299
+##  8    -0.238  0.108 -0.270      0.224 -0.221 -0.115 -0.273   0.253   0.210 
+##  9    -0.114 -0.706 -0.727      0.224 -0.271 -0.199 -0.273  -0.806  -0.882 
+## 10     1.37  -0.706  0.00402    0.987  0.342 -0.157 -0.0520 -0.912  -0.841 
+## # ... with 3,331 more rows, and 14 more variables: Status &amp;lt;fct&amp;gt;,
+## #   Home_other &amp;lt;dbl&amp;gt;, Home_owner &amp;lt;dbl&amp;gt;, Home_parents &amp;lt;dbl&amp;gt;,
+## #   Home_priv &amp;lt;dbl&amp;gt;, Home_rent &amp;lt;dbl&amp;gt;, Marital_married &amp;lt;dbl&amp;gt;,
+## #   Marital_separated &amp;lt;dbl&amp;gt;, Marital_single &amp;lt;dbl&amp;gt;, Marital_widow &amp;lt;dbl&amp;gt;,
+## #   Records_yes &amp;lt;dbl&amp;gt;, Job_freelance &amp;lt;dbl&amp;gt;, Job_others &amp;lt;dbl&amp;gt;,
+## #   Job_partime &amp;lt;dbl&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Basicamente é isso aí. Nos próximos posts, vou tentar mostrar um pouco mais dos demais pacotes do &lt;code&gt;tidymodels&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Achou algum erro? &lt;a href=&#34;http://twitter.com/edgar_cutar&#34;&gt;Me avise no twitter&lt;/a&gt;!&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
