@@ -67,7 +67,7 @@ Sonar %&amp;gt;%
 Existem algumas formas de fazer isso. Uma delas é o método da fórmula, usado acima.&lt;/p&gt;
 &lt;p&gt;Esse modelo assume o formato &lt;span class=&#34;math inline&#34;&gt;\(Y \sim X_1 + X_2 + ... + X_n\)&lt;/span&gt;.&lt;/p&gt;
 &lt;p&gt;Acima, o &lt;code&gt;.&lt;/code&gt; indica que todas as demais variáveis devem estar do lado direito da fórmula (é mais fácil que escrever as 60 variáveis uma a uma).&lt;/p&gt;
-&lt;p&gt;Existem &lt;a href=&#34;https://tidymodels.github.io/recipes/articles/Selecting_Variables.html&#34;&gt;outras formas de selecionar variáveis dentro do pacote &lt;code&gt;{recipes}&lt;/code&gt;&lt;/a&gt;, como a função &lt;code&gt;update_role()&lt;/code&gt;. Essa função é útil especialmente quando sua tabela não contém apenas Abaixo um exemplo usando esta função:&lt;/p&gt;
+&lt;p&gt;Existem &lt;a href=&#34;https://tidymodels.github.io/recipes/articles/Selecting_Variables.html&#34;&gt;outras formas de selecionar variáveis dentro do pacote &lt;code&gt;{recipes}&lt;/code&gt;&lt;/a&gt;, como a função &lt;code&gt;update_role()&lt;/code&gt;. Essa função é útil especialmente quando sua tabela não contém apenas variáveis de preditoras e de saídas (&lt;code&gt;predictors&lt;/code&gt; e &lt;code&gt;outcome&lt;/code&gt;). Abaixo um exemplo usando esta função:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;data(biomass)
 
 biomass %&amp;gt;% 
@@ -103,8 +103,8 @@ biomass %&amp;gt;%
 &lt;/div&gt;
 &lt;div id=&#34;steps&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Steps&lt;/h3&gt;
-&lt;p&gt;A partir da criação da receita e a determinação dos papéis, é hora do pré-processamento real. Cada &lt;strong&gt;passo&lt;/strong&gt; do pré-processamento é adicionado através de, pasme, &lt;strong&gt;PASSOS&lt;/strong&gt; (em inglês, &lt;em&gt;steps&lt;/em&gt;).&lt;/p&gt;
-&lt;p&gt;Os passos disponíveis, a grosso modo, podem ser divididos nos seguintes grupos (fica também como sugestão de ordem para realização dos mesmos):&lt;/p&gt;
+&lt;p&gt;A partir da criação da receita e a determinação dos papéis, é hora do pré-processamento real. Cada &lt;strong&gt;passo&lt;/strong&gt; do pré-processamento é adicionado através de, pasme, &lt;strong&gt;passos&lt;/strong&gt; (em inglês, &lt;em&gt;steps&lt;/em&gt;).&lt;/p&gt;
+&lt;p&gt;Os passos disponíveis, a grosso modo, podem ser divididos nos seguintes grupos:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Imputação&lt;/li&gt;
 &lt;li&gt;Transformações individuais para assimetria e outras questões&lt;/li&gt;
@@ -161,8 +161,8 @@ Sonar %&amp;gt;%
 ## [70] &amp;quot;step_unorder&amp;quot;       &amp;quot;step_upsample&amp;quot;      &amp;quot;step_window&amp;quot;       
 ## [73] &amp;quot;step_YeoJohnson&amp;quot;    &amp;quot;step_zv&amp;quot;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
-&lt;div id=&#34;finalizando-a-receita-e-aplicando-em-novos-dados&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;Finalizando a receita e aplicando em novos dados&lt;/h3&gt;
+&lt;div id=&#34;finalizando-a-receita-e-cozinhando-novos-dados&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Finalizando a receita e “cozinhando” novos dados&lt;/h3&gt;
 &lt;p&gt;Todos os passos, até agora, simplesmente foram enumerados, nenhum deles é efetivamente calculado até que você entre com a função &lt;code&gt;prep()&lt;/code&gt;, que literalmente prepara sua receita.&lt;/p&gt;
 &lt;p&gt;Após, é possível gerar os dados pré-processados a partir de duas funções:
 - função &lt;code&gt;juice()&lt;/code&gt;: essa função “espreme” os dados usados para a criação da receita
@@ -177,7 +177,7 @@ train_test_split &amp;lt;- initial_split(credit_data, prop = 0.75)
 
 credit_train &amp;lt;- training(train_test_split)
 credit_test &amp;lt;- testing(train_test_split)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Criadas as bases de treino e teste, vamos criar uma receita simples. Perceba o uso do parâmetro &lt;code&gt;retain = TRUE&lt;/code&gt;. Com isso, forçamos que a receita guarde a base de treino original, só assim podemos usar a função &lt;code&gt;juice()&lt;/code&gt;. Em bases muito grandes, precisamos ter cuidado com o tamanho da receita.&lt;/p&gt;
+&lt;p&gt;Criadas as bases de treino e teste, vamos criar uma receita simples. Perceba o uso do parâmetro &lt;code&gt;retain = TRUE&lt;/code&gt;. Com isso, forçamos que a receita guarde a base de treino original, só assim podemos usar a função &lt;code&gt;juice()&lt;/code&gt;. Em bases muito grandes, precisamos ter cuidado com o tamanho da receita, caso esse parâmetro seja acionado.&lt;/p&gt;
 &lt;p&gt;Vamos usar &lt;code&gt;step_knnimpute()&lt;/code&gt; para preencher os &lt;code&gt;NAs&lt;/code&gt; com seus vizinhos mais próximos e &lt;code&gt;step_dummy()&lt;/code&gt; para transformar nossas variáveis categóricas em variáveis dummy.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;rec &amp;lt;- credit_train %&amp;gt;%
   recipe(Status ~ .) %&amp;gt;%

@@ -420,7 +420,7 @@ Sonar %&gt;%
 Existem algumas formas de fazer isso. Uma delas é o método da fórmula, usado acima.</p>
 <p>Esse modelo assume o formato <span class="math inline">\(Y \sim X_1 + X_2 + ... + X_n\)</span>.</p>
 <p>Acima, o <code>.</code> indica que todas as demais variáveis devem estar do lado direito da fórmula (é mais fácil que escrever as 60 variáveis uma a uma).</p>
-<p>Existem <a href="https://tidymodels.github.io/recipes/articles/Selecting_Variables.html">outras formas de selecionar variáveis dentro do pacote <code>{recipes}</code></a>, como a função <code>update_role()</code>. Essa função é útil especialmente quando sua tabela não contém apenas Abaixo um exemplo usando esta função:</p>
+<p>Existem <a href="https://tidymodels.github.io/recipes/articles/Selecting_Variables.html">outras formas de selecionar variáveis dentro do pacote <code>{recipes}</code></a>, como a função <code>update_role()</code>. Essa função é útil especialmente quando sua tabela não contém apenas variáveis de preditoras e de saídas (<code>predictors</code> e <code>outcome</code>). Abaixo um exemplo usando esta função:</p>
 <pre class="r"><code>data(biomass)
 
 biomass %&gt;% 
@@ -456,8 +456,8 @@ biomass %&gt;%
 </div>
 <div id="steps" class="section level3">
 <h3>Steps</h3>
-<p>A partir da criação da receita e a determinação dos papéis, é hora do pré-processamento real. Cada <strong>passo</strong> do pré-processamento é adicionado através de, pasme, <strong>PASSOS</strong> (em inglês, <em>steps</em>).</p>
-<p>Os passos disponíveis, a grosso modo, podem ser divididos nos seguintes grupos (fica também como sugestão de ordem para realização dos mesmos):</p>
+<p>A partir da criação da receita e a determinação dos papéis, é hora do pré-processamento real. Cada <strong>passo</strong> do pré-processamento é adicionado através de, pasme, <strong>passos</strong> (em inglês, <em>steps</em>).</p>
+<p>Os passos disponíveis, a grosso modo, podem ser divididos nos seguintes grupos:</p>
 <ul>
 <li>Imputação</li>
 <li>Transformações individuais para assimetria e outras questões</li>
@@ -514,8 +514,8 @@ Sonar %&gt;%
 ## [70] &quot;step_unorder&quot;       &quot;step_upsample&quot;      &quot;step_window&quot;       
 ## [73] &quot;step_YeoJohnson&quot;    &quot;step_zv&quot;</code></pre>
 </div>
-<div id="finalizando-a-receita-e-aplicando-em-novos-dados" class="section level3">
-<h3>Finalizando a receita e aplicando em novos dados</h3>
+<div id="finalizando-a-receita-e-cozinhando-novos-dados" class="section level3">
+<h3>Finalizando a receita e “cozinhando” novos dados</h3>
 <p>Todos os passos, até agora, simplesmente foram enumerados, nenhum deles é efetivamente calculado até que você entre com a função <code>prep()</code>, que literalmente prepara sua receita.</p>
 <p>Após, é possível gerar os dados pré-processados a partir de duas funções:
 - função <code>juice()</code>: essa função “espreme” os dados usados para a criação da receita
@@ -530,7 +530,7 @@ train_test_split &lt;- initial_split(credit_data, prop = 0.75)
 
 credit_train &lt;- training(train_test_split)
 credit_test &lt;- testing(train_test_split)</code></pre>
-<p>Criadas as bases de treino e teste, vamos criar uma receita simples. Perceba o uso do parâmetro <code>retain = TRUE</code>. Com isso, forçamos que a receita guarde a base de treino original, só assim podemos usar a função <code>juice()</code>. Em bases muito grandes, precisamos ter cuidado com o tamanho da receita.</p>
+<p>Criadas as bases de treino e teste, vamos criar uma receita simples. Perceba o uso do parâmetro <code>retain = TRUE</code>. Com isso, forçamos que a receita guarde a base de treino original, só assim podemos usar a função <code>juice()</code>. Em bases muito grandes, precisamos ter cuidado com o tamanho da receita, caso esse parâmetro seja acionado.</p>
 <p>Vamos usar <code>step_knnimpute()</code> para preencher os <code>NAs</code> com seus vizinhos mais próximos e <code>step_dummy()</code> para transformar nossas variáveis categóricas em variáveis dummy.</p>
 <pre class="r"><code>rec &lt;- credit_train %&gt;%
   recipe(Status ~ .) %&gt;%
