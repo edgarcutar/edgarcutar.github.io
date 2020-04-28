@@ -44,13 +44,13 @@ simpsons &amp;lt;- readr::read_delim(&amp;quot;https://raw.githubusercontent.com
 simpsons %&amp;gt;% glimpse()&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## Observations: 1,386
 ## Variables: 7
-## $ season          &amp;lt;dbl&amp;gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2...
-## $ episode_ordinal &amp;lt;dbl&amp;gt; 2, 3, 3, 6, 6, 7, 8, 9, 10, 11, 12, 13, 13, 13...
-## $ season_episode  &amp;lt;dbl&amp;gt; 102, 103, 103, 106, 106, 107, 108, 109, 110, 1...
-## $ production_code &amp;lt;chr&amp;gt; &amp;quot;7G02&amp;quot;, &amp;quot;7G03&amp;quot;, &amp;quot;7G03&amp;quot;, &amp;quot;7G06&amp;quot;, &amp;quot;7G06&amp;quot;, &amp;quot;7G09&amp;quot;...
-## $ episode_title   &amp;lt;chr&amp;gt; &amp;quot;Bart the Genius&amp;quot;, &amp;quot;Homer&amp;#39;s Odyssey&amp;quot;, &amp;quot;Homer&amp;#39;s...
-## $ guest_star      &amp;lt;chr&amp;gt; &amp;quot;Marcia Wallace&amp;quot;, &amp;quot;Sam McMurray&amp;quot;, &amp;quot;Marcia Wall...
-## $ role            &amp;lt;chr&amp;gt; &amp;quot;Edna Krabappel;  Ms. Melon&amp;quot;, &amp;quot;Worker&amp;quot;, &amp;quot;Edna ...&lt;/code&gt;&lt;/pre&gt;
+## $ season          &amp;lt;dbl&amp;gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, ...
+## $ episode_ordinal &amp;lt;dbl&amp;gt; 2, 3, 3, 6, 6, 7, 8, 9, 10, 11, 12, 13, 13, 13, 14,...
+## $ season_episode  &amp;lt;dbl&amp;gt; 102, 103, 103, 106, 106, 107, 108, 109, 110, 111, 1...
+## $ production_code &amp;lt;chr&amp;gt; &amp;quot;7G02&amp;quot;, &amp;quot;7G03&amp;quot;, &amp;quot;7G03&amp;quot;, &amp;quot;7G06&amp;quot;, &amp;quot;7G06&amp;quot;, &amp;quot;7G09&amp;quot;, &amp;quot;7G...
+## $ episode_title   &amp;lt;chr&amp;gt; &amp;quot;Bart the Genius&amp;quot;, &amp;quot;Homer&amp;#39;s Odyssey&amp;quot;, &amp;quot;Homer&amp;#39;s Odys...
+## $ guest_star      &amp;lt;chr&amp;gt; &amp;quot;Marcia Wallace&amp;quot;, &amp;quot;Sam McMurray&amp;quot;, &amp;quot;Marcia Wallace&amp;quot;,...
+## $ role            &amp;lt;chr&amp;gt; &amp;quot;Edna Krabappel;  Ms. Melon&amp;quot;, &amp;quot;Worker&amp;quot;, &amp;quot;Edna Kraba...&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;No primeiro gráfico gostaria de usar a função &lt;code&gt;step_other()&lt;/code&gt; do pacote &lt;code&gt;recipes&lt;/code&gt; para unir todos os &lt;code&gt;roles&lt;/code&gt; com menos de 1% de frequência na base. O pacote &lt;a href=&#34;https://tidymodels.github.io/recipes/&#34;&gt;&lt;code&gt;recipes&lt;/code&gt;&lt;/a&gt; é idealizado para pré-processamento de dados pelo &lt;a href=&#34;https://twitter.com/topepos&#34;&gt;Max Kuhn&lt;/a&gt;(Software Engineer do RStudio e mago da modelagem preditiva). Vale a pena dar uma olhada nas funções disponíveis nesse pacote.&lt;/p&gt;
 &lt;p&gt;Também é usada a função &lt;code&gt;background_image()&lt;/code&gt; do pacote &lt;code&gt;ggpubr&lt;/code&gt;.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;springfield &amp;lt;- readJPEG(&amp;quot;img/spring.jpg&amp;quot;)
@@ -81,9 +81,20 @@ most_frequent %&amp;gt;%
 &lt;p&gt;Bacana, né?&lt;/p&gt;
 &lt;p&gt;Seguindo uma baita ideia de layout do &lt;a href=&#34;https://twitter.com/_Gil_Henriques&#34;&gt;Gil Henriques&lt;/a&gt; e uma dica que vi na internet e não lembro quem deu, gostaria de fazer outro gráfico: entre os convidados que interpretaram a si mesmos, qual o percentual de participação de homens e mulheres?&lt;/p&gt;
 &lt;p&gt;Dessa vez vou usar o pacote &lt;code&gt;ggimage&lt;/code&gt; pra colocar uma imagem ocupando todo o fundo do gráfico.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pacman::p_load(ggimage, patternplot)
-
-man_vs_women &amp;lt;- simpsons %&amp;gt;% 
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pacman::p_load(ggimage, patternplot)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## package &amp;#39;gridGraphics&amp;#39; successfully unpacked and MD5 sums checked
+## package &amp;#39;ggplotify&amp;#39; successfully unpacked and MD5 sums checked
+## package &amp;#39;rvcheck&amp;#39; successfully unpacked and MD5 sums checked
+## package &amp;#39;ggimage&amp;#39; successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+##  C:\Users\edgarj\AppData\Local\Temp\RtmpQ9McIb\downloaded_packages
+## package &amp;#39;RcppParallel&amp;#39; successfully unpacked and MD5 sums checked
+## package &amp;#39;patternplot&amp;#39; successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+##  C:\Users\edgarj\AppData\Local\Temp\RtmpQ9McIb\downloaded_packages&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;man_vs_women &amp;lt;- simpsons %&amp;gt;% 
   filter(role %in% c(&amp;quot;Himself&amp;quot;, &amp;quot;Herself&amp;quot;)) %&amp;gt;% 
   group_by(season = round(season/2)*2, role) %&amp;gt;% 
   summarise(number = n())
@@ -151,22 +162,22 @@ nuclear &amp;lt;- readr::read_csv(&amp;quot;https://raw.githubusercontent.com/rf
 nuclear %&amp;gt;% glimpse()&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## Observations: 2,051
 ## Variables: 16
-## $ date_long         &amp;lt;dbl&amp;gt; 19450716, 19450805, 19450809, 19460630, 1946...
-## $ year              &amp;lt;dbl&amp;gt; 1945, 1945, 1945, 1946, 1946, 1948, 1948, 19...
-## $ id_no             &amp;lt;dbl&amp;gt; 45001, 45002, 45003, 46001, 46002, 48001, 48...
-## $ country           &amp;lt;chr&amp;gt; &amp;quot;USA&amp;quot;, &amp;quot;USA&amp;quot;, &amp;quot;USA&amp;quot;, &amp;quot;USA&amp;quot;, &amp;quot;USA&amp;quot;, &amp;quot;USA&amp;quot;, &amp;quot;U...
-## $ region            &amp;lt;chr&amp;gt; &amp;quot;ALAMOGORDO&amp;quot;, &amp;quot;HIROSHIMA&amp;quot;, &amp;quot;NAGASAKI&amp;quot;, &amp;quot;BIKI...
-## $ source            &amp;lt;chr&amp;gt; &amp;quot;DOE&amp;quot;, &amp;quot;DOE&amp;quot;, &amp;quot;DOE&amp;quot;, &amp;quot;DOE&amp;quot;, &amp;quot;DOE&amp;quot;, &amp;quot;DOE&amp;quot;, &amp;quot;D...
-## $ latitude          &amp;lt;dbl&amp;gt; 32.54, 34.23, 32.45, 11.35, 11.35, 11.30, 11...
-## $ longitude         &amp;lt;dbl&amp;gt; -105.57, 132.27, 129.52, 165.20, 165.20, 162...
-## $ magnitude_body    &amp;lt;dbl&amp;gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
-## $ magnitude_surface &amp;lt;dbl&amp;gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
-## $ depth             &amp;lt;dbl&amp;gt; -0.10, -0.60, -0.60, -0.20, 0.03, -0.08, -0....
-## $ yield_lower       &amp;lt;dbl&amp;gt; 21.0, 15.0, 21.0, 21.0, 21.0, 37.0, 49.0, 18...
-## $ yield_upper       &amp;lt;dbl&amp;gt; 21.0, 15.0, 21.0, 21.0, 21.0, 37.0, 49.0, 18...
-## $ purpose           &amp;lt;chr&amp;gt; &amp;quot;WR&amp;quot;, &amp;quot;COMBAT&amp;quot;, &amp;quot;COMBAT&amp;quot;, &amp;quot;WE&amp;quot;, &amp;quot;WE&amp;quot;, &amp;quot;WR&amp;quot;, ...
-## $ name              &amp;lt;chr&amp;gt; &amp;quot;TRINITY&amp;quot;, &amp;quot;LITTLEBOY&amp;quot;, &amp;quot;FATMAN&amp;quot;, &amp;quot;ABLE&amp;quot;, &amp;quot;B...
-## $ type              &amp;lt;chr&amp;gt; &amp;quot;TOWER&amp;quot;, &amp;quot;AIRDROP&amp;quot;, &amp;quot;AIRDROP&amp;quot;, &amp;quot;AIRDROP&amp;quot;, &amp;quot;U...&lt;/code&gt;&lt;/pre&gt;
+## $ date_long         &amp;lt;dbl&amp;gt; 19450716, 19450805, 19450809, 19460630, 19460724,...
+## $ year              &amp;lt;dbl&amp;gt; 1945, 1945, 1945, 1946, 1946, 1948, 1948, 1948, 1...
+## $ id_no             &amp;lt;dbl&amp;gt; 45001, 45002, 45003, 46001, 46002, 48001, 48002, ...
+## $ country           &amp;lt;chr&amp;gt; &amp;quot;USA&amp;quot;, &amp;quot;USA&amp;quot;, &amp;quot;USA&amp;quot;, &amp;quot;USA&amp;quot;, &amp;quot;USA&amp;quot;, &amp;quot;USA&amp;quot;, &amp;quot;USA&amp;quot;, ...
+## $ region            &amp;lt;chr&amp;gt; &amp;quot;ALAMOGORDO&amp;quot;, &amp;quot;HIROSHIMA&amp;quot;, &amp;quot;NAGASAKI&amp;quot;, &amp;quot;BIKINI&amp;quot;, ...
+## $ source            &amp;lt;chr&amp;gt; &amp;quot;DOE&amp;quot;, &amp;quot;DOE&amp;quot;, &amp;quot;DOE&amp;quot;, &amp;quot;DOE&amp;quot;, &amp;quot;DOE&amp;quot;, &amp;quot;DOE&amp;quot;, &amp;quot;DOE&amp;quot;, ...
+## $ latitude          &amp;lt;dbl&amp;gt; 32.54, 34.23, 32.45, 11.35, 11.35, 11.30, 11.30, ...
+## $ longitude         &amp;lt;dbl&amp;gt; -105.57, 132.27, 129.52, 165.20, 165.20, 162.15, ...
+## $ magnitude_body    &amp;lt;dbl&amp;gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
+## $ magnitude_surface &amp;lt;dbl&amp;gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
+## $ depth             &amp;lt;dbl&amp;gt; -0.100, -0.600, -0.600, -0.200, 0.030, -0.080, -0...
+## $ yield_lower       &amp;lt;dbl&amp;gt; 21.0, 15.0, 21.0, 21.0, 21.0, 37.0, 49.0, 18.0, 2...
+## $ yield_upper       &amp;lt;dbl&amp;gt; 21.0, 15.0, 21.0, 21.0, 21.0, 37.0, 49.0, 18.0, 2...
+## $ purpose           &amp;lt;chr&amp;gt; &amp;quot;WR&amp;quot;, &amp;quot;COMBAT&amp;quot;, &amp;quot;COMBAT&amp;quot;, &amp;quot;WE&amp;quot;, &amp;quot;WE&amp;quot;, &amp;quot;WR&amp;quot;, &amp;quot;WR&amp;quot;,...
+## $ name              &amp;lt;chr&amp;gt; &amp;quot;TRINITY&amp;quot;, &amp;quot;LITTLEBOY&amp;quot;, &amp;quot;FATMAN&amp;quot;, &amp;quot;ABLE&amp;quot;, &amp;quot;BAKER&amp;quot;...
+## $ type              &amp;lt;chr&amp;gt; &amp;quot;TOWER&amp;quot;, &amp;quot;AIRDROP&amp;quot;, &amp;quot;AIRDROP&amp;quot;, &amp;quot;AIRDROP&amp;quot;, &amp;quot;UW&amp;quot;, &amp;quot;...&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Vamos começar pegando um mapa-mundi. Para nossa conveniência existe um nos pacotes &lt;code&gt;ggplot&lt;/code&gt; e &lt;code&gt;maps&lt;/code&gt;. Plotamos esse mapa usando a função &lt;code&gt;geom_polygon()&lt;/code&gt; e vamos usar o tema &lt;code&gt;theme_map&lt;/code&gt; do pacote &lt;code&gt;ggthemes&lt;/code&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world &amp;lt;- ggplot2::map_data(&amp;quot;world&amp;quot;)
 
@@ -429,24 +440,24 @@ imperadores &amp;lt;- readr::read_csv(&amp;quot;https://raw.githubusercontent.co
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;imperadores %&amp;gt;% glimpse()&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## Observations: 68
 ## Variables: 18
-## $ index          &amp;lt;dbl&amp;gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, ...
-## $ name           &amp;lt;chr&amp;gt; &amp;quot;Augustus&amp;quot;, &amp;quot;Tiberius&amp;quot;, &amp;quot;Caligula&amp;quot;, &amp;quot;Claudius&amp;quot;,...
-## $ name_full      &amp;lt;chr&amp;gt; &amp;quot;IMPERATOR CAESAR DIVI FILIVS AVGVSTVS&amp;quot;, &amp;quot;TIBER...
-## $ birth          &amp;lt;date&amp;gt; -062-09-23, -041-11-16, 0012-08-31, -009-08-01...
-## $ death          &amp;lt;date&amp;gt; 0014-08-19, 0037-03-16, 0041-01-24, 0054-10-13...
-## $ birth_cty      &amp;lt;chr&amp;gt; &amp;quot;Rome&amp;quot;, &amp;quot;Rome&amp;quot;, &amp;quot;Antitum&amp;quot;, &amp;quot;Lugdunum&amp;quot;, &amp;quot;Antitum...
-## $ birth_prv      &amp;lt;chr&amp;gt; &amp;quot;Italia&amp;quot;, &amp;quot;Italia&amp;quot;, &amp;quot;Italia&amp;quot;, &amp;quot;Gallia Lugdunens...
-## $ rise           &amp;lt;chr&amp;gt; &amp;quot;Birthright&amp;quot;, &amp;quot;Birthright&amp;quot;, &amp;quot;Birthright&amp;quot;, &amp;quot;Birt...
-## $ reign_start    &amp;lt;date&amp;gt; -026-01-16, 0014-09-18, 0037-03-18, 0041-01-25...
-## $ reign_end      &amp;lt;date&amp;gt; 0014-08-19, 0037-03-16, 0041-01-24, 0054-10-13...
-## $ cause          &amp;lt;chr&amp;gt; &amp;quot;Assassination&amp;quot;, &amp;quot;Assassination&amp;quot;, &amp;quot;Assassinatio...
-## $ killer         &amp;lt;chr&amp;gt; &amp;quot;Wife&amp;quot;, &amp;quot;Other Emperor&amp;quot;, &amp;quot;Senate&amp;quot;, &amp;quot;Wife&amp;quot;, &amp;quot;Sen...
-## $ dynasty        &amp;lt;chr&amp;gt; &amp;quot;Julio-Claudian&amp;quot;, &amp;quot;Julio-Claudian&amp;quot;, &amp;quot;Julio-Clau...
-## $ era            &amp;lt;chr&amp;gt; &amp;quot;Principate&amp;quot;, &amp;quot;Principate&amp;quot;, &amp;quot;Principate&amp;quot;, &amp;quot;Prin...
-## $ notes          &amp;lt;chr&amp;gt; &amp;quot;birth, reign.start are BCE. Assign negative fo...
-## $ verif_who      &amp;lt;chr&amp;gt; &amp;quot;Reddit user zonination&amp;quot;, &amp;quot;Reddit user zoninati...
-## $ age_death      &amp;lt;dbl&amp;gt; 75.90411, 77.32877, 28.40000, 63.20000, 30.4836...
-## $ reign_duration &amp;lt;dbl&amp;gt; 40.5890411, 22.4904110, 3.8547945, 13.7150685, ...&lt;/code&gt;&lt;/pre&gt;
+## $ index          &amp;lt;dbl&amp;gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1...
+## $ name           &amp;lt;chr&amp;gt; &amp;quot;Augustus&amp;quot;, &amp;quot;Tiberius&amp;quot;, &amp;quot;Caligula&amp;quot;, &amp;quot;Claudius&amp;quot;, &amp;quot;Ner...
+## $ name_full      &amp;lt;chr&amp;gt; &amp;quot;IMPERATOR CAESAR DIVI FILIVS AVGVSTVS&amp;quot;, &amp;quot;TIBERIVS C...
+## $ birth          &amp;lt;date&amp;gt; -062-09-23, -041-11-16, 0012-08-31, -009-08-01, 003...
+## $ death          &amp;lt;date&amp;gt; 0014-08-19, 0037-03-16, 0041-01-24, 0054-10-13, 006...
+## $ birth_cty      &amp;lt;chr&amp;gt; &amp;quot;Rome&amp;quot;, &amp;quot;Rome&amp;quot;, &amp;quot;Antitum&amp;quot;, &amp;quot;Lugdunum&amp;quot;, &amp;quot;Antitum&amp;quot;, &amp;quot;T...
+## $ birth_prv      &amp;lt;chr&amp;gt; &amp;quot;Italia&amp;quot;, &amp;quot;Italia&amp;quot;, &amp;quot;Italia&amp;quot;, &amp;quot;Gallia Lugdunensis&amp;quot;, ...
+## $ rise           &amp;lt;chr&amp;gt; &amp;quot;Birthright&amp;quot;, &amp;quot;Birthright&amp;quot;, &amp;quot;Birthright&amp;quot;, &amp;quot;Birthrigh...
+## $ reign_start    &amp;lt;date&amp;gt; -026-01-16, 0014-09-18, 0037-03-18, 0041-01-25, 005...
+## $ reign_end      &amp;lt;date&amp;gt; 0014-08-19, 0037-03-16, 0041-01-24, 0054-10-13, 006...
+## $ cause          &amp;lt;chr&amp;gt; &amp;quot;Assassination&amp;quot;, &amp;quot;Assassination&amp;quot;, &amp;quot;Assassination&amp;quot;, &amp;quot;...
+## $ killer         &amp;lt;chr&amp;gt; &amp;quot;Wife&amp;quot;, &amp;quot;Other Emperor&amp;quot;, &amp;quot;Senate&amp;quot;, &amp;quot;Wife&amp;quot;, &amp;quot;Senate&amp;quot;,...
+## $ dynasty        &amp;lt;chr&amp;gt; &amp;quot;Julio-Claudian&amp;quot;, &amp;quot;Julio-Claudian&amp;quot;, &amp;quot;Julio-Claudian&amp;quot;...
+## $ era            &amp;lt;chr&amp;gt; &amp;quot;Principate&amp;quot;, &amp;quot;Principate&amp;quot;, &amp;quot;Principate&amp;quot;, &amp;quot;Principat...
+## $ notes          &amp;lt;chr&amp;gt; &amp;quot;birth, reign.start are BCE. Assign negative for cor...
+## $ verif_who      &amp;lt;chr&amp;gt; &amp;quot;Reddit user zonination&amp;quot;, &amp;quot;Reddit user zonination&amp;quot;, ...
+## $ age_death      &amp;lt;dbl&amp;gt; 75.90411, 77.32877, 28.40000, 63.20000, 30.48361, 70...
+## $ reign_duration &amp;lt;dbl&amp;gt; 40.5890411, 22.4904110, 3.8547945, 13.7150685, 13.65...&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;A primeira coisa que eu gostaria de ver é uma distribuição das causas de morte dos imperadores. Tenho impressão que não era um trabalho fácil. A função &lt;code&gt;fct_reorder()&lt;/code&gt;, do pacote &lt;code&gt;forcats&lt;/code&gt;, &lt;a href=&#34;https://forcats.tidyverse.org/&#34;&gt;pacote feito para manipulação de fatores&lt;/a&gt;, nos ajuda a deixar os fatores na ordem decrescente que queremos para gráfico.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;resumo_causas &amp;lt;- imperadores %&amp;gt;%
   group_by(cause) %&amp;gt;% 
@@ -467,6 +478,87 @@ resumo_causas %&amp;gt;%
   theme_bw() +
   theme(text = element_text(family = &amp;quot;RomanT&amp;quot;),
         axis.text.x = element_text(angle = -5, vjust = -0.5)) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family not
+## found in Windows font database
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family not
+## found in Windows font database
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family not
+## found in Windows font database&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Realmente não era uma vida tranquila.&lt;/p&gt;
 &lt;p&gt;Agora, para unir as mortes violentas em um grupo só, podemos usar &lt;code&gt;fct_collapse()&lt;/code&gt;, também do pacote &lt;code&gt;forcats&lt;/code&gt;.&lt;/p&gt;
@@ -492,6 +584,45 @@ resumo_coll %&amp;gt;%
   scale_x_discrete(labels = c(&amp;quot;Mortes Violentas&amp;quot;, &amp;quot;Causas Naturais&amp;quot;, &amp;quot;Outros&amp;quot;)) +
   theme_bw() +
   theme(text = element_text(family = &amp;quot;RomanT&amp;quot;)) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Pelo menos 65% dos imperadores romanos morreram violentamente. Isso me deixa curioso para saber quantos golpes de Estado ocorreram em Roma e com qual frequência eles aconteceram.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;golpes &amp;lt;- imperadores %&amp;gt;% 
@@ -584,30 +715,29 @@ bob_ross &amp;lt;- readr::read_csv(&amp;quot;https://raw.githubusercontent.com/r
 &lt;p&gt;Em primeiro lugar, para ver o que temos nos dados, vamos usar a função &lt;code&gt;head&lt;/code&gt;, que retorna as primeiras linhas da planilha:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bob_ross %&amp;gt;% head()&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## # A tibble: 6 x 69
-##   episode title apple_frame aurora_borealis  barn beach  boat bridge
-##   &amp;lt;chr&amp;gt;   &amp;lt;chr&amp;gt;       &amp;lt;dbl&amp;gt;           &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt;
-## 1 S01E01  &amp;quot;\&amp;quot;A~           0               0     0     0     0      0
-## 2 S01E02  &amp;quot;\&amp;quot;M~           0               0     0     0     0      0
-## 3 S01E03  &amp;quot;\&amp;quot;E~           0               0     0     0     0      0
-## 4 S01E04  &amp;quot;\&amp;quot;W~           0               0     0     0     0      0
-## 5 S01E05  &amp;quot;\&amp;quot;Q~           0               0     0     0     0      0
-## 6 S01E06  &amp;quot;\&amp;quot;W~           0               0     0     0     0      0
-## # ... with 61 more variables: building &amp;lt;dbl&amp;gt;, bushes &amp;lt;dbl&amp;gt;, cabin &amp;lt;dbl&amp;gt;,
-## #   cactus &amp;lt;dbl&amp;gt;, circle_frame &amp;lt;dbl&amp;gt;, cirrus &amp;lt;dbl&amp;gt;, cliff &amp;lt;dbl&amp;gt;,
-## #   clouds &amp;lt;dbl&amp;gt;, conifer &amp;lt;dbl&amp;gt;, cumulus &amp;lt;dbl&amp;gt;, deciduous &amp;lt;dbl&amp;gt;,
-## #   diane_andre &amp;lt;dbl&amp;gt;, dock &amp;lt;dbl&amp;gt;, double_oval_frame &amp;lt;dbl&amp;gt;, farm &amp;lt;dbl&amp;gt;,
-## #   fence &amp;lt;dbl&amp;gt;, fire &amp;lt;dbl&amp;gt;, florida_frame &amp;lt;dbl&amp;gt;, flowers &amp;lt;dbl&amp;gt;,
-## #   fog &amp;lt;dbl&amp;gt;, framed &amp;lt;dbl&amp;gt;, grass &amp;lt;dbl&amp;gt;, guest &amp;lt;dbl&amp;gt;,
-## #   half_circle_frame &amp;lt;dbl&amp;gt;, half_oval_frame &amp;lt;dbl&amp;gt;, hills &amp;lt;dbl&amp;gt;,
+##   episode title apple_frame aurora_borealis  barn beach  boat bridge building
+##   &amp;lt;chr&amp;gt;   &amp;lt;chr&amp;gt;       &amp;lt;dbl&amp;gt;           &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt;    &amp;lt;dbl&amp;gt;
+## 1 S01E01  &amp;quot;\&amp;quot;A~           0               0     0     0     0      0        0
+## 2 S01E02  &amp;quot;\&amp;quot;M~           0               0     0     0     0      0        0
+## 3 S01E03  &amp;quot;\&amp;quot;E~           0               0     0     0     0      0        0
+## 4 S01E04  &amp;quot;\&amp;quot;W~           0               0     0     0     0      0        0
+## 5 S01E05  &amp;quot;\&amp;quot;Q~           0               0     0     0     0      0        0
+## 6 S01E06  &amp;quot;\&amp;quot;W~           0               0     0     0     0      0        0
+## # ... with 60 more variables: bushes &amp;lt;dbl&amp;gt;, cabin &amp;lt;dbl&amp;gt;, cactus &amp;lt;dbl&amp;gt;,
+## #   circle_frame &amp;lt;dbl&amp;gt;, cirrus &amp;lt;dbl&amp;gt;, cliff &amp;lt;dbl&amp;gt;, clouds &amp;lt;dbl&amp;gt;, conifer &amp;lt;dbl&amp;gt;,
+## #   cumulus &amp;lt;dbl&amp;gt;, deciduous &amp;lt;dbl&amp;gt;, diane_andre &amp;lt;dbl&amp;gt;, dock &amp;lt;dbl&amp;gt;,
+## #   double_oval_frame &amp;lt;dbl&amp;gt;, farm &amp;lt;dbl&amp;gt;, fence &amp;lt;dbl&amp;gt;, fire &amp;lt;dbl&amp;gt;,
+## #   florida_frame &amp;lt;dbl&amp;gt;, flowers &amp;lt;dbl&amp;gt;, fog &amp;lt;dbl&amp;gt;, framed &amp;lt;dbl&amp;gt;, grass &amp;lt;dbl&amp;gt;,
+## #   guest &amp;lt;dbl&amp;gt;, half_circle_frame &amp;lt;dbl&amp;gt;, half_oval_frame &amp;lt;dbl&amp;gt;, hills &amp;lt;dbl&amp;gt;,
 ## #   lake &amp;lt;dbl&amp;gt;, lakes &amp;lt;dbl&amp;gt;, lighthouse &amp;lt;dbl&amp;gt;, mill &amp;lt;dbl&amp;gt;, moon &amp;lt;dbl&amp;gt;,
 ## #   mountain &amp;lt;dbl&amp;gt;, mountains &amp;lt;dbl&amp;gt;, night &amp;lt;dbl&amp;gt;, ocean &amp;lt;dbl&amp;gt;,
 ## #   oval_frame &amp;lt;dbl&amp;gt;, palm_trees &amp;lt;dbl&amp;gt;, path &amp;lt;dbl&amp;gt;, person &amp;lt;dbl&amp;gt;,
 ## #   portrait &amp;lt;dbl&amp;gt;, rectangle_3d_frame &amp;lt;dbl&amp;gt;, rectangular_frame &amp;lt;dbl&amp;gt;,
 ## #   river &amp;lt;dbl&amp;gt;, rocks &amp;lt;dbl&amp;gt;, seashell_frame &amp;lt;dbl&amp;gt;, snow &amp;lt;dbl&amp;gt;,
-## #   snowy_mountain &amp;lt;dbl&amp;gt;, split_frame &amp;lt;dbl&amp;gt;, steve_ross &amp;lt;dbl&amp;gt;,
-## #   structure &amp;lt;dbl&amp;gt;, sun &amp;lt;dbl&amp;gt;, tomb_frame &amp;lt;dbl&amp;gt;, tree &amp;lt;dbl&amp;gt;, trees &amp;lt;dbl&amp;gt;,
-## #   triple_frame &amp;lt;dbl&amp;gt;, waterfall &amp;lt;dbl&amp;gt;, waves &amp;lt;dbl&amp;gt;, windmill &amp;lt;dbl&amp;gt;,
-## #   window_frame &amp;lt;dbl&amp;gt;, winter &amp;lt;dbl&amp;gt;, wood_framed &amp;lt;dbl&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+## #   snowy_mountain &amp;lt;dbl&amp;gt;, split_frame &amp;lt;dbl&amp;gt;, steve_ross &amp;lt;dbl&amp;gt;, structure &amp;lt;dbl&amp;gt;,
+## #   sun &amp;lt;dbl&amp;gt;, tomb_frame &amp;lt;dbl&amp;gt;, tree &amp;lt;dbl&amp;gt;, trees &amp;lt;dbl&amp;gt;, triple_frame &amp;lt;dbl&amp;gt;,
+## #   waterfall &amp;lt;dbl&amp;gt;, waves &amp;lt;dbl&amp;gt;, windmill &amp;lt;dbl&amp;gt;, window_frame &amp;lt;dbl&amp;gt;,
+## #   winter &amp;lt;dbl&amp;gt;, wood_framed &amp;lt;dbl&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Temos cada uma das 403 pinturas que Bob Ross fez ao longo dos 11 anos e 31 temporadas de &lt;em&gt;The Joy of Painting&lt;/em&gt;, cada uma delas contendo os diversos elementos presentes em cada pintura: casas, barcos, palmeiras, árvores etc.&lt;/p&gt;
 &lt;p&gt;Para organizar um pouco a tabela, vamos usar a função &lt;code&gt;gather&lt;/code&gt;, colocando os diversos elementos em uma única coluna e sua existência ou não como outra coluna. Vamos também separar episódio e temporada em colunas próprias, numéricas, usando algumas funções do pacote &lt;code&gt;stringr&lt;/code&gt; e um pouquinho de &lt;code&gt;regex&lt;/code&gt;.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bob_ross_gather &amp;lt;- bob_ross %&amp;gt;% 
@@ -694,6 +824,7 @@ bob_ross_veg %&amp;gt;%
        caption = &amp;quot;Fonte: Tidy Tuesday (https://github.com/rfordatascience/tidytuesday)&amp;quot;) + 
   facet_wrap(~element) +
   theme_bw()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## `geom_smooth()` using formula &amp;#39;y ~ x&amp;#39;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2019-08-06-bob/index_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Aparentemente Bob Ross era bem consistente em suas pinturas. Também dá pra perceber a maior presença de plantas de climas mais frios (coníferas, decíduas) comparada à frequência daquelas de climas quentes (palmeiras, cactos). Isso continua nos mostrando como suas pinturas geralmente retratavam paisagens mais frias.&lt;/p&gt;
 &lt;p&gt;Dá pra notar uma diminuição do número de arbustos e árvores decíduas e um aumento das coníferas. Bob parece ter ido para climas ainda mais frios conforme o tempo passou!&lt;/p&gt;

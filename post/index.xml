@@ -13,6 +13,270 @@
     </image>
     
     <item>
+      <title>Ajuste de modelos preditivos com o pacote {parsnip}</title>
+      <link>/post/parsnip/</link>
+      <pubDate>Sun, 06 Oct 2019 00:00:00 +0000</pubDate>
+      <guid>/post/parsnip/</guid>
+      <description>
+
+
+&lt;p&gt;Neste &lt;a href=&#34;https://www.linkedin.com/pulse/pr%C3%A9-processamento-de-dados-r-com-o-pacote-recipes-edgar-cutar-junior/&#34;&gt;segundo post da série sobre o Tidymodels&lt;/a&gt;, o conjunto de pacotes desenvolvido por &lt;a href=&#34;twitter.com/topepos&#34;&gt;Max Kuhn&lt;/a&gt; para ajuste de modelos preditivos para R, iremos falar sobre o &lt;a href=&#34;https://tidymodels.github.io/parsnip/&#34;&gt;{parsnip}&lt;/a&gt;. Esse post saiu quase todo da &lt;a href=&#34;https://tidymodels.github.io/parsnip/&#34;&gt;própria página do pacote parsnip&lt;/a&gt; assim como de posts do Max Kuhn no RStudio (notadamente &lt;a href=&#34;https://www.tidyverse.org/blog/2019/04/parsnip-internals/&#34;&gt;este&lt;/a&gt; e &lt;a href=&#34;https://www.tidyverse.org/blog/2018/11/parsnip-0-0-1/&#34;&gt;este&lt;/a&gt;). Todas as eventuais piadas ruins são minhas mesmo.&lt;/p&gt;
+&lt;div id=&#34;cenouras-e-pastinagas&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Cenouras e Pastinagas&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;Parsnip_vs_carrot.jpg&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Parsnip é o nome em inglês da pastinaga, parente esquecida da cenoura. Originalmente parsnip era o pacote que iria substituir o &lt;a href=&#34;http://caret.r-forge.r-project.org/&#34;&gt;{caret}&lt;/a&gt; (a pronúncia de caret é igual a “carrot”, cenoura em inglês), que foi o primeiro pacote integrado para modelagem preditiva para R, desenvolvido no começo dos anos 2000 pelo mesmo Max Kuhn, na época diretor de pesquisa não-clínica na Pfizer.&lt;/p&gt;
+&lt;p&gt;Com a evolução do pacote, a ideia originaldo Parsnip acabou se desdobrando no conjunto de pacotes que compõem o {tidymodels}, cada um deles especializado em tarefas específicas da modelagem preditiva. Com isso &lt;a href=&#34;https://www.tidyverse.org/blog/2018/11/parsnip-0-0-1/&#34;&gt;Parsnip ficou com um problema bem específico, a interface.&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;uma-interface-padronizada&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Uma interface padronizada&lt;/h2&gt;
+&lt;p&gt;Diversas funções e pacotes oferecem diferentes interfaces e parâmetros para objetivos parecidos, e o parsnip padroniza essa interface para o ajuste dos modelos e também para retornar os valores preditos.&lt;/p&gt;
+&lt;div id=&#34;o-problema&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;O Problema&lt;/h3&gt;
+&lt;p&gt;O problema de inconsistência de interface é facilmente encontrado em diversos modelos do R. Um exemplo simples acontece na regressão logística. Talvez o mais consagrado modo de &lt;a href=&#34;https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/glm&#34;&gt;ajustar uma regressão logística seja através do pacote &lt;code&gt;glm&lt;/code&gt;&lt;/a&gt;. Esse pacote usa a sintaxe padrão do R (&lt;a href=&#34;https://www.amazon.com.br/dp/B07737S8XJ/ref=dp-kindle-redirect?_encoding=UTF8&amp;amp;btkr=1&#34;&gt;que, na verdade, precede o R&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;Para ajustar uma regressão logística no &lt;code&gt;glm&lt;/code&gt; você:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Usa o método da fórmula para definir as variáveis preditoras e o que deve ser predito.&lt;/li&gt;
+&lt;li&gt;O método da fórmula usa o formato &lt;code&gt;Y ~ X1 + X2 + X3&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Para especificar que é um modelo logístico usamos o argumento &lt;code&gt;family = binomial&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Agora vamos supor que eu queira aplicar alguma regularização nesse modelo. Uma escolha possível seria &lt;a href=&#34;https://cran.r-project.org/web/packages/glmnet/index.html&#34;&gt;usando o pacote &lt;code&gt;glmnet&lt;/code&gt;&lt;/a&gt;. Nesse caso:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Esse pacote não usa o método da fórmula, deve-se entregar os preditores em uma matriz (o que implica que variáveis “dummy” devem ser pré-computadas)&lt;/li&gt;
+&lt;li&gt;O argumento da família muda ligeiramente, e deve ser &lt;code&gt;family = &#34;binomial&#34;&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;O problema seria ainda maior se eu tentasse usar a interface para o TensorFlow no pacote &lt;code&gt;keras&lt;/code&gt;. O &lt;code&gt;keras&lt;/code&gt; tem uma abordagem muito interessante para encadear modelos de Deep Learning mas a formulação é completamente diferente do tradicional. Ajustar um modelo usando &lt;code&gt;keras&lt;/code&gt; exigiria estudar e entender uma outra forma de sintaxe de modelos.&lt;/p&gt;
+&lt;p&gt;O problema se estende a como os diferentes pacotes retornam predições. A maior parte dos pacotes em R usam a função &lt;code&gt;predict()&lt;/code&gt;. Para retornar um vetor de probabilidades na nossa regressão logística, usaríamos &lt;code&gt;predict(obj, newdata, type = &#34;response&#34;)&lt;/code&gt;. Mas essa convenção varia bastante entre pacotes.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th&gt;Função&lt;/th&gt;
+&lt;th&gt;Pacote&lt;/th&gt;
+&lt;th&gt;Código&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td&gt;glm&lt;/td&gt;
+&lt;td&gt;stats&lt;/td&gt;
+&lt;td&gt;predict(obj, type = “response”)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td&gt;lda&lt;/td&gt;
+&lt;td&gt;MASS&lt;/td&gt;
+&lt;td&gt;predict(obj)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td&gt;gbm&lt;/td&gt;
+&lt;td&gt;gbm&lt;/td&gt;
+&lt;td&gt;predict(obj, type = “response”, n.trees)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td&gt;mda&lt;/td&gt;
+&lt;td&gt;mda&lt;/td&gt;
+&lt;td&gt;predict(obj, type = “posterior”)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td&gt;rpart&lt;/td&gt;
+&lt;td&gt;rpart&lt;/td&gt;
+&lt;td&gt;predict(obj, type = “prob”)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td&gt;Weka&lt;/td&gt;
+&lt;td&gt;RWeka&lt;/td&gt;
+&lt;td&gt;predict(obj, type = “probability”)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Numa instância maior, podemos ter ainda mais problemas: alguns modelos podem criar predições em vários submodelos de uma vez. Quando usamos Boosted Trees ajustadas com &lt;em&gt;i&lt;/em&gt; árvores, podemos fazer uma predição usando menos de &lt;em&gt;i&lt;/em&gt; iterações (efetivamente criando um novo modelo de predição), o que pode levar a mais inconsistências.&lt;/p&gt;
+&lt;p&gt;Esse tipo de problema, quando agregado, podia levar ao questionamento&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;O R está trabalhando pra mim ou eu estou trabalhando para o R?&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;div id=&#34;a-solução&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;A solução&lt;/h3&gt;
+&lt;p&gt;Para demonstrar como o &lt;code&gt;parsnip&lt;/code&gt; funciona, vamos seguir com o exemplo da regressão logística.&lt;/p&gt;
+&lt;p&gt;Para isso vamos usar uma base de dados chamada &lt;code&gt;Smarket&lt;/code&gt;, do pacote ISLR, que tem os retornos diários do índice S&amp;amp;P500 entre 2001 e 2005. Vamos começar dividindo a base em treino e teste. Vamos centralizar e escalar usando uma receita simples do pacote &lt;code&gt;recipes&lt;/code&gt;&lt;a href=&#34;(https://www.linkedin.com/pulse/pr%C3%A9-processamento-de-dados-r-com-o-pacote-recipes-edgar-cutar-junior/)&#34;&gt;(falamos sobre esse pacote no último post)&lt;/a&gt;].&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;if (!require(&amp;quot;pacman&amp;quot;)) install.packages(&amp;quot;pacman&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Carregando pacotes exigidos: pacman&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pacman::p_load(tidymodels, ISLR) 
+
+split &amp;lt;- initial_split(Smarket %&amp;gt;% select(-Year, -Today), props = 9/10)
+smarket_train &amp;lt;- training(split)
+smarket_test  &amp;lt;- testing(split)
+
+smarket_rec &amp;lt;- recipe(Direction ~ ., data = smarket_train) %&amp;gt;%
+  step_center(all_predictors()) %&amp;gt;%
+  step_scale(all_predictors()) %&amp;gt;%
+  prep(training = smarket_train, retain = TRUE)
+
+train_data &amp;lt;- juice(smarket_rec)
+test_data  &amp;lt;- bake(smarket_rec, smarket_test)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Para usar o &lt;code&gt;parsnip&lt;/code&gt;, você começa com a especificação de um modelo. É um objeto simples que define a intenção daquele modelo. Já que vamos seguir com nossa saga de regressão logística, nosso primeiro passo é uma função simples.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;market_model &amp;lt;- logistic_reg()
+market_model&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Logistic Regression Model Specification (classification)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Pode parecer estranho porque não entramos com absolutamente nenhum detalhe sobre o que vamos fazer, mas é isso aí mesmo! O &lt;code&gt;parsnip&lt;/code&gt; oferece uma variedade de formas para ajustar esse modelo. Nós vamos usar o tradicional Método dos Mínimos Quadrados, mas poderia ser com penalização (via lasso, ridge, Bayes etc)… Diferenciamos um caso do outro através da &lt;em&gt;&lt;em&gt;Engine&lt;/em&gt; computacional&lt;/em&gt;, que é uma combinação de tipo de estimação com implementação. Pode ser através de um pacote ou uma plataforma como Spark ou TensorFlow. Para começar simples, vamos usar o glm.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;glm_market_model &amp;lt;- market_model %&amp;gt;% set_engine(&amp;quot;glm&amp;quot;)
+glm_market_model&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Logistic Regression Model Specification (classification)
+## 
+## Computational engine: glm&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Não existem mais muitos argumentos por aqui, então vamos pular direto pro ajuste do modelo. Nossas duas escolhas nesse ponto são entre usar &lt;code&gt;fit()&lt;/code&gt; ou &lt;code&gt;fit_xy()&lt;/code&gt;. O primeiro usa o método da fórmula, enquanto o segundo usa objetos separados para os preditores e para o resultado.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;glm_fit &amp;lt;- glm_market_model %&amp;gt;%
+  fit(Direction ~ ., data = train_data)
+
+#ou
+
+glm_market_model %&amp;gt;%
+  fit_xy(x = select(train_data, -Direction), y = select(train_data, Direction))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## parsnip model object
+## 
+## Fit time:  20ms 
+## 
+## Call:  stats::glm(formula = formula, family = stats::binomial, data = data)
+## 
+## Coefficients:
+## (Intercept)         Lag1         Lag2         Lag3         Lag4         Lag5  
+##    0.103028    -0.133905    -0.043881     0.011143     0.002595     0.008425  
+##      Volume  
+##    0.047614  
+## 
+## Degrees of Freedom: 937 Total (i.e. Null);  931 Residual
+## Null Deviance:       1298 
+## Residual Deviance: 1293  AIC: 1307&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Claro que não é necessário fazer todos esses passos individualmente, e poderíamos simplesmente condensar tudo em um só objeto.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;glm_fit &amp;lt;- logistic_reg() %&amp;gt;% 
+  set_engine(&amp;quot;glm&amp;quot;) %&amp;gt;% 
+  fit(Direction ~ ., data = train_data)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;mais-engines&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Mais engines!&lt;/h3&gt;
+&lt;p&gt;O valor do &lt;code&gt;parsnip&lt;/code&gt; começa quando queremos testar diferentes &lt;em&gt;engines&lt;/em&gt;. Vamos usar o mesmo modelo e estimar os coeficientes através de estimativa Bayesiana usando &lt;code&gt;stan&lt;/code&gt;. Para isso só precisamos:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;stan_model &amp;lt;- logistic_reg() %&amp;gt;% 
+  set_engine(&amp;quot;stan&amp;quot;)
+
+stan_model&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Logistic Regression Model Specification (classification)
+## 
+## Computational engine: stan&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Para ajustar esse modelo, o &lt;code&gt;parsnip&lt;/code&gt; chamou a função &lt;code&gt;stan_glm()&lt;/code&gt; do pacote &lt;code&gt;rstanarm&lt;/code&gt;. Se você quiser passar argumentos para essa função, simplesmente adicione eles na função &lt;code&gt;set_engine()&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;stan_model &amp;lt;- logistic_reg() %&amp;gt;% 
+  set_engine(&amp;quot;stan&amp;quot;, iter = 5000) 
+
+stan_model&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Logistic Regression Model Specification (classification)
+## 
+## Engine-Specific Arguments:
+##   iter = 5000
+## 
+## Computational engine: stan&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;O modelo pode ser ajustado da mesma forma. &lt;code&gt;rstanarm&lt;/code&gt; printa &lt;em&gt;MUITAS&lt;/em&gt; informações ao ajustar um modelo. Isso pode ser útil para diagnóstico mas vamos excluir usando uma função de controle.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ctrl &amp;lt;- fit_control(verbosity = 0)
+
+stan_fit &amp;lt;- stan_model %&amp;gt;%
+    fit(Direction ~ ., data = train_data, control = ctrl)
+
+stan_fit&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## parsnip model object
+## 
+## Fit time:  7.9s 
+## stan_glm
+##  family:       binomial [logit]
+##  formula:      Direction ~ .
+##  observations: 938
+##  predictors:   7
+## ------
+##             Median MAD_SD
+## (Intercept)  0.1    0.1  
+## Lag1        -0.1    0.1  
+## Lag2         0.0    0.1  
+## Lag3         0.0    0.1  
+## Lag4         0.0    0.1  
+## Lag5         0.0    0.1  
+## Volume       0.0    0.1  
+## 
+## ------
+## * For help interpreting the printed output see ?print.stanreg
+## * For info on the priors used see ?prior_summary.stanreg&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;predições&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Predições&lt;/h3&gt;
+&lt;p&gt;Além das óbvias funcionalidades para ajustar diferentes modelos, ainda temos muitas vantagens na hora de prever resultados. Isso resolve uma série de frustrações como ter um arquivo predito que PULA algum resultado quando tem valores faltando, por exemplo, além de padronizar a função.&lt;/p&gt;
+&lt;p&gt;Para regressões logísticas, por exemplo, o output é sempre um &lt;code&gt;tibble&lt;/code&gt; com uma coluna &lt;code&gt;.pred_class&lt;/code&gt; contendo a classe predita.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;predict(glm_fit, test_data)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 312 x 1
+##    .pred_class
+##    &amp;lt;fct&amp;gt;      
+##  1 Down       
+##  2 Up         
+##  3 Up         
+##  4 Up         
+##  5 Down       
+##  6 Up         
+##  7 Up         
+##  8 Up         
+##  9 Down       
+## 10 Up         
+## # ... with 302 more rows&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;predict(stan_fit, test_data)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 312 x 1
+##    .pred_class
+##    &amp;lt;fct&amp;gt;      
+##  1 Down       
+##  2 Up         
+##  3 Up         
+##  4 Up         
+##  5 Down       
+##  6 Up         
+##  7 Up         
+##  8 Up         
+##  9 Down       
+## 10 Up         
+## # ... with 302 more rows&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Isso facilita a união com os valores originais e o &lt;code&gt;.&lt;/code&gt; no nome é para evitar nomes duplicados.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;parsnip&lt;/code&gt; também trás diferentes tipos de previsão com uma interface padrão. Por exemplo, para estimativa de intervalos.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;predict(glm_fit, test_data, type = &amp;quot;conf_int&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 312 x 4
+##    .pred_lower_Down .pred_upper_Down .pred_lower_Up .pred_upper_Up
+##               &amp;lt;dbl&amp;gt;            &amp;lt;dbl&amp;gt;          &amp;lt;dbl&amp;gt;          &amp;lt;dbl&amp;gt;
+##  1            0.429            0.611          0.389          0.571
+##  2            0.439            0.553          0.447          0.561
+##  3            0.400            0.557          0.443          0.600
+##  4            0.396            0.544          0.456          0.604
+##  5            0.436            0.586          0.414          0.564
+##  6            0.329            0.509          0.491          0.671
+##  7            0.396            0.549          0.451          0.604
+##  8            0.313            0.648          0.352          0.687
+##  9            0.449            0.676          0.324          0.551
+## 10            0.251            0.500          0.500          0.749
+## # ... with 302 more rows&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ou para as probabilidades de cada previsão:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;predict(glm_fit, test_data, type = &amp;quot;prob&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 312 x 2
+##    .pred_Down .pred_Up
+##         &amp;lt;dbl&amp;gt;    &amp;lt;dbl&amp;gt;
+##  1      0.521    0.479
+##  2      0.496    0.504
+##  3      0.478    0.522
+##  4      0.469    0.531
+##  5      0.511    0.489
+##  6      0.416    0.584
+##  7      0.472    0.528
+##  8      0.478    0.522
+##  9      0.566    0.434
+## 10      0.367    0.633
+## # ... with 302 more rows&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;próximos-passos&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Próximos passos&lt;/h2&gt;
+&lt;p&gt;Esse artigo apenas toca a superfície das possibilidades de uso do pacote &lt;code&gt;parsnip&lt;/code&gt;. Nos próximos artigos vamos explorar como fazer uma &lt;em&gt;grid search&lt;/em&gt; pelos melhores parâmetros, como fazer uma &lt;em&gt;k-fold Cross Validation&lt;/em&gt; usando esta interface e como avaliar a performance de modelos, tudo isso usando os tidymodels.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Pré-processamento de dados com o pacote {recipes}</title>
       <link>/post/recipes/</link>
       <pubDate>Sun, 06 Oct 2019 00:00:00 +0000</pubDate>
@@ -250,13 +514,13 @@ simpsons &amp;lt;- readr::read_delim(&amp;quot;https://raw.githubusercontent.com
 simpsons %&amp;gt;% glimpse()&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## Observations: 1,386
 ## Variables: 7
-## $ season          &amp;lt;dbl&amp;gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2...
-## $ episode_ordinal &amp;lt;dbl&amp;gt; 2, 3, 3, 6, 6, 7, 8, 9, 10, 11, 12, 13, 13, 13...
-## $ season_episode  &amp;lt;dbl&amp;gt; 102, 103, 103, 106, 106, 107, 108, 109, 110, 1...
-## $ production_code &amp;lt;chr&amp;gt; &amp;quot;7G02&amp;quot;, &amp;quot;7G03&amp;quot;, &amp;quot;7G03&amp;quot;, &amp;quot;7G06&amp;quot;, &amp;quot;7G06&amp;quot;, &amp;quot;7G09&amp;quot;...
-## $ episode_title   &amp;lt;chr&amp;gt; &amp;quot;Bart the Genius&amp;quot;, &amp;quot;Homer&amp;#39;s Odyssey&amp;quot;, &amp;quot;Homer&amp;#39;s...
-## $ guest_star      &amp;lt;chr&amp;gt; &amp;quot;Marcia Wallace&amp;quot;, &amp;quot;Sam McMurray&amp;quot;, &amp;quot;Marcia Wall...
-## $ role            &amp;lt;chr&amp;gt; &amp;quot;Edna Krabappel;  Ms. Melon&amp;quot;, &amp;quot;Worker&amp;quot;, &amp;quot;Edna ...&lt;/code&gt;&lt;/pre&gt;
+## $ season          &amp;lt;dbl&amp;gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, ...
+## $ episode_ordinal &amp;lt;dbl&amp;gt; 2, 3, 3, 6, 6, 7, 8, 9, 10, 11, 12, 13, 13, 13, 14,...
+## $ season_episode  &amp;lt;dbl&amp;gt; 102, 103, 103, 106, 106, 107, 108, 109, 110, 111, 1...
+## $ production_code &amp;lt;chr&amp;gt; &amp;quot;7G02&amp;quot;, &amp;quot;7G03&amp;quot;, &amp;quot;7G03&amp;quot;, &amp;quot;7G06&amp;quot;, &amp;quot;7G06&amp;quot;, &amp;quot;7G09&amp;quot;, &amp;quot;7G...
+## $ episode_title   &amp;lt;chr&amp;gt; &amp;quot;Bart the Genius&amp;quot;, &amp;quot;Homer&amp;#39;s Odyssey&amp;quot;, &amp;quot;Homer&amp;#39;s Odys...
+## $ guest_star      &amp;lt;chr&amp;gt; &amp;quot;Marcia Wallace&amp;quot;, &amp;quot;Sam McMurray&amp;quot;, &amp;quot;Marcia Wallace&amp;quot;,...
+## $ role            &amp;lt;chr&amp;gt; &amp;quot;Edna Krabappel;  Ms. Melon&amp;quot;, &amp;quot;Worker&amp;quot;, &amp;quot;Edna Kraba...&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;No primeiro gráfico gostaria de usar a função &lt;code&gt;step_other()&lt;/code&gt; do pacote &lt;code&gt;recipes&lt;/code&gt; para unir todos os &lt;code&gt;roles&lt;/code&gt; com menos de 1% de frequência na base. O pacote &lt;a href=&#34;https://tidymodels.github.io/recipes/&#34;&gt;&lt;code&gt;recipes&lt;/code&gt;&lt;/a&gt; é idealizado para pré-processamento de dados pelo &lt;a href=&#34;https://twitter.com/topepos&#34;&gt;Max Kuhn&lt;/a&gt;(Software Engineer do RStudio e mago da modelagem preditiva). Vale a pena dar uma olhada nas funções disponíveis nesse pacote.&lt;/p&gt;
 &lt;p&gt;Também é usada a função &lt;code&gt;background_image()&lt;/code&gt; do pacote &lt;code&gt;ggpubr&lt;/code&gt;.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;springfield &amp;lt;- readJPEG(&amp;quot;img/spring.jpg&amp;quot;)
@@ -287,9 +551,20 @@ most_frequent %&amp;gt;%
 &lt;p&gt;Bacana, né?&lt;/p&gt;
 &lt;p&gt;Seguindo uma baita ideia de layout do &lt;a href=&#34;https://twitter.com/_Gil_Henriques&#34;&gt;Gil Henriques&lt;/a&gt; e uma dica que vi na internet e não lembro quem deu, gostaria de fazer outro gráfico: entre os convidados que interpretaram a si mesmos, qual o percentual de participação de homens e mulheres?&lt;/p&gt;
 &lt;p&gt;Dessa vez vou usar o pacote &lt;code&gt;ggimage&lt;/code&gt; pra colocar uma imagem ocupando todo o fundo do gráfico.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pacman::p_load(ggimage, patternplot)
-
-man_vs_women &amp;lt;- simpsons %&amp;gt;% 
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pacman::p_load(ggimage, patternplot)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## package &amp;#39;gridGraphics&amp;#39; successfully unpacked and MD5 sums checked
+## package &amp;#39;ggplotify&amp;#39; successfully unpacked and MD5 sums checked
+## package &amp;#39;rvcheck&amp;#39; successfully unpacked and MD5 sums checked
+## package &amp;#39;ggimage&amp;#39; successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+##  C:\Users\edgarj\AppData\Local\Temp\RtmpQ9McIb\downloaded_packages
+## package &amp;#39;RcppParallel&amp;#39; successfully unpacked and MD5 sums checked
+## package &amp;#39;patternplot&amp;#39; successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+##  C:\Users\edgarj\AppData\Local\Temp\RtmpQ9McIb\downloaded_packages&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;man_vs_women &amp;lt;- simpsons %&amp;gt;% 
   filter(role %in% c(&amp;quot;Himself&amp;quot;, &amp;quot;Herself&amp;quot;)) %&amp;gt;% 
   group_by(season = round(season/2)*2, role) %&amp;gt;% 
   summarise(number = n())
@@ -357,22 +632,22 @@ nuclear &amp;lt;- readr::read_csv(&amp;quot;https://raw.githubusercontent.com/rf
 nuclear %&amp;gt;% glimpse()&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## Observations: 2,051
 ## Variables: 16
-## $ date_long         &amp;lt;dbl&amp;gt; 19450716, 19450805, 19450809, 19460630, 1946...
-## $ year              &amp;lt;dbl&amp;gt; 1945, 1945, 1945, 1946, 1946, 1948, 1948, 19...
-## $ id_no             &amp;lt;dbl&amp;gt; 45001, 45002, 45003, 46001, 46002, 48001, 48...
-## $ country           &amp;lt;chr&amp;gt; &amp;quot;USA&amp;quot;, &amp;quot;USA&amp;quot;, &amp;quot;USA&amp;quot;, &amp;quot;USA&amp;quot;, &amp;quot;USA&amp;quot;, &amp;quot;USA&amp;quot;, &amp;quot;U...
-## $ region            &amp;lt;chr&amp;gt; &amp;quot;ALAMOGORDO&amp;quot;, &amp;quot;HIROSHIMA&amp;quot;, &amp;quot;NAGASAKI&amp;quot;, &amp;quot;BIKI...
-## $ source            &amp;lt;chr&amp;gt; &amp;quot;DOE&amp;quot;, &amp;quot;DOE&amp;quot;, &amp;quot;DOE&amp;quot;, &amp;quot;DOE&amp;quot;, &amp;quot;DOE&amp;quot;, &amp;quot;DOE&amp;quot;, &amp;quot;D...
-## $ latitude          &amp;lt;dbl&amp;gt; 32.54, 34.23, 32.45, 11.35, 11.35, 11.30, 11...
-## $ longitude         &amp;lt;dbl&amp;gt; -105.57, 132.27, 129.52, 165.20, 165.20, 162...
-## $ magnitude_body    &amp;lt;dbl&amp;gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
-## $ magnitude_surface &amp;lt;dbl&amp;gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
-## $ depth             &amp;lt;dbl&amp;gt; -0.10, -0.60, -0.60, -0.20, 0.03, -0.08, -0....
-## $ yield_lower       &amp;lt;dbl&amp;gt; 21.0, 15.0, 21.0, 21.0, 21.0, 37.0, 49.0, 18...
-## $ yield_upper       &amp;lt;dbl&amp;gt; 21.0, 15.0, 21.0, 21.0, 21.0, 37.0, 49.0, 18...
-## $ purpose           &amp;lt;chr&amp;gt; &amp;quot;WR&amp;quot;, &amp;quot;COMBAT&amp;quot;, &amp;quot;COMBAT&amp;quot;, &amp;quot;WE&amp;quot;, &amp;quot;WE&amp;quot;, &amp;quot;WR&amp;quot;, ...
-## $ name              &amp;lt;chr&amp;gt; &amp;quot;TRINITY&amp;quot;, &amp;quot;LITTLEBOY&amp;quot;, &amp;quot;FATMAN&amp;quot;, &amp;quot;ABLE&amp;quot;, &amp;quot;B...
-## $ type              &amp;lt;chr&amp;gt; &amp;quot;TOWER&amp;quot;, &amp;quot;AIRDROP&amp;quot;, &amp;quot;AIRDROP&amp;quot;, &amp;quot;AIRDROP&amp;quot;, &amp;quot;U...&lt;/code&gt;&lt;/pre&gt;
+## $ date_long         &amp;lt;dbl&amp;gt; 19450716, 19450805, 19450809, 19460630, 19460724,...
+## $ year              &amp;lt;dbl&amp;gt; 1945, 1945, 1945, 1946, 1946, 1948, 1948, 1948, 1...
+## $ id_no             &amp;lt;dbl&amp;gt; 45001, 45002, 45003, 46001, 46002, 48001, 48002, ...
+## $ country           &amp;lt;chr&amp;gt; &amp;quot;USA&amp;quot;, &amp;quot;USA&amp;quot;, &amp;quot;USA&amp;quot;, &amp;quot;USA&amp;quot;, &amp;quot;USA&amp;quot;, &amp;quot;USA&amp;quot;, &amp;quot;USA&amp;quot;, ...
+## $ region            &amp;lt;chr&amp;gt; &amp;quot;ALAMOGORDO&amp;quot;, &amp;quot;HIROSHIMA&amp;quot;, &amp;quot;NAGASAKI&amp;quot;, &amp;quot;BIKINI&amp;quot;, ...
+## $ source            &amp;lt;chr&amp;gt; &amp;quot;DOE&amp;quot;, &amp;quot;DOE&amp;quot;, &amp;quot;DOE&amp;quot;, &amp;quot;DOE&amp;quot;, &amp;quot;DOE&amp;quot;, &amp;quot;DOE&amp;quot;, &amp;quot;DOE&amp;quot;, ...
+## $ latitude          &amp;lt;dbl&amp;gt; 32.54, 34.23, 32.45, 11.35, 11.35, 11.30, 11.30, ...
+## $ longitude         &amp;lt;dbl&amp;gt; -105.57, 132.27, 129.52, 165.20, 165.20, 162.15, ...
+## $ magnitude_body    &amp;lt;dbl&amp;gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
+## $ magnitude_surface &amp;lt;dbl&amp;gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
+## $ depth             &amp;lt;dbl&amp;gt; -0.100, -0.600, -0.600, -0.200, 0.030, -0.080, -0...
+## $ yield_lower       &amp;lt;dbl&amp;gt; 21.0, 15.0, 21.0, 21.0, 21.0, 37.0, 49.0, 18.0, 2...
+## $ yield_upper       &amp;lt;dbl&amp;gt; 21.0, 15.0, 21.0, 21.0, 21.0, 37.0, 49.0, 18.0, 2...
+## $ purpose           &amp;lt;chr&amp;gt; &amp;quot;WR&amp;quot;, &amp;quot;COMBAT&amp;quot;, &amp;quot;COMBAT&amp;quot;, &amp;quot;WE&amp;quot;, &amp;quot;WE&amp;quot;, &amp;quot;WR&amp;quot;, &amp;quot;WR&amp;quot;,...
+## $ name              &amp;lt;chr&amp;gt; &amp;quot;TRINITY&amp;quot;, &amp;quot;LITTLEBOY&amp;quot;, &amp;quot;FATMAN&amp;quot;, &amp;quot;ABLE&amp;quot;, &amp;quot;BAKER&amp;quot;...
+## $ type              &amp;lt;chr&amp;gt; &amp;quot;TOWER&amp;quot;, &amp;quot;AIRDROP&amp;quot;, &amp;quot;AIRDROP&amp;quot;, &amp;quot;AIRDROP&amp;quot;, &amp;quot;UW&amp;quot;, &amp;quot;...&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Vamos começar pegando um mapa-mundi. Para nossa conveniência existe um nos pacotes &lt;code&gt;ggplot&lt;/code&gt; e &lt;code&gt;maps&lt;/code&gt;. Plotamos esse mapa usando a função &lt;code&gt;geom_polygon()&lt;/code&gt; e vamos usar o tema &lt;code&gt;theme_map&lt;/code&gt; do pacote &lt;code&gt;ggthemes&lt;/code&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;world &amp;lt;- ggplot2::map_data(&amp;quot;world&amp;quot;)
 
@@ -635,24 +910,24 @@ imperadores &amp;lt;- readr::read_csv(&amp;quot;https://raw.githubusercontent.co
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;imperadores %&amp;gt;% glimpse()&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## Observations: 68
 ## Variables: 18
-## $ index          &amp;lt;dbl&amp;gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, ...
-## $ name           &amp;lt;chr&amp;gt; &amp;quot;Augustus&amp;quot;, &amp;quot;Tiberius&amp;quot;, &amp;quot;Caligula&amp;quot;, &amp;quot;Claudius&amp;quot;,...
-## $ name_full      &amp;lt;chr&amp;gt; &amp;quot;IMPERATOR CAESAR DIVI FILIVS AVGVSTVS&amp;quot;, &amp;quot;TIBER...
-## $ birth          &amp;lt;date&amp;gt; -062-09-23, -041-11-16, 0012-08-31, -009-08-01...
-## $ death          &amp;lt;date&amp;gt; 0014-08-19, 0037-03-16, 0041-01-24, 0054-10-13...
-## $ birth_cty      &amp;lt;chr&amp;gt; &amp;quot;Rome&amp;quot;, &amp;quot;Rome&amp;quot;, &amp;quot;Antitum&amp;quot;, &amp;quot;Lugdunum&amp;quot;, &amp;quot;Antitum...
-## $ birth_prv      &amp;lt;chr&amp;gt; &amp;quot;Italia&amp;quot;, &amp;quot;Italia&amp;quot;, &amp;quot;Italia&amp;quot;, &amp;quot;Gallia Lugdunens...
-## $ rise           &amp;lt;chr&amp;gt; &amp;quot;Birthright&amp;quot;, &amp;quot;Birthright&amp;quot;, &amp;quot;Birthright&amp;quot;, &amp;quot;Birt...
-## $ reign_start    &amp;lt;date&amp;gt; -026-01-16, 0014-09-18, 0037-03-18, 0041-01-25...
-## $ reign_end      &amp;lt;date&amp;gt; 0014-08-19, 0037-03-16, 0041-01-24, 0054-10-13...
-## $ cause          &amp;lt;chr&amp;gt; &amp;quot;Assassination&amp;quot;, &amp;quot;Assassination&amp;quot;, &amp;quot;Assassinatio...
-## $ killer         &amp;lt;chr&amp;gt; &amp;quot;Wife&amp;quot;, &amp;quot;Other Emperor&amp;quot;, &amp;quot;Senate&amp;quot;, &amp;quot;Wife&amp;quot;, &amp;quot;Sen...
-## $ dynasty        &amp;lt;chr&amp;gt; &amp;quot;Julio-Claudian&amp;quot;, &amp;quot;Julio-Claudian&amp;quot;, &amp;quot;Julio-Clau...
-## $ era            &amp;lt;chr&amp;gt; &amp;quot;Principate&amp;quot;, &amp;quot;Principate&amp;quot;, &amp;quot;Principate&amp;quot;, &amp;quot;Prin...
-## $ notes          &amp;lt;chr&amp;gt; &amp;quot;birth, reign.start are BCE. Assign negative fo...
-## $ verif_who      &amp;lt;chr&amp;gt; &amp;quot;Reddit user zonination&amp;quot;, &amp;quot;Reddit user zoninati...
-## $ age_death      &amp;lt;dbl&amp;gt; 75.90411, 77.32877, 28.40000, 63.20000, 30.4836...
-## $ reign_duration &amp;lt;dbl&amp;gt; 40.5890411, 22.4904110, 3.8547945, 13.7150685, ...&lt;/code&gt;&lt;/pre&gt;
+## $ index          &amp;lt;dbl&amp;gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1...
+## $ name           &amp;lt;chr&amp;gt; &amp;quot;Augustus&amp;quot;, &amp;quot;Tiberius&amp;quot;, &amp;quot;Caligula&amp;quot;, &amp;quot;Claudius&amp;quot;, &amp;quot;Ner...
+## $ name_full      &amp;lt;chr&amp;gt; &amp;quot;IMPERATOR CAESAR DIVI FILIVS AVGVSTVS&amp;quot;, &amp;quot;TIBERIVS C...
+## $ birth          &amp;lt;date&amp;gt; -062-09-23, -041-11-16, 0012-08-31, -009-08-01, 003...
+## $ death          &amp;lt;date&amp;gt; 0014-08-19, 0037-03-16, 0041-01-24, 0054-10-13, 006...
+## $ birth_cty      &amp;lt;chr&amp;gt; &amp;quot;Rome&amp;quot;, &amp;quot;Rome&amp;quot;, &amp;quot;Antitum&amp;quot;, &amp;quot;Lugdunum&amp;quot;, &amp;quot;Antitum&amp;quot;, &amp;quot;T...
+## $ birth_prv      &amp;lt;chr&amp;gt; &amp;quot;Italia&amp;quot;, &amp;quot;Italia&amp;quot;, &amp;quot;Italia&amp;quot;, &amp;quot;Gallia Lugdunensis&amp;quot;, ...
+## $ rise           &amp;lt;chr&amp;gt; &amp;quot;Birthright&amp;quot;, &amp;quot;Birthright&amp;quot;, &amp;quot;Birthright&amp;quot;, &amp;quot;Birthrigh...
+## $ reign_start    &amp;lt;date&amp;gt; -026-01-16, 0014-09-18, 0037-03-18, 0041-01-25, 005...
+## $ reign_end      &amp;lt;date&amp;gt; 0014-08-19, 0037-03-16, 0041-01-24, 0054-10-13, 006...
+## $ cause          &amp;lt;chr&amp;gt; &amp;quot;Assassination&amp;quot;, &amp;quot;Assassination&amp;quot;, &amp;quot;Assassination&amp;quot;, &amp;quot;...
+## $ killer         &amp;lt;chr&amp;gt; &amp;quot;Wife&amp;quot;, &amp;quot;Other Emperor&amp;quot;, &amp;quot;Senate&amp;quot;, &amp;quot;Wife&amp;quot;, &amp;quot;Senate&amp;quot;,...
+## $ dynasty        &amp;lt;chr&amp;gt; &amp;quot;Julio-Claudian&amp;quot;, &amp;quot;Julio-Claudian&amp;quot;, &amp;quot;Julio-Claudian&amp;quot;...
+## $ era            &amp;lt;chr&amp;gt; &amp;quot;Principate&amp;quot;, &amp;quot;Principate&amp;quot;, &amp;quot;Principate&amp;quot;, &amp;quot;Principat...
+## $ notes          &amp;lt;chr&amp;gt; &amp;quot;birth, reign.start are BCE. Assign negative for cor...
+## $ verif_who      &amp;lt;chr&amp;gt; &amp;quot;Reddit user zonination&amp;quot;, &amp;quot;Reddit user zonination&amp;quot;, ...
+## $ age_death      &amp;lt;dbl&amp;gt; 75.90411, 77.32877, 28.40000, 63.20000, 30.48361, 70...
+## $ reign_duration &amp;lt;dbl&amp;gt; 40.5890411, 22.4904110, 3.8547945, 13.7150685, 13.65...&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;A primeira coisa que eu gostaria de ver é uma distribuição das causas de morte dos imperadores. Tenho impressão que não era um trabalho fácil. A função &lt;code&gt;fct_reorder()&lt;/code&gt;, do pacote &lt;code&gt;forcats&lt;/code&gt;, &lt;a href=&#34;https://forcats.tidyverse.org/&#34;&gt;pacote feito para manipulação de fatores&lt;/a&gt;, nos ajuda a deixar os fatores na ordem decrescente que queremos para gráfico.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;resumo_causas &amp;lt;- imperadores %&amp;gt;%
   group_by(cause) %&amp;gt;% 
@@ -673,6 +948,87 @@ resumo_causas %&amp;gt;%
   theme_bw() +
   theme(text = element_text(family = &amp;quot;RomanT&amp;quot;),
         axis.text.x = element_text(angle = -5, vjust = -0.5)) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family not
+## found in Windows font database
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family not
+## found in Windows font database
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family not
+## found in Windows font database&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Realmente não era uma vida tranquila.&lt;/p&gt;
 &lt;p&gt;Agora, para unir as mortes violentas em um grupo só, podemos usar &lt;code&gt;fct_collapse()&lt;/code&gt;, também do pacote &lt;code&gt;forcats&lt;/code&gt;.&lt;/p&gt;
@@ -698,6 +1054,45 @@ resumo_coll %&amp;gt;%
   scale_x_discrete(labels = c(&amp;quot;Mortes Violentas&amp;quot;, &amp;quot;Causas Naturais&amp;quot;, &amp;quot;Outros&amp;quot;)) +
   theme_bw() +
   theme(text = element_text(family = &amp;quot;RomanT&amp;quot;)) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Pelo menos 65% dos imperadores romanos morreram violentamente. Isso me deixa curioso para saber quantos golpes de Estado ocorreram em Roma e com qual frequência eles aconteceram.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;golpes &amp;lt;- imperadores %&amp;gt;% 
@@ -801,8 +1196,8 @@ dplyr::starwars&lt;/code&gt;&lt;/pre&gt;
 ##  8 R5-D4     97    32 &amp;lt;NA&amp;gt;       white, red red             NA   &amp;lt;NA&amp;gt;  
 ##  9 Bigg~    183    84 black      light      brown           24   male  
 ## 10 Obi-~    182    77 auburn, w~ fair       blue-gray       57   male  
-## # ... with 77 more rows, and 5 more variables: homeworld &amp;lt;chr&amp;gt;,
-## #   species &amp;lt;chr&amp;gt;, films &amp;lt;list&amp;gt;, vehicles &amp;lt;list&amp;gt;, starships &amp;lt;list&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+## # ... with 77 more rows, and 5 more variables: homeworld &amp;lt;chr&amp;gt;, species &amp;lt;chr&amp;gt;,
+## #   films &amp;lt;list&amp;gt;, vehicles &amp;lt;list&amp;gt;, starships &amp;lt;list&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Essa base mostra uma série de dados (altura, peso, cor de cabelo, pele e olhos) de diversos personagens da franquia Star Wars. Cada personagem aparece apenas uma vez (com exceção de Anakin Skywalker/Darth Vader, que aparece como dois personagens, mas divago).&lt;/p&gt;
 &lt;p&gt;O outro tipo de dado é o “longitudinal”. Nesse tipo de estudo, os dados são coletados repetidamente para ao mesmo indivíduo. Olhando para a base do Star Wars, se tivessemos dados da vida dos personagens, ela se tornaria longitudinal. Por exemplo, teríamos dados do Luke Skywalker com seu peso e altura em diversas fases da sua vida.&lt;/p&gt;
 &lt;p&gt;Uma base longitudinal, como você deve imaginar, é muito mais complicada de se obter, mas permite análises também mais complexas. É possível determinar tipos de crescimento, entender comportamentos antes/depois de certos acontecimentos (resposta a um remédio, sobrevida depois de uma cirurgia, medições de variáveis climáticas ao redor do globo). Conseguir uma base longitudinal leva tempo e custa caro, mas existem determinadas aplicações que necessitam desse tipo de dado.&lt;/p&gt;
@@ -922,30 +1317,29 @@ bob_ross &amp;lt;- readr::read_csv(&amp;quot;https://raw.githubusercontent.com/r
 &lt;p&gt;Em primeiro lugar, para ver o que temos nos dados, vamos usar a função &lt;code&gt;head&lt;/code&gt;, que retorna as primeiras linhas da planilha:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bob_ross %&amp;gt;% head()&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## # A tibble: 6 x 69
-##   episode title apple_frame aurora_borealis  barn beach  boat bridge
-##   &amp;lt;chr&amp;gt;   &amp;lt;chr&amp;gt;       &amp;lt;dbl&amp;gt;           &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt;
-## 1 S01E01  &amp;quot;\&amp;quot;A~           0               0     0     0     0      0
-## 2 S01E02  &amp;quot;\&amp;quot;M~           0               0     0     0     0      0
-## 3 S01E03  &amp;quot;\&amp;quot;E~           0               0     0     0     0      0
-## 4 S01E04  &amp;quot;\&amp;quot;W~           0               0     0     0     0      0
-## 5 S01E05  &amp;quot;\&amp;quot;Q~           0               0     0     0     0      0
-## 6 S01E06  &amp;quot;\&amp;quot;W~           0               0     0     0     0      0
-## # ... with 61 more variables: building &amp;lt;dbl&amp;gt;, bushes &amp;lt;dbl&amp;gt;, cabin &amp;lt;dbl&amp;gt;,
-## #   cactus &amp;lt;dbl&amp;gt;, circle_frame &amp;lt;dbl&amp;gt;, cirrus &amp;lt;dbl&amp;gt;, cliff &amp;lt;dbl&amp;gt;,
-## #   clouds &amp;lt;dbl&amp;gt;, conifer &amp;lt;dbl&amp;gt;, cumulus &amp;lt;dbl&amp;gt;, deciduous &amp;lt;dbl&amp;gt;,
-## #   diane_andre &amp;lt;dbl&amp;gt;, dock &amp;lt;dbl&amp;gt;, double_oval_frame &amp;lt;dbl&amp;gt;, farm &amp;lt;dbl&amp;gt;,
-## #   fence &amp;lt;dbl&amp;gt;, fire &amp;lt;dbl&amp;gt;, florida_frame &amp;lt;dbl&amp;gt;, flowers &amp;lt;dbl&amp;gt;,
-## #   fog &amp;lt;dbl&amp;gt;, framed &amp;lt;dbl&amp;gt;, grass &amp;lt;dbl&amp;gt;, guest &amp;lt;dbl&amp;gt;,
-## #   half_circle_frame &amp;lt;dbl&amp;gt;, half_oval_frame &amp;lt;dbl&amp;gt;, hills &amp;lt;dbl&amp;gt;,
+##   episode title apple_frame aurora_borealis  barn beach  boat bridge building
+##   &amp;lt;chr&amp;gt;   &amp;lt;chr&amp;gt;       &amp;lt;dbl&amp;gt;           &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt;    &amp;lt;dbl&amp;gt;
+## 1 S01E01  &amp;quot;\&amp;quot;A~           0               0     0     0     0      0        0
+## 2 S01E02  &amp;quot;\&amp;quot;M~           0               0     0     0     0      0        0
+## 3 S01E03  &amp;quot;\&amp;quot;E~           0               0     0     0     0      0        0
+## 4 S01E04  &amp;quot;\&amp;quot;W~           0               0     0     0     0      0        0
+## 5 S01E05  &amp;quot;\&amp;quot;Q~           0               0     0     0     0      0        0
+## 6 S01E06  &amp;quot;\&amp;quot;W~           0               0     0     0     0      0        0
+## # ... with 60 more variables: bushes &amp;lt;dbl&amp;gt;, cabin &amp;lt;dbl&amp;gt;, cactus &amp;lt;dbl&amp;gt;,
+## #   circle_frame &amp;lt;dbl&amp;gt;, cirrus &amp;lt;dbl&amp;gt;, cliff &amp;lt;dbl&amp;gt;, clouds &amp;lt;dbl&amp;gt;, conifer &amp;lt;dbl&amp;gt;,
+## #   cumulus &amp;lt;dbl&amp;gt;, deciduous &amp;lt;dbl&amp;gt;, diane_andre &amp;lt;dbl&amp;gt;, dock &amp;lt;dbl&amp;gt;,
+## #   double_oval_frame &amp;lt;dbl&amp;gt;, farm &amp;lt;dbl&amp;gt;, fence &amp;lt;dbl&amp;gt;, fire &amp;lt;dbl&amp;gt;,
+## #   florida_frame &amp;lt;dbl&amp;gt;, flowers &amp;lt;dbl&amp;gt;, fog &amp;lt;dbl&amp;gt;, framed &amp;lt;dbl&amp;gt;, grass &amp;lt;dbl&amp;gt;,
+## #   guest &amp;lt;dbl&amp;gt;, half_circle_frame &amp;lt;dbl&amp;gt;, half_oval_frame &amp;lt;dbl&amp;gt;, hills &amp;lt;dbl&amp;gt;,
 ## #   lake &amp;lt;dbl&amp;gt;, lakes &amp;lt;dbl&amp;gt;, lighthouse &amp;lt;dbl&amp;gt;, mill &amp;lt;dbl&amp;gt;, moon &amp;lt;dbl&amp;gt;,
 ## #   mountain &amp;lt;dbl&amp;gt;, mountains &amp;lt;dbl&amp;gt;, night &amp;lt;dbl&amp;gt;, ocean &amp;lt;dbl&amp;gt;,
 ## #   oval_frame &amp;lt;dbl&amp;gt;, palm_trees &amp;lt;dbl&amp;gt;, path &amp;lt;dbl&amp;gt;, person &amp;lt;dbl&amp;gt;,
 ## #   portrait &amp;lt;dbl&amp;gt;, rectangle_3d_frame &amp;lt;dbl&amp;gt;, rectangular_frame &amp;lt;dbl&amp;gt;,
 ## #   river &amp;lt;dbl&amp;gt;, rocks &amp;lt;dbl&amp;gt;, seashell_frame &amp;lt;dbl&amp;gt;, snow &amp;lt;dbl&amp;gt;,
-## #   snowy_mountain &amp;lt;dbl&amp;gt;, split_frame &amp;lt;dbl&amp;gt;, steve_ross &amp;lt;dbl&amp;gt;,
-## #   structure &amp;lt;dbl&amp;gt;, sun &amp;lt;dbl&amp;gt;, tomb_frame &amp;lt;dbl&amp;gt;, tree &amp;lt;dbl&amp;gt;, trees &amp;lt;dbl&amp;gt;,
-## #   triple_frame &amp;lt;dbl&amp;gt;, waterfall &amp;lt;dbl&amp;gt;, waves &amp;lt;dbl&amp;gt;, windmill &amp;lt;dbl&amp;gt;,
-## #   window_frame &amp;lt;dbl&amp;gt;, winter &amp;lt;dbl&amp;gt;, wood_framed &amp;lt;dbl&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+## #   snowy_mountain &amp;lt;dbl&amp;gt;, split_frame &amp;lt;dbl&amp;gt;, steve_ross &amp;lt;dbl&amp;gt;, structure &amp;lt;dbl&amp;gt;,
+## #   sun &amp;lt;dbl&amp;gt;, tomb_frame &amp;lt;dbl&amp;gt;, tree &amp;lt;dbl&amp;gt;, trees &amp;lt;dbl&amp;gt;, triple_frame &amp;lt;dbl&amp;gt;,
+## #   waterfall &amp;lt;dbl&amp;gt;, waves &amp;lt;dbl&amp;gt;, windmill &amp;lt;dbl&amp;gt;, window_frame &amp;lt;dbl&amp;gt;,
+## #   winter &amp;lt;dbl&amp;gt;, wood_framed &amp;lt;dbl&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Temos cada uma das 403 pinturas que Bob Ross fez ao longo dos 11 anos e 31 temporadas de &lt;em&gt;The Joy of Painting&lt;/em&gt;, cada uma delas contendo os diversos elementos presentes em cada pintura: casas, barcos, palmeiras, árvores etc.&lt;/p&gt;
 &lt;p&gt;Para organizar um pouco a tabela, vamos usar a função &lt;code&gt;gather&lt;/code&gt;, colocando os diversos elementos em uma única coluna e sua existência ou não como outra coluna. Vamos também separar episódio e temporada em colunas próprias, numéricas, usando algumas funções do pacote &lt;code&gt;stringr&lt;/code&gt; e um pouquinho de &lt;code&gt;regex&lt;/code&gt;.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bob_ross_gather &amp;lt;- bob_ross %&amp;gt;% 
@@ -1032,6 +1426,7 @@ bob_ross_veg %&amp;gt;%
        caption = &amp;quot;Fonte: Tidy Tuesday (https://github.com/rfordatascience/tidytuesday)&amp;quot;) + 
   facet_wrap(~element) +
   theme_bw()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## `geom_smooth()` using formula &amp;#39;y ~ x&amp;#39;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2019-08-06-bob/index_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Aparentemente Bob Ross era bem consistente em suas pinturas. Também dá pra perceber a maior presença de plantas de climas mais frios (coníferas, decíduas) comparada à frequência daquelas de climas quentes (palmeiras, cactos). Isso continua nos mostrando como suas pinturas geralmente retratavam paisagens mais frias.&lt;/p&gt;
 &lt;p&gt;Dá pra notar uma diminuição do número de arbustos e árvores decíduas e um aumento das coníferas. Bob parece ter ido para climas ainda mais frios conforme o tempo passou!&lt;/p&gt;
@@ -1051,7 +1446,7 @@ bob_ross_veg %&amp;gt;%
 &lt;p&gt;A base que queremos está disponível via &lt;code&gt;wbstats&lt;/code&gt; e tem o código “SG.GEN.PARL.ZS”. Então vamos buscá-la através do pacote, puxando os dados desde 1997 (quando os dados começaram a ser coletados).&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;if (!require(&amp;quot;pacman&amp;quot;)) install.packages(&amp;quot;pacman&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## Carregando pacotes exigidos: pacman&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pacman::p_load(tidyverse, scales,wbstats)
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pacman::p_load(tidyverse, scales, wbstats)
 
 women &amp;lt;- wbstats::wb(indicator = &amp;quot;SG.GEN.PARL.ZS&amp;quot;, 
                      startdate = 1997, 
@@ -1061,13 +1456,13 @@ women &amp;lt;- wbstats::wb(indicator = &amp;quot;SG.GEN.PARL.ZS&amp;quot;,
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;women %&amp;gt;% glimpse()&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## Observations: 3,971
 ## Variables: 7
-## $ iso3c       &amp;lt;chr&amp;gt; &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;...
-## $ date        &amp;lt;chr&amp;gt; &amp;quot;2018&amp;quot;, &amp;quot;2017&amp;quot;, &amp;quot;2016&amp;quot;, &amp;quot;2015&amp;quot;, &amp;quot;2014&amp;quot;, &amp;quot;2013&amp;quot;, &amp;quot;2...
-## $ value       &amp;lt;dbl&amp;gt; 27.7, 27.7, 27.7, 27.7, 27.7, 27.7, 27.7, 27.7, 27...
-## $ indicatorID &amp;lt;chr&amp;gt; &amp;quot;SG.GEN.PARL.ZS&amp;quot;, &amp;quot;SG.GEN.PARL.ZS&amp;quot;, &amp;quot;SG.GEN.PARL.Z...
-## $ indicator   &amp;lt;chr&amp;gt; &amp;quot;Proportion of seats held by women in national par...
-## $ iso2c       &amp;lt;chr&amp;gt; &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;A...
-## $ country     &amp;lt;chr&amp;gt; &amp;quot;Afghanistan&amp;quot;, &amp;quot;Afghanistan&amp;quot;, &amp;quot;Afghanistan&amp;quot;, &amp;quot;Afgh...&lt;/code&gt;&lt;/pre&gt;
+## $ iso3c       &amp;lt;chr&amp;gt; &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;,...
+## $ date        &amp;lt;chr&amp;gt; &amp;quot;2018&amp;quot;, &amp;quot;2017&amp;quot;, &amp;quot;2016&amp;quot;, &amp;quot;2015&amp;quot;, &amp;quot;2014&amp;quot;, &amp;quot;2013&amp;quot;, &amp;quot;2012&amp;quot;,...
+## $ value       &amp;lt;dbl&amp;gt; 27.7, 27.7, 27.7, 27.7, 27.7, 27.7, 27.7, 27.7, 27.7, 2...
+## $ indicatorID &amp;lt;chr&amp;gt; &amp;quot;SG.GEN.PARL.ZS&amp;quot;, &amp;quot;SG.GEN.PARL.ZS&amp;quot;, &amp;quot;SG.GEN.PARL.ZS&amp;quot;, &amp;quot;...
+## $ indicator   &amp;lt;chr&amp;gt; &amp;quot;Proportion of seats held by women in national parliame...
+## $ iso2c       &amp;lt;chr&amp;gt; &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;...
+## $ country     &amp;lt;chr&amp;gt; &amp;quot;Afghanistan&amp;quot;, &amp;quot;Afghanistan&amp;quot;, &amp;quot;Afghanistan&amp;quot;, &amp;quot;Afghanist...&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Ok, cada país possui 22 linhas, de 1997 a 2018.&lt;/p&gt;
 &lt;p&gt;Em primeiro lugar, eu gostaria de ver como a média mundial está se comportando desde 1997:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;media_mundo &amp;lt;- women %&amp;gt;% 
@@ -1108,8 +1503,8 @@ women %&amp;gt;%
   xlim(0,100) +
   scale_x_continuous(breaks = (0:10)*10) +
   theme_minimal()&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## Scale for &amp;#39;x&amp;#39; is already present. Adding another scale for &amp;#39;x&amp;#39;, which
-## will replace the existing scale.&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Scale for &amp;#39;x&amp;#39; is already present. Adding another scale for &amp;#39;x&amp;#39;, which will
+## replace the existing scale.&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2019-07-29-mulheres/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Nesse segundo gráfico temos um novo panorama, até menos animador. Embora em boa parte do mundo a situação parlamentar tenha evoluído, ainda existe uma boa quantidade de países em que o percentual ainda é muito baixo, abaixo de 10% das cadeiras sendo ocupadas por mulheres.&lt;/p&gt;
 &lt;p&gt;Pra finalizar, vamos dar uma olhada na situação do Brasil frente ao resto do mundo. Pra isso, vamos isolar a participação tupininquim das demais.&lt;/p&gt;

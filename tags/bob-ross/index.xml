@@ -30,30 +30,29 @@ bob_ross &amp;lt;- readr::read_csv(&amp;quot;https://raw.githubusercontent.com/r
 &lt;p&gt;Em primeiro lugar, para ver o que temos nos dados, vamos usar a função &lt;code&gt;head&lt;/code&gt;, que retorna as primeiras linhas da planilha:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bob_ross %&amp;gt;% head()&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## # A tibble: 6 x 69
-##   episode title apple_frame aurora_borealis  barn beach  boat bridge
-##   &amp;lt;chr&amp;gt;   &amp;lt;chr&amp;gt;       &amp;lt;dbl&amp;gt;           &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt;
-## 1 S01E01  &amp;quot;\&amp;quot;A~           0               0     0     0     0      0
-## 2 S01E02  &amp;quot;\&amp;quot;M~           0               0     0     0     0      0
-## 3 S01E03  &amp;quot;\&amp;quot;E~           0               0     0     0     0      0
-## 4 S01E04  &amp;quot;\&amp;quot;W~           0               0     0     0     0      0
-## 5 S01E05  &amp;quot;\&amp;quot;Q~           0               0     0     0     0      0
-## 6 S01E06  &amp;quot;\&amp;quot;W~           0               0     0     0     0      0
-## # ... with 61 more variables: building &amp;lt;dbl&amp;gt;, bushes &amp;lt;dbl&amp;gt;, cabin &amp;lt;dbl&amp;gt;,
-## #   cactus &amp;lt;dbl&amp;gt;, circle_frame &amp;lt;dbl&amp;gt;, cirrus &amp;lt;dbl&amp;gt;, cliff &amp;lt;dbl&amp;gt;,
-## #   clouds &amp;lt;dbl&amp;gt;, conifer &amp;lt;dbl&amp;gt;, cumulus &amp;lt;dbl&amp;gt;, deciduous &amp;lt;dbl&amp;gt;,
-## #   diane_andre &amp;lt;dbl&amp;gt;, dock &amp;lt;dbl&amp;gt;, double_oval_frame &amp;lt;dbl&amp;gt;, farm &amp;lt;dbl&amp;gt;,
-## #   fence &amp;lt;dbl&amp;gt;, fire &amp;lt;dbl&amp;gt;, florida_frame &amp;lt;dbl&amp;gt;, flowers &amp;lt;dbl&amp;gt;,
-## #   fog &amp;lt;dbl&amp;gt;, framed &amp;lt;dbl&amp;gt;, grass &amp;lt;dbl&amp;gt;, guest &amp;lt;dbl&amp;gt;,
-## #   half_circle_frame &amp;lt;dbl&amp;gt;, half_oval_frame &amp;lt;dbl&amp;gt;, hills &amp;lt;dbl&amp;gt;,
+##   episode title apple_frame aurora_borealis  barn beach  boat bridge building
+##   &amp;lt;chr&amp;gt;   &amp;lt;chr&amp;gt;       &amp;lt;dbl&amp;gt;           &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt;    &amp;lt;dbl&amp;gt;
+## 1 S01E01  &amp;quot;\&amp;quot;A~           0               0     0     0     0      0        0
+## 2 S01E02  &amp;quot;\&amp;quot;M~           0               0     0     0     0      0        0
+## 3 S01E03  &amp;quot;\&amp;quot;E~           0               0     0     0     0      0        0
+## 4 S01E04  &amp;quot;\&amp;quot;W~           0               0     0     0     0      0        0
+## 5 S01E05  &amp;quot;\&amp;quot;Q~           0               0     0     0     0      0        0
+## 6 S01E06  &amp;quot;\&amp;quot;W~           0               0     0     0     0      0        0
+## # ... with 60 more variables: bushes &amp;lt;dbl&amp;gt;, cabin &amp;lt;dbl&amp;gt;, cactus &amp;lt;dbl&amp;gt;,
+## #   circle_frame &amp;lt;dbl&amp;gt;, cirrus &amp;lt;dbl&amp;gt;, cliff &amp;lt;dbl&amp;gt;, clouds &amp;lt;dbl&amp;gt;, conifer &amp;lt;dbl&amp;gt;,
+## #   cumulus &amp;lt;dbl&amp;gt;, deciduous &amp;lt;dbl&amp;gt;, diane_andre &amp;lt;dbl&amp;gt;, dock &amp;lt;dbl&amp;gt;,
+## #   double_oval_frame &amp;lt;dbl&amp;gt;, farm &amp;lt;dbl&amp;gt;, fence &amp;lt;dbl&amp;gt;, fire &amp;lt;dbl&amp;gt;,
+## #   florida_frame &amp;lt;dbl&amp;gt;, flowers &amp;lt;dbl&amp;gt;, fog &amp;lt;dbl&amp;gt;, framed &amp;lt;dbl&amp;gt;, grass &amp;lt;dbl&amp;gt;,
+## #   guest &amp;lt;dbl&amp;gt;, half_circle_frame &amp;lt;dbl&amp;gt;, half_oval_frame &amp;lt;dbl&amp;gt;, hills &amp;lt;dbl&amp;gt;,
 ## #   lake &amp;lt;dbl&amp;gt;, lakes &amp;lt;dbl&amp;gt;, lighthouse &amp;lt;dbl&amp;gt;, mill &amp;lt;dbl&amp;gt;, moon &amp;lt;dbl&amp;gt;,
 ## #   mountain &amp;lt;dbl&amp;gt;, mountains &amp;lt;dbl&amp;gt;, night &amp;lt;dbl&amp;gt;, ocean &amp;lt;dbl&amp;gt;,
 ## #   oval_frame &amp;lt;dbl&amp;gt;, palm_trees &amp;lt;dbl&amp;gt;, path &amp;lt;dbl&amp;gt;, person &amp;lt;dbl&amp;gt;,
 ## #   portrait &amp;lt;dbl&amp;gt;, rectangle_3d_frame &amp;lt;dbl&amp;gt;, rectangular_frame &amp;lt;dbl&amp;gt;,
 ## #   river &amp;lt;dbl&amp;gt;, rocks &amp;lt;dbl&amp;gt;, seashell_frame &amp;lt;dbl&amp;gt;, snow &amp;lt;dbl&amp;gt;,
-## #   snowy_mountain &amp;lt;dbl&amp;gt;, split_frame &amp;lt;dbl&amp;gt;, steve_ross &amp;lt;dbl&amp;gt;,
-## #   structure &amp;lt;dbl&amp;gt;, sun &amp;lt;dbl&amp;gt;, tomb_frame &amp;lt;dbl&amp;gt;, tree &amp;lt;dbl&amp;gt;, trees &amp;lt;dbl&amp;gt;,
-## #   triple_frame &amp;lt;dbl&amp;gt;, waterfall &amp;lt;dbl&amp;gt;, waves &amp;lt;dbl&amp;gt;, windmill &amp;lt;dbl&amp;gt;,
-## #   window_frame &amp;lt;dbl&amp;gt;, winter &amp;lt;dbl&amp;gt;, wood_framed &amp;lt;dbl&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+## #   snowy_mountain &amp;lt;dbl&amp;gt;, split_frame &amp;lt;dbl&amp;gt;, steve_ross &amp;lt;dbl&amp;gt;, structure &amp;lt;dbl&amp;gt;,
+## #   sun &amp;lt;dbl&amp;gt;, tomb_frame &amp;lt;dbl&amp;gt;, tree &amp;lt;dbl&amp;gt;, trees &amp;lt;dbl&amp;gt;, triple_frame &amp;lt;dbl&amp;gt;,
+## #   waterfall &amp;lt;dbl&amp;gt;, waves &amp;lt;dbl&amp;gt;, windmill &amp;lt;dbl&amp;gt;, window_frame &amp;lt;dbl&amp;gt;,
+## #   winter &amp;lt;dbl&amp;gt;, wood_framed &amp;lt;dbl&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Temos cada uma das 403 pinturas que Bob Ross fez ao longo dos 11 anos e 31 temporadas de &lt;em&gt;The Joy of Painting&lt;/em&gt;, cada uma delas contendo os diversos elementos presentes em cada pintura: casas, barcos, palmeiras, árvores etc.&lt;/p&gt;
 &lt;p&gt;Para organizar um pouco a tabela, vamos usar a função &lt;code&gt;gather&lt;/code&gt;, colocando os diversos elementos em uma única coluna e sua existência ou não como outra coluna. Vamos também separar episódio e temporada em colunas próprias, numéricas, usando algumas funções do pacote &lt;code&gt;stringr&lt;/code&gt; e um pouquinho de &lt;code&gt;regex&lt;/code&gt;.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bob_ross_gather &amp;lt;- bob_ross %&amp;gt;% 
@@ -140,6 +139,7 @@ bob_ross_veg %&amp;gt;%
        caption = &amp;quot;Fonte: Tidy Tuesday (https://github.com/rfordatascience/tidytuesday)&amp;quot;) + 
   facet_wrap(~element) +
   theme_bw()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## `geom_smooth()` using formula &amp;#39;y ~ x&amp;#39;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2019-08-06-bob/index_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Aparentemente Bob Ross era bem consistente em suas pinturas. Também dá pra perceber a maior presença de plantas de climas mais frios (coníferas, decíduas) comparada à frequência daquelas de climas quentes (palmeiras, cactos). Isso continua nos mostrando como suas pinturas geralmente retratavam paisagens mais frias.&lt;/p&gt;
 &lt;p&gt;Dá pra notar uma diminuição do número de arbustos e árvores decíduas e um aumento das coníferas. Bob parece ter ido para climas ainda mais frios conforme o tempo passou!&lt;/p&gt;
