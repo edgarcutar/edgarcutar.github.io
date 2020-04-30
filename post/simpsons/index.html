@@ -86,7 +86,7 @@ if (!require(&quot;pacman&quot;)) install.packages(&quot;pacman&quot;)pacman::p
   
   
   
-  <link rel="stylesheet" href="/css/academic.min.c4c1a2b19fab19f2de1e3d551e488d5c.css">
+  <link rel="stylesheet" href="/css/academic.min.ad3b6b564eecf3bded7ab4274cd100b7.css">
 
   
 
@@ -401,13 +401,13 @@ simpsons &lt;- readr::read_delim(&quot;https://raw.githubusercontent.com/rfordat
 simpsons %&gt;% glimpse()</code></pre>
 <pre><code>## Observations: 1,386
 ## Variables: 7
-## $ season          &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, ...
-## $ episode_ordinal &lt;dbl&gt; 2, 3, 3, 6, 6, 7, 8, 9, 10, 11, 12, 13, 13, 13, 14,...
-## $ season_episode  &lt;dbl&gt; 102, 103, 103, 106, 106, 107, 108, 109, 110, 111, 1...
-## $ production_code &lt;chr&gt; &quot;7G02&quot;, &quot;7G03&quot;, &quot;7G03&quot;, &quot;7G06&quot;, &quot;7G06&quot;, &quot;7G09&quot;, &quot;7G...
-## $ episode_title   &lt;chr&gt; &quot;Bart the Genius&quot;, &quot;Homer&#39;s Odyssey&quot;, &quot;Homer&#39;s Odys...
-## $ guest_star      &lt;chr&gt; &quot;Marcia Wallace&quot;, &quot;Sam McMurray&quot;, &quot;Marcia Wallace&quot;,...
-## $ role            &lt;chr&gt; &quot;Edna Krabappel;  Ms. Melon&quot;, &quot;Worker&quot;, &quot;Edna Kraba...</code></pre>
+## $ season          &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2...
+## $ episode_ordinal &lt;dbl&gt; 2, 3, 3, 6, 6, 7, 8, 9, 10, 11, 12, 13, 13, 13...
+## $ season_episode  &lt;dbl&gt; 102, 103, 103, 106, 106, 107, 108, 109, 110, 1...
+## $ production_code &lt;chr&gt; &quot;7G02&quot;, &quot;7G03&quot;, &quot;7G03&quot;, &quot;7G06&quot;, &quot;7G06&quot;, &quot;7G09&quot;...
+## $ episode_title   &lt;chr&gt; &quot;Bart the Genius&quot;, &quot;Homer&#39;s Odyssey&quot;, &quot;Homer&#39;s...
+## $ guest_star      &lt;chr&gt; &quot;Marcia Wallace&quot;, &quot;Sam McMurray&quot;, &quot;Marcia Wall...
+## $ role            &lt;chr&gt; &quot;Edna Krabappel;  Ms. Melon&quot;, &quot;Worker&quot;, &quot;Edna ...</code></pre>
 <p>No primeiro gráfico gostaria de usar a função <code>step_other()</code> do pacote <code>recipes</code> para unir todos os <code>roles</code> com menos de 1% de frequência na base. O pacote <a href="https://tidymodels.github.io/recipes/"><code>recipes</code></a> é idealizado para pré-processamento de dados pelo <a href="https://twitter.com/topepos">Max Kuhn</a>(Software Engineer do RStudio e mago da modelagem preditiva). Vale a pena dar uma olhada nas funções disponíveis nesse pacote.</p>
 <p>Também é usada a função <code>background_image()</code> do pacote <code>ggpubr</code>.</p>
 <pre class="r"><code>springfield &lt;- readJPEG(&quot;img/spring.jpg&quot;)
@@ -438,20 +438,9 @@ most_frequent %&gt;%
 <p>Bacana, né?</p>
 <p>Seguindo uma baita ideia de layout do <a href="https://twitter.com/_Gil_Henriques">Gil Henriques</a> e uma dica que vi na internet e não lembro quem deu, gostaria de fazer outro gráfico: entre os convidados que interpretaram a si mesmos, qual o percentual de participação de homens e mulheres?</p>
 <p>Dessa vez vou usar o pacote <code>ggimage</code> pra colocar uma imagem ocupando todo o fundo do gráfico.</p>
-<pre class="r"><code>pacman::p_load(ggimage, patternplot)</code></pre>
-<pre><code>## package &#39;gridGraphics&#39; successfully unpacked and MD5 sums checked
-## package &#39;ggplotify&#39; successfully unpacked and MD5 sums checked
-## package &#39;rvcheck&#39; successfully unpacked and MD5 sums checked
-## package &#39;ggimage&#39; successfully unpacked and MD5 sums checked
-## 
-## The downloaded binary packages are in
-##  C:\Users\edgarj\AppData\Local\Temp\RtmpQ9McIb\downloaded_packages
-## package &#39;RcppParallel&#39; successfully unpacked and MD5 sums checked
-## package &#39;patternplot&#39; successfully unpacked and MD5 sums checked
-## 
-## The downloaded binary packages are in
-##  C:\Users\edgarj\AppData\Local\Temp\RtmpQ9McIb\downloaded_packages</code></pre>
-<pre class="r"><code>man_vs_women &lt;- simpsons %&gt;% 
+<pre class="r"><code>pacman::p_load(ggimage, patternplot)
+
+man_vs_women &lt;- simpsons %&gt;% 
   filter(role %in% c(&quot;Himself&quot;, &quot;Herself&quot;)) %&gt;% 
   group_by(season = round(season/2)*2, role) %&gt;% 
   summarise(number = n())
