@@ -45,24 +45,24 @@ imperadores &amp;lt;- readr::read_csv(&amp;quot;https://raw.githubusercontent.co
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;imperadores %&amp;gt;% glimpse()&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## Observations: 68
 ## Variables: 18
-## $ index          &amp;lt;dbl&amp;gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, ...
-## $ name           &amp;lt;chr&amp;gt; &amp;quot;Augustus&amp;quot;, &amp;quot;Tiberius&amp;quot;, &amp;quot;Caligula&amp;quot;, &amp;quot;Claudius&amp;quot;,...
-## $ name_full      &amp;lt;chr&amp;gt; &amp;quot;IMPERATOR CAESAR DIVI FILIVS AVGVSTVS&amp;quot;, &amp;quot;TIBER...
-## $ birth          &amp;lt;date&amp;gt; -062-09-23, -041-11-16, 0012-08-31, -009-08-01...
-## $ death          &amp;lt;date&amp;gt; 0014-08-19, 0037-03-16, 0041-01-24, 0054-10-13...
-## $ birth_cty      &amp;lt;chr&amp;gt; &amp;quot;Rome&amp;quot;, &amp;quot;Rome&amp;quot;, &amp;quot;Antitum&amp;quot;, &amp;quot;Lugdunum&amp;quot;, &amp;quot;Antitum...
-## $ birth_prv      &amp;lt;chr&amp;gt; &amp;quot;Italia&amp;quot;, &amp;quot;Italia&amp;quot;, &amp;quot;Italia&amp;quot;, &amp;quot;Gallia Lugdunens...
-## $ rise           &amp;lt;chr&amp;gt; &amp;quot;Birthright&amp;quot;, &amp;quot;Birthright&amp;quot;, &amp;quot;Birthright&amp;quot;, &amp;quot;Birt...
-## $ reign_start    &amp;lt;date&amp;gt; -026-01-16, 0014-09-18, 0037-03-18, 0041-01-25...
-## $ reign_end      &amp;lt;date&amp;gt; 0014-08-19, 0037-03-16, 0041-01-24, 0054-10-13...
-## $ cause          &amp;lt;chr&amp;gt; &amp;quot;Assassination&amp;quot;, &amp;quot;Assassination&amp;quot;, &amp;quot;Assassinatio...
-## $ killer         &amp;lt;chr&amp;gt; &amp;quot;Wife&amp;quot;, &amp;quot;Other Emperor&amp;quot;, &amp;quot;Senate&amp;quot;, &amp;quot;Wife&amp;quot;, &amp;quot;Sen...
-## $ dynasty        &amp;lt;chr&amp;gt; &amp;quot;Julio-Claudian&amp;quot;, &amp;quot;Julio-Claudian&amp;quot;, &amp;quot;Julio-Clau...
-## $ era            &amp;lt;chr&amp;gt; &amp;quot;Principate&amp;quot;, &amp;quot;Principate&amp;quot;, &amp;quot;Principate&amp;quot;, &amp;quot;Prin...
-## $ notes          &amp;lt;chr&amp;gt; &amp;quot;birth, reign.start are BCE. Assign negative fo...
-## $ verif_who      &amp;lt;chr&amp;gt; &amp;quot;Reddit user zonination&amp;quot;, &amp;quot;Reddit user zoninati...
-## $ age_death      &amp;lt;dbl&amp;gt; 75.90411, 77.32877, 28.40000, 63.20000, 30.4836...
-## $ reign_duration &amp;lt;dbl&amp;gt; 40.5890411, 22.4904110, 3.8547945, 13.7150685, ...&lt;/code&gt;&lt;/pre&gt;
+## $ index          &amp;lt;dbl&amp;gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1...
+## $ name           &amp;lt;chr&amp;gt; &amp;quot;Augustus&amp;quot;, &amp;quot;Tiberius&amp;quot;, &amp;quot;Caligula&amp;quot;, &amp;quot;Claudius&amp;quot;, &amp;quot;Ner...
+## $ name_full      &amp;lt;chr&amp;gt; &amp;quot;IMPERATOR CAESAR DIVI FILIVS AVGVSTVS&amp;quot;, &amp;quot;TIBERIVS C...
+## $ birth          &amp;lt;date&amp;gt; -062-09-23, -041-11-16, 0012-08-31, -009-08-01, 003...
+## $ death          &amp;lt;date&amp;gt; 0014-08-19, 0037-03-16, 0041-01-24, 0054-10-13, 006...
+## $ birth_cty      &amp;lt;chr&amp;gt; &amp;quot;Rome&amp;quot;, &amp;quot;Rome&amp;quot;, &amp;quot;Antitum&amp;quot;, &amp;quot;Lugdunum&amp;quot;, &amp;quot;Antitum&amp;quot;, &amp;quot;T...
+## $ birth_prv      &amp;lt;chr&amp;gt; &amp;quot;Italia&amp;quot;, &amp;quot;Italia&amp;quot;, &amp;quot;Italia&amp;quot;, &amp;quot;Gallia Lugdunensis&amp;quot;, ...
+## $ rise           &amp;lt;chr&amp;gt; &amp;quot;Birthright&amp;quot;, &amp;quot;Birthright&amp;quot;, &amp;quot;Birthright&amp;quot;, &amp;quot;Birthrigh...
+## $ reign_start    &amp;lt;date&amp;gt; -026-01-16, 0014-09-18, 0037-03-18, 0041-01-25, 005...
+## $ reign_end      &amp;lt;date&amp;gt; 0014-08-19, 0037-03-16, 0041-01-24, 0054-10-13, 006...
+## $ cause          &amp;lt;chr&amp;gt; &amp;quot;Assassination&amp;quot;, &amp;quot;Assassination&amp;quot;, &amp;quot;Assassination&amp;quot;, &amp;quot;...
+## $ killer         &amp;lt;chr&amp;gt; &amp;quot;Wife&amp;quot;, &amp;quot;Other Emperor&amp;quot;, &amp;quot;Senate&amp;quot;, &amp;quot;Wife&amp;quot;, &amp;quot;Senate&amp;quot;,...
+## $ dynasty        &amp;lt;chr&amp;gt; &amp;quot;Julio-Claudian&amp;quot;, &amp;quot;Julio-Claudian&amp;quot;, &amp;quot;Julio-Claudian&amp;quot;...
+## $ era            &amp;lt;chr&amp;gt; &amp;quot;Principate&amp;quot;, &amp;quot;Principate&amp;quot;, &amp;quot;Principate&amp;quot;, &amp;quot;Principat...
+## $ notes          &amp;lt;chr&amp;gt; &amp;quot;birth, reign.start are BCE. Assign negative for cor...
+## $ verif_who      &amp;lt;chr&amp;gt; &amp;quot;Reddit user zonination&amp;quot;, &amp;quot;Reddit user zonination&amp;quot;, ...
+## $ age_death      &amp;lt;dbl&amp;gt; 75.90411, 77.32877, 28.40000, 63.20000, 30.48361, 70...
+## $ reign_duration &amp;lt;dbl&amp;gt; 40.5890411, 22.4904110, 3.8547945, 13.7150685, 13.65...&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;A primeira coisa que eu gostaria de ver é uma distribuição das causas de morte dos imperadores. Tenho impressão que não era um trabalho fácil. A função &lt;code&gt;fct_reorder()&lt;/code&gt;, do pacote &lt;code&gt;forcats&lt;/code&gt;, &lt;a href=&#34;https://forcats.tidyverse.org/&#34;&gt;pacote feito para manipulação de fatores&lt;/a&gt;, nos ajuda a deixar os fatores na ordem decrescente que queremos para gráfico.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;resumo_causas &amp;lt;- imperadores %&amp;gt;%
   group_by(cause) %&amp;gt;% 
@@ -83,6 +83,87 @@ resumo_causas %&amp;gt;%
   theme_bw() +
   theme(text = element_text(family = &amp;quot;RomanT&amp;quot;),
         axis.text.x = element_text(angle = -5, vjust = -0.5)) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family not
+## found in Windows font database
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family not
+## found in Windows font database
+
+## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family not
+## found in Windows font database&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database
+
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Realmente não era uma vida tranquila.&lt;/p&gt;
 &lt;p&gt;Agora, para unir as mortes violentas em um grupo só, podemos usar &lt;code&gt;fct_collapse()&lt;/code&gt;, também do pacote &lt;code&gt;forcats&lt;/code&gt;.&lt;/p&gt;
@@ -108,6 +189,45 @@ resumo_coll %&amp;gt;%
   scale_x_discrete(labels = c(&amp;quot;Mortes Violentas&amp;quot;, &amp;quot;Causas Naturais&amp;quot;, &amp;quot;Outros&amp;quot;)) +
   theme_bw() +
   theme(text = element_text(family = &amp;quot;RomanT&amp;quot;)) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## font family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database
+
+## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, : font
+## family not found in Windows font database&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2019-08-13-roma/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Pelo menos 65% dos imperadores romanos morreram violentamente. Isso me deixa curioso para saber quantos golpes de Estado ocorreram em Roma e com qual frequência eles aconteceram.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;golpes &amp;lt;- imperadores %&amp;gt;% 

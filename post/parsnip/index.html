@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.4.0">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Edgar Cutar Junior">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Neste segundo post da série sobre o Tidymodels, o conjunto de pacotes desenvolvido por Max Kuhn para ajuste de modelos preditivos para R, iremos falar sobre o {parsnip}. Esse post saiu quase todo da própria página do pacote parsnip assim como de posts do Max Kuhn no RStudio (notadamente este e este). Todas as eventuais piadas ruins são minhas mesmo.
+Cenouras e PastinagasParsnip é o nome em inglês da pastinaga, parente esquecida da cenoura.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="/post/parsnip/">
+
+  
+
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="hsl(339, 90%, 68%)">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css" crossorigin="anonymous" title="hl-light" disabled>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark">
+        
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.css" integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ==" crossorigin="anonymous">
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono&display=swap">
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.min.c4c1a2b19fab19f2de1e3d551e488d5c.css">
+
+  
+
+  
+  
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-144596672-2', 'auto');
+      
+      ga('require', 'eventTracker');
+      ga('require', 'outboundLinkTracker');
+      ga('require', 'urlChangeTracker');
+      ga('send', 'pageview');
+    </script>
+    <script async src="https://www.google-analytics.com/analytics.js"></script>
+    
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/autotrack/2.4.1/autotrack.js" integrity="sha512-HUmooslVKj4m6OBu0OgzjXXr+QuFYy/k7eLI5jdeEy/F4RSgMn6XRWRGkFi5IFaFgy7uFTkegp3Z0XnJf3Jq+g==" crossorigin="anonymous"></script>
+    
+  
+  
+
+  
+
+  
+
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="/post/parsnip/">
+
+  
+  
+  
+  
+    
+  
+  
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="twitter:site" content="@edgar_cutar">
+  <meta property="twitter:creator" content="@edgar_cutar">
+  
+  <meta property="og:site_name" content="Edgar Cutar Junior">
+  <meta property="og:url" content="/post/parsnip/">
+  <meta property="og:title" content="Ajuste de modelos preditivos com o pacote {parsnip} | Edgar Cutar Junior">
+  <meta property="og:description" content="Neste segundo post da série sobre o Tidymodels, o conjunto de pacotes desenvolvido por Max Kuhn para ajuste de modelos preditivos para R, iremos falar sobre o {parsnip}. Esse post saiu quase todo da própria página do pacote parsnip assim como de posts do Max Kuhn no RStudio (notadamente este e este). Todas as eventuais piadas ruins são minhas mesmo.
+Cenouras e PastinagasParsnip é o nome em inglês da pastinaga, parente esquecida da cenoura."><meta property="og:image" content="/post/parsnip/featured.jpeg">
+  <meta property="twitter:image" content="/post/parsnip/featured.jpeg"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2019-10-06T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2020-03-20T13:24:00-03:00">
+  
+
+  
+
+
+  
+
+
+
+
+
+  <title>Ajuste de modelos preditivos com o pacote {parsnip} | Edgar Cutar Junior</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="dark">
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0 compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="/">Edgar Cutar Junior</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav ml-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+        </li>
+        
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+  <article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+<div class="article-container pt-3">
+  <h1 itemprop="name">Ajuste de modelos preditivos com o pacote {parsnip}</h1>
+
+  
+
+  
+
+
+
+<meta content="2019-10-06 00:00:00 &#43;0000 UTC" itemprop="datePublished">
+<meta content="2020-03-20 13:24:00 -0300 -03" itemprop="dateModified">
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+          Last updated on
+      
+    
+    <time>Mar 20, 2020</time>
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    8 min read
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+
+  
+    
+
+  
+
+</div>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+<div class="article-header article-container featured-image-wrapper mt-4 mb-4" style="max-width: 600px; max-height: 338px;">
+  <div style="position: relative">
+    <img src="/post/parsnip/featured.jpeg" alt="" class="featured-image">
+    
+  </div>
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      
+
+
+<p>Neste <a href="https://www.linkedin.com/pulse/pr%C3%A9-processamento-de-dados-r-com-o-pacote-recipes-edgar-cutar-junior/">segundo post da série sobre o Tidymodels</a>, o conjunto de pacotes desenvolvido por <a href="twitter.com/topepos">Max Kuhn</a> para ajuste de modelos preditivos para R, iremos falar sobre o <a href="https://tidymodels.github.io/parsnip/">{parsnip}</a>. Esse post saiu quase todo da <a href="https://tidymodels.github.io/parsnip/">própria página do pacote parsnip</a> assim como de posts do Max Kuhn no RStudio (notadamente <a href="https://www.tidyverse.org/blog/2019/04/parsnip-internals/">este</a> e <a href="https://www.tidyverse.org/blog/2018/11/parsnip-0-0-1/">este</a>). Todas as eventuais piadas ruins são minhas mesmo.</p>
+<div id="cenouras-e-pastinagas" class="section level2">
+<h2>Cenouras e Pastinagas</h2>
+<p><img src="Parsnip_vs_carrot.jpg" /></p>
+<p>Parsnip é o nome em inglês da pastinaga, parente esquecida da cenoura. Originalmente parsnip era o pacote que iria substituir o <a href="http://caret.r-forge.r-project.org/">{caret}</a> (a pronúncia de caret é igual a “carrot”, cenoura em inglês), que foi o primeiro pacote integrado para modelagem preditiva para R, desenvolvido no começo dos anos 2000 pelo mesmo Max Kuhn, na época diretor de pesquisa não-clínica na Pfizer.</p>
+<p>Com a evolução do pacote, a ideia originaldo Parsnip acabou se desdobrando no conjunto de pacotes que compõem o {tidymodels}, cada um deles especializado em tarefas específicas da modelagem preditiva. Com isso <a href="https://www.tidyverse.org/blog/2018/11/parsnip-0-0-1/">Parsnip ficou com um problema bem específico, a interface.</a></p>
+</div>
+<div id="uma-interface-padronizada" class="section level2">
+<h2>Uma interface padronizada</h2>
+<p>Diversas funções e pacotes oferecem diferentes interfaces e parâmetros para objetivos parecidos, e o parsnip padroniza essa interface para o ajuste dos modelos e também para retornar os valores preditos.</p>
+<div id="o-problema" class="section level3">
+<h3>O Problema</h3>
+<p>O problema de inconsistência de interface é facilmente encontrado em diversos modelos do R. Um exemplo simples acontece na regressão logística. Talvez o mais consagrado modo de <a href="https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/glm">ajustar uma regressão logística seja através do pacote <code>glm</code></a>. Esse pacote usa a sintaxe padrão do R (<a href="https://www.amazon.com.br/dp/B07737S8XJ/ref=dp-kindle-redirect?_encoding=UTF8&amp;btkr=1">que, na verdade, precede o R</a>).</p>
+<p>Para ajustar uma regressão logística no <code>glm</code> você:</p>
+<ul>
+<li>Usa o método da fórmula para definir as variáveis preditoras e o que deve ser predito.</li>
+<li>O método da fórmula usa o formato <code>Y ~ X1 + X2 + X3</code></li>
+<li>Para especificar que é um modelo logístico usamos o argumento <code>family = binomial</code></li>
+</ul>
+<p>Agora vamos supor que eu queira aplicar alguma regularização nesse modelo. Uma escolha possível seria <a href="https://cran.r-project.org/web/packages/glmnet/index.html">usando o pacote <code>glmnet</code></a>. Nesse caso:</p>
+<ul>
+<li>Esse pacote não usa o método da fórmula, deve-se entregar os preditores em uma matriz (o que implica que variáveis “dummy” devem ser pré-computadas)</li>
+<li>O argumento da família muda ligeiramente, e deve ser <code>family = "binomial"</code></li>
+</ul>
+<p>O problema seria ainda maior se eu tentasse usar a interface para o TensorFlow no pacote <code>keras</code>. O <code>keras</code> tem uma abordagem muito interessante para encadear modelos de Deep Learning mas a formulação é completamente diferente do tradicional. Ajustar um modelo usando <code>keras</code> exigiria estudar e entender uma outra forma de sintaxe de modelos.</p>
+<p>O problema se estende a como os diferentes pacotes retornam predições. A maior parte dos pacotes em R usam a função <code>predict()</code>. Para retornar um vetor de probabilidades na nossa regressão logística, usaríamos <code>predict(obj, newdata, type = "response")</code>. Mas essa convenção varia bastante entre pacotes.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Função</th>
+<th>Pacote</th>
+<th>Código</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>glm</td>
+<td>stats</td>
+<td>predict(obj, type = “response”)</td>
+</tr>
+<tr class="even">
+<td>lda</td>
+<td>MASS</td>
+<td>predict(obj)</td>
+</tr>
+<tr class="odd">
+<td>gbm</td>
+<td>gbm</td>
+<td>predict(obj, type = “response”, n.trees)</td>
+</tr>
+<tr class="even">
+<td>mda</td>
+<td>mda</td>
+<td>predict(obj, type = “posterior”)</td>
+</tr>
+<tr class="odd">
+<td>rpart</td>
+<td>rpart</td>
+<td>predict(obj, type = “prob”)</td>
+</tr>
+<tr class="even">
+<td>Weka</td>
+<td>RWeka</td>
+<td>predict(obj, type = “probability”)</td>
+</tr>
+</tbody>
+</table>
+<p>Numa instância maior, podemos ter ainda mais problemas: alguns modelos podem criar predições em vários submodelos de uma vez. Quando usamos Boosted Trees ajustadas com <em>i</em> árvores, podemos fazer uma predição usando menos de <em>i</em> iterações (efetivamente criando um novo modelo de predição), o que pode levar a mais inconsistências.</p>
+<p>Esse tipo de problema, quando agregado, podia levar ao questionamento</p>
+<blockquote>
+<p>O R está trabalhando pra mim ou eu estou trabalhando para o R?</p>
+</blockquote>
+</div>
+<div id="a-solução" class="section level3">
+<h3>A solução</h3>
+<p>Para demonstrar como o <code>parsnip</code> funciona, vamos seguir com o exemplo da regressão logística.</p>
+<p>Para isso vamos usar uma base de dados chamada <code>Smarket</code>, do pacote ISLR, que tem os retornos diários do índice S&amp;P500 entre 2001 e 2005. Vamos começar dividindo a base em treino e teste. Vamos centralizar e escalar usando uma receita simples do pacote <code>recipes</code><a href="(https://www.linkedin.com/pulse/pr%C3%A9-processamento-de-dados-r-com-o-pacote-recipes-edgar-cutar-junior/)">(falamos sobre esse pacote no último post)</a>].</p>
+<pre class="r"><code>if (!require(&quot;pacman&quot;)) install.packages(&quot;pacman&quot;)</code></pre>
+<pre><code>## Carregando pacotes exigidos: pacman</code></pre>
+<pre class="r"><code>pacman::p_load(tidymodels, ISLR) 
+
+split &lt;- initial_split(Smarket %&gt;% select(-Year, -Today), props = 9/10)
+smarket_train &lt;- training(split)
+smarket_test  &lt;- testing(split)
+
+smarket_rec &lt;- recipe(Direction ~ ., data = smarket_train) %&gt;%
+  step_center(all_predictors()) %&gt;%
+  step_scale(all_predictors()) %&gt;%
+  prep(training = smarket_train, retain = TRUE)
+
+train_data &lt;- juice(smarket_rec)
+test_data  &lt;- bake(smarket_rec, smarket_test)</code></pre>
+<p>Para usar o <code>parsnip</code>, você começa com a especificação de um modelo. É um objeto simples que define a intenção daquele modelo. Já que vamos seguir com nossa saga de regressão logística, nosso primeiro passo é uma função simples.</p>
+<pre class="r"><code>market_model &lt;- logistic_reg()
+market_model</code></pre>
+<pre><code>## Logistic Regression Model Specification (classification)</code></pre>
+<p>Pode parecer estranho porque não entramos com absolutamente nenhum detalhe sobre o que vamos fazer, mas é isso aí mesmo! O <code>parsnip</code> oferece uma variedade de formas para ajustar esse modelo. Nós vamos usar o tradicional Método dos Mínimos Quadrados, mas poderia ser com penalização (via lasso, ridge, Bayes etc)… Diferenciamos um caso do outro através da <em><em>Engine</em> computacional</em>, que é uma combinação de tipo de estimação com implementação. Pode ser através de um pacote ou uma plataforma como Spark ou TensorFlow. Para começar simples, vamos usar o glm.</p>
+<pre class="r"><code>glm_market_model &lt;- market_model %&gt;% set_engine(&quot;glm&quot;)
+glm_market_model</code></pre>
+<pre><code>## Logistic Regression Model Specification (classification)
+## 
+## Computational engine: glm</code></pre>
+<p>Não existem mais muitos argumentos por aqui, então vamos pular direto pro ajuste do modelo. Nossas duas escolhas nesse ponto são entre usar <code>fit()</code> ou <code>fit_xy()</code>. O primeiro usa o método da fórmula, enquanto o segundo usa objetos separados para os preditores e para o resultado.</p>
+<pre class="r"><code>glm_fit &lt;- glm_market_model %&gt;%
+  fit(Direction ~ ., data = train_data)
+
+#ou
+
+glm_market_model %&gt;%
+  fit_xy(x = select(train_data, -Direction), y = select(train_data, Direction))</code></pre>
+<pre><code>## parsnip model object
+## 
+## Fit time:  20ms 
+## 
+## Call:  stats::glm(formula = formula, family = stats::binomial, data = data)
+## 
+## Coefficients:
+## (Intercept)         Lag1         Lag2         Lag3         Lag4         Lag5  
+##    0.103028    -0.133905    -0.043881     0.011143     0.002595     0.008425  
+##      Volume  
+##    0.047614  
+## 
+## Degrees of Freedom: 937 Total (i.e. Null);  931 Residual
+## Null Deviance:       1298 
+## Residual Deviance: 1293  AIC: 1307</code></pre>
+<p>Claro que não é necessário fazer todos esses passos individualmente, e poderíamos simplesmente condensar tudo em um só objeto.</p>
+<pre class="r"><code>glm_fit &lt;- logistic_reg() %&gt;% 
+  set_engine(&quot;glm&quot;) %&gt;% 
+  fit(Direction ~ ., data = train_data)</code></pre>
+</div>
+<div id="mais-engines" class="section level3">
+<h3>Mais engines!</h3>
+<p>O valor do <code>parsnip</code> começa quando queremos testar diferentes <em>engines</em>. Vamos usar o mesmo modelo e estimar os coeficientes através de estimativa Bayesiana usando <code>stan</code>. Para isso só precisamos:</p>
+<pre class="r"><code>stan_model &lt;- logistic_reg() %&gt;% 
+  set_engine(&quot;stan&quot;)
+
+stan_model</code></pre>
+<pre><code>## Logistic Regression Model Specification (classification)
+## 
+## Computational engine: stan</code></pre>
+<p>Para ajustar esse modelo, o <code>parsnip</code> chamou a função <code>stan_glm()</code> do pacote <code>rstanarm</code>. Se você quiser passar argumentos para essa função, simplesmente adicione eles na função <code>set_engine()</code>:</p>
+<pre class="r"><code>stan_model &lt;- logistic_reg() %&gt;% 
+  set_engine(&quot;stan&quot;, iter = 5000) 
+
+stan_model</code></pre>
+<pre><code>## Logistic Regression Model Specification (classification)
+## 
+## Engine-Specific Arguments:
+##   iter = 5000
+## 
+## Computational engine: stan</code></pre>
+<p>O modelo pode ser ajustado da mesma forma. <code>rstanarm</code> printa <em>MUITAS</em> informações ao ajustar um modelo. Isso pode ser útil para diagnóstico mas vamos excluir usando uma função de controle.</p>
+<pre class="r"><code>ctrl &lt;- fit_control(verbosity = 0)
+
+stan_fit &lt;- stan_model %&gt;%
+    fit(Direction ~ ., data = train_data, control = ctrl)
+
+stan_fit</code></pre>
+<pre><code>## parsnip model object
+## 
+## Fit time:  7.9s 
+## stan_glm
+##  family:       binomial [logit]
+##  formula:      Direction ~ .
+##  observations: 938
+##  predictors:   7
+## ------
+##             Median MAD_SD
+## (Intercept)  0.1    0.1  
+## Lag1        -0.1    0.1  
+## Lag2         0.0    0.1  
+## Lag3         0.0    0.1  
+## Lag4         0.0    0.1  
+## Lag5         0.0    0.1  
+## Volume       0.0    0.1  
+## 
+## ------
+## * For help interpreting the printed output see ?print.stanreg
+## * For info on the priors used see ?prior_summary.stanreg</code></pre>
+</div>
+<div id="predições" class="section level3">
+<h3>Predições</h3>
+<p>Além das óbvias funcionalidades para ajustar diferentes modelos, ainda temos muitas vantagens na hora de prever resultados. Isso resolve uma série de frustrações como ter um arquivo predito que PULA algum resultado quando tem valores faltando, por exemplo, além de padronizar a função.</p>
+<p>Para regressões logísticas, por exemplo, o output é sempre um <code>tibble</code> com uma coluna <code>.pred_class</code> contendo a classe predita.</p>
+<pre class="r"><code>predict(glm_fit, test_data)</code></pre>
+<pre><code>## # A tibble: 312 x 1
+##    .pred_class
+##    &lt;fct&gt;      
+##  1 Down       
+##  2 Up         
+##  3 Up         
+##  4 Up         
+##  5 Down       
+##  6 Up         
+##  7 Up         
+##  8 Up         
+##  9 Down       
+## 10 Up         
+## # ... with 302 more rows</code></pre>
+<pre class="r"><code>predict(stan_fit, test_data)</code></pre>
+<pre><code>## # A tibble: 312 x 1
+##    .pred_class
+##    &lt;fct&gt;      
+##  1 Down       
+##  2 Up         
+##  3 Up         
+##  4 Up         
+##  5 Down       
+##  6 Up         
+##  7 Up         
+##  8 Up         
+##  9 Down       
+## 10 Up         
+## # ... with 302 more rows</code></pre>
+<p>Isso facilita a união com os valores originais e o <code>.</code> no nome é para evitar nomes duplicados.</p>
+<p><code>parsnip</code> também trás diferentes tipos de previsão com uma interface padrão. Por exemplo, para estimativa de intervalos.</p>
+<pre class="r"><code>predict(glm_fit, test_data, type = &quot;conf_int&quot;)</code></pre>
+<pre><code>## # A tibble: 312 x 4
+##    .pred_lower_Down .pred_upper_Down .pred_lower_Up .pred_upper_Up
+##               &lt;dbl&gt;            &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;
+##  1            0.429            0.611          0.389          0.571
+##  2            0.439            0.553          0.447          0.561
+##  3            0.400            0.557          0.443          0.600
+##  4            0.396            0.544          0.456          0.604
+##  5            0.436            0.586          0.414          0.564
+##  6            0.329            0.509          0.491          0.671
+##  7            0.396            0.549          0.451          0.604
+##  8            0.313            0.648          0.352          0.687
+##  9            0.449            0.676          0.324          0.551
+## 10            0.251            0.500          0.500          0.749
+## # ... with 302 more rows</code></pre>
+<p>Ou para as probabilidades de cada previsão:</p>
+<pre class="r"><code>predict(glm_fit, test_data, type = &quot;prob&quot;)</code></pre>
+<pre><code>## # A tibble: 312 x 2
+##    .pred_Down .pred_Up
+##         &lt;dbl&gt;    &lt;dbl&gt;
+##  1      0.521    0.479
+##  2      0.496    0.504
+##  3      0.478    0.522
+##  4      0.469    0.531
+##  5      0.511    0.489
+##  6      0.416    0.584
+##  7      0.472    0.528
+##  8      0.478    0.522
+##  9      0.566    0.434
+## 10      0.367    0.633
+## # ... with 302 more rows</code></pre>
+</div>
+</div>
+<div id="próximos-passos" class="section level2">
+<h2>Próximos passos</h2>
+<p>Esse artigo apenas toca a superfície das possibilidades de uso do pacote <code>parsnip</code>. Nos próximos artigos vamos explorar como fazer uma <em>grid search</em> pelos melhores parâmetros, como fazer uma <em>k-fold Cross Validation</em> usando esta interface e como avaliar a performance de modelos, tudo isso usando os tidymodels.</p>
+</div>
+
+    </div>
+
+    
+
+
+    
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/predictive/">predictive</a>
+  
+  <a class="badge badge-light" href="/tags/fitting/">fitting</a>
+  
+  <a class="badge badge-light" href="/tags/max/">max</a>
+  
+  <a class="badge badge-light" href="/tags/tidymodels/">tidymodels</a>
+  
+</div>
+
+
+
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  <div class="media author-card" itemscope itemtype="http://schema.org/Person">
+    
+      
+      <img class="portrait mr-3" src="/authors/admin/avatar_hue0081ed01cf7870b31222544075fac03_48912_250x250_fill_q90_lanczos_center.jpg" itemprop="image" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title" itemprop="name"><a href="/">Edgar Cutar Junior</a></h5>
+      
+      
+      <ul class="network-icon" aria-hidden="true">
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+          <li>
+            <a itemprop="sameAs" href="mailto:e.cutar@gmail.com" >
+              <i class="fas fa-envelope"></i>
+            </a>
+          </li>
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="https://twitter.com/edgar_cutar" target="_blank" rel="noopener">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </li>
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="https://github.com/edgarcutar" target="_blank" rel="noopener">
+              <i class="fab fa-github"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+
+      
+      
+      <div class="article-widget">
+        <div class="hr-light"></div>
+        <h3>Related</h3>
+        <ul>
+          
+          <li><a href="/post/recipes/">Pré-processamento de dados com o pacote {recipes}</a></li>
+          
+        </ul>
+      </div>
+      
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+    
+    <script src="/js/mathjax-config.js"></script>
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js" integrity="sha256-aYTdUrn6Ow1DDgh5JTc3aDGnnju48y/1c8s1dgkYPQ8=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/languages/r.min.js"></script>
+        
+      
+
+      
+      
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_CHTML-full" integrity="sha256-GhM+5JHb6QUzOQPXSJLEWP7R73CbkisjzK5Eyij4U9w=" crossorigin="anonymous" async></script>
+      
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.js" integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log==" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "results found",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.16bbb3750feb7244c9bc409a5a4fe678.js"></script>
+
+    
+
+
+
+
+
+
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+  <p class="powered-by">
+    
+      <a href="/privacy/">Privacy Policy</a>
+    
+    
+       &middot; 
+      <a href="/terms/">Terms</a>
+        
+  </p>
+  
+
+  <p class="powered-by">
+    
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

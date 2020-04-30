@@ -13,6 +13,14 @@
     </image>
     
     <item>
+      <title>fitting</title>
+      <link>/tags/fitting/</link>
+      <pubDate>Sun, 06 Oct 2019 00:00:00 +0000</pubDate>
+      <guid>/tags/fitting/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>max</title>
       <link>/tags/max/</link>
       <pubDate>Sun, 06 Oct 2019 00:00:00 +0000</pubDate>
@@ -33,6 +41,14 @@
       <link>/tags/preprocessing/</link>
       <pubDate>Sun, 06 Oct 2019 00:00:00 +0000</pubDate>
       <guid>/tags/preprocessing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tidy</title>
+      <link>/tags/tidy/</link>
+      <pubDate>Sun, 06 Oct 2019 00:00:00 +0000</pubDate>
+      <guid>/tags/tidy/</guid>
       <description></description>
     </item>
     
@@ -145,14 +161,6 @@
       <link>/tags/bob-ross/</link>
       <pubDate>Tue, 06 Aug 2019 08:54:32 -0300</pubDate>
       <guid>/tags/bob-ross/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>tidy</title>
-      <link>/tags/tidy/</link>
-      <pubDate>Mon, 29 Jul 2019 00:00:00 +0000</pubDate>
-      <guid>/tags/tidy/</guid>
       <description></description>
     </item>
     

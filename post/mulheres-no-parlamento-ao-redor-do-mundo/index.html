@@ -86,7 +86,7 @@ if (!require(&quot;pacman&quot;)) install.">
   
   
   
-  <link rel="stylesheet" href="/css/academic.min.ad3b6b564eecf3bded7ab4274cd100b7.css">
+  <link rel="stylesheet" href="/css/academic.min.c4c1a2b19fab19f2de1e3d551e488d5c.css">
 
   
 
@@ -383,7 +383,7 @@ if (!require(&quot;pacman&quot;)) install."><meta property="og:image" content="/
 <p>A base que queremos está disponível via <code>wbstats</code> e tem o código “SG.GEN.PARL.ZS”. Então vamos buscá-la através do pacote, puxando os dados desde 1997 (quando os dados começaram a ser coletados).</p>
 <pre class="r"><code>if (!require(&quot;pacman&quot;)) install.packages(&quot;pacman&quot;)</code></pre>
 <pre><code>## Carregando pacotes exigidos: pacman</code></pre>
-<pre class="r"><code>pacman::p_load(tidyverse, scales,wbstats)
+<pre class="r"><code>pacman::p_load(tidyverse, scales, wbstats)
 
 women &lt;- wbstats::wb(indicator = &quot;SG.GEN.PARL.ZS&quot;, 
                      startdate = 1997, 
@@ -393,13 +393,13 @@ women &lt;- wbstats::wb(indicator = &quot;SG.GEN.PARL.ZS&quot;,
 <pre class="r"><code>women %&gt;% glimpse()</code></pre>
 <pre><code>## Observations: 3,971
 ## Variables: 7
-## $ iso3c       &lt;chr&gt; &quot;AFG&quot;, &quot;AFG&quot;, &quot;AFG&quot;, &quot;AFG&quot;, &quot;AFG&quot;, &quot;AFG&quot;, &quot;AFG&quot;, &quot;...
-## $ date        &lt;chr&gt; &quot;2018&quot;, &quot;2017&quot;, &quot;2016&quot;, &quot;2015&quot;, &quot;2014&quot;, &quot;2013&quot;, &quot;2...
-## $ value       &lt;dbl&gt; 27.7, 27.7, 27.7, 27.7, 27.7, 27.7, 27.7, 27.7, 27...
-## $ indicatorID &lt;chr&gt; &quot;SG.GEN.PARL.ZS&quot;, &quot;SG.GEN.PARL.ZS&quot;, &quot;SG.GEN.PARL.Z...
-## $ indicator   &lt;chr&gt; &quot;Proportion of seats held by women in national par...
-## $ iso2c       &lt;chr&gt; &quot;AF&quot;, &quot;AF&quot;, &quot;AF&quot;, &quot;AF&quot;, &quot;AF&quot;, &quot;AF&quot;, &quot;AF&quot;, &quot;AF&quot;, &quot;A...
-## $ country     &lt;chr&gt; &quot;Afghanistan&quot;, &quot;Afghanistan&quot;, &quot;Afghanistan&quot;, &quot;Afgh...</code></pre>
+## $ iso3c       &lt;chr&gt; &quot;AFG&quot;, &quot;AFG&quot;, &quot;AFG&quot;, &quot;AFG&quot;, &quot;AFG&quot;, &quot;AFG&quot;, &quot;AFG&quot;, &quot;AFG&quot;,...
+## $ date        &lt;chr&gt; &quot;2018&quot;, &quot;2017&quot;, &quot;2016&quot;, &quot;2015&quot;, &quot;2014&quot;, &quot;2013&quot;, &quot;2012&quot;,...
+## $ value       &lt;dbl&gt; 27.7, 27.7, 27.7, 27.7, 27.7, 27.7, 27.7, 27.7, 27.7, 2...
+## $ indicatorID &lt;chr&gt; &quot;SG.GEN.PARL.ZS&quot;, &quot;SG.GEN.PARL.ZS&quot;, &quot;SG.GEN.PARL.ZS&quot;, &quot;...
+## $ indicator   &lt;chr&gt; &quot;Proportion of seats held by women in national parliame...
+## $ iso2c       &lt;chr&gt; &quot;AF&quot;, &quot;AF&quot;, &quot;AF&quot;, &quot;AF&quot;, &quot;AF&quot;, &quot;AF&quot;, &quot;AF&quot;, &quot;AF&quot;, &quot;AF&quot;, &quot;...
+## $ country     &lt;chr&gt; &quot;Afghanistan&quot;, &quot;Afghanistan&quot;, &quot;Afghanistan&quot;, &quot;Afghanist...</code></pre>
 <p>Ok, cada país possui 22 linhas, de 1997 a 2018.</p>
 <p>Em primeiro lugar, eu gostaria de ver como a média mundial está se comportando desde 1997:</p>
 <pre class="r"><code>media_mundo &lt;- women %&gt;% 
@@ -440,8 +440,8 @@ women %&gt;%
   xlim(0,100) +
   scale_x_continuous(breaks = (0:10)*10) +
   theme_minimal()</code></pre>
-<pre><code>## Scale for &#39;x&#39; is already present. Adding another scale for &#39;x&#39;, which
-## will replace the existing scale.</code></pre>
+<pre><code>## Scale for &#39;x&#39; is already present. Adding another scale for &#39;x&#39;, which will
+## replace the existing scale.</code></pre>
 <p><img src="/post/2019-07-29-mulheres/index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>Nesse segundo gráfico temos um novo panorama, até menos animador. Embora em boa parte do mundo a situação parlamentar tenha evoluído, ainda existe uma boa quantidade de países em que o percentual ainda é muito baixo, abaixo de 10% das cadeiras sendo ocupadas por mulheres.</p>
 <p>Pra finalizar, vamos dar uma olhada na situação do Brasil frente ao resto do mundo. Pra isso, vamos isolar a participação tupininquim das demais.</p>

@@ -44,13 +44,13 @@ simpsons &amp;lt;- readr::read_delim(&amp;quot;https://raw.githubusercontent.com
 simpsons %&amp;gt;% glimpse()&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## Observations: 1,386
 ## Variables: 7
-## $ season          &amp;lt;dbl&amp;gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2...
-## $ episode_ordinal &amp;lt;dbl&amp;gt; 2, 3, 3, 6, 6, 7, 8, 9, 10, 11, 12, 13, 13, 13...
-## $ season_episode  &amp;lt;dbl&amp;gt; 102, 103, 103, 106, 106, 107, 108, 109, 110, 1...
-## $ production_code &amp;lt;chr&amp;gt; &amp;quot;7G02&amp;quot;, &amp;quot;7G03&amp;quot;, &amp;quot;7G03&amp;quot;, &amp;quot;7G06&amp;quot;, &amp;quot;7G06&amp;quot;, &amp;quot;7G09&amp;quot;...
-## $ episode_title   &amp;lt;chr&amp;gt; &amp;quot;Bart the Genius&amp;quot;, &amp;quot;Homer&amp;#39;s Odyssey&amp;quot;, &amp;quot;Homer&amp;#39;s...
-## $ guest_star      &amp;lt;chr&amp;gt; &amp;quot;Marcia Wallace&amp;quot;, &amp;quot;Sam McMurray&amp;quot;, &amp;quot;Marcia Wall...
-## $ role            &amp;lt;chr&amp;gt; &amp;quot;Edna Krabappel;  Ms. Melon&amp;quot;, &amp;quot;Worker&amp;quot;, &amp;quot;Edna ...&lt;/code&gt;&lt;/pre&gt;
+## $ season          &amp;lt;dbl&amp;gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, ...
+## $ episode_ordinal &amp;lt;dbl&amp;gt; 2, 3, 3, 6, 6, 7, 8, 9, 10, 11, 12, 13, 13, 13, 14,...
+## $ season_episode  &amp;lt;dbl&amp;gt; 102, 103, 103, 106, 106, 107, 108, 109, 110, 111, 1...
+## $ production_code &amp;lt;chr&amp;gt; &amp;quot;7G02&amp;quot;, &amp;quot;7G03&amp;quot;, &amp;quot;7G03&amp;quot;, &amp;quot;7G06&amp;quot;, &amp;quot;7G06&amp;quot;, &amp;quot;7G09&amp;quot;, &amp;quot;7G...
+## $ episode_title   &amp;lt;chr&amp;gt; &amp;quot;Bart the Genius&amp;quot;, &amp;quot;Homer&amp;#39;s Odyssey&amp;quot;, &amp;quot;Homer&amp;#39;s Odys...
+## $ guest_star      &amp;lt;chr&amp;gt; &amp;quot;Marcia Wallace&amp;quot;, &amp;quot;Sam McMurray&amp;quot;, &amp;quot;Marcia Wallace&amp;quot;,...
+## $ role            &amp;lt;chr&amp;gt; &amp;quot;Edna Krabappel;  Ms. Melon&amp;quot;, &amp;quot;Worker&amp;quot;, &amp;quot;Edna Kraba...&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;No primeiro gráfico gostaria de usar a função &lt;code&gt;step_other()&lt;/code&gt; do pacote &lt;code&gt;recipes&lt;/code&gt; para unir todos os &lt;code&gt;roles&lt;/code&gt; com menos de 1% de frequência na base. O pacote &lt;a href=&#34;https://tidymodels.github.io/recipes/&#34;&gt;&lt;code&gt;recipes&lt;/code&gt;&lt;/a&gt; é idealizado para pré-processamento de dados pelo &lt;a href=&#34;https://twitter.com/topepos&#34;&gt;Max Kuhn&lt;/a&gt;(Software Engineer do RStudio e mago da modelagem preditiva). Vale a pena dar uma olhada nas funções disponíveis nesse pacote.&lt;/p&gt;
 &lt;p&gt;Também é usada a função &lt;code&gt;background_image()&lt;/code&gt; do pacote &lt;code&gt;ggpubr&lt;/code&gt;.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;springfield &amp;lt;- readJPEG(&amp;quot;img/spring.jpg&amp;quot;)
@@ -81,9 +81,20 @@ most_frequent %&amp;gt;%
 &lt;p&gt;Bacana, né?&lt;/p&gt;
 &lt;p&gt;Seguindo uma baita ideia de layout do &lt;a href=&#34;https://twitter.com/_Gil_Henriques&#34;&gt;Gil Henriques&lt;/a&gt; e uma dica que vi na internet e não lembro quem deu, gostaria de fazer outro gráfico: entre os convidados que interpretaram a si mesmos, qual o percentual de participação de homens e mulheres?&lt;/p&gt;
 &lt;p&gt;Dessa vez vou usar o pacote &lt;code&gt;ggimage&lt;/code&gt; pra colocar uma imagem ocupando todo o fundo do gráfico.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pacman::p_load(ggimage, patternplot)
-
-man_vs_women &amp;lt;- simpsons %&amp;gt;% 
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pacman::p_load(ggimage, patternplot)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## package &amp;#39;gridGraphics&amp;#39; successfully unpacked and MD5 sums checked
+## package &amp;#39;ggplotify&amp;#39; successfully unpacked and MD5 sums checked
+## package &amp;#39;rvcheck&amp;#39; successfully unpacked and MD5 sums checked
+## package &amp;#39;ggimage&amp;#39; successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+##  C:\Users\edgarj\AppData\Local\Temp\RtmpQ9McIb\downloaded_packages
+## package &amp;#39;RcppParallel&amp;#39; successfully unpacked and MD5 sums checked
+## package &amp;#39;patternplot&amp;#39; successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+##  C:\Users\edgarj\AppData\Local\Temp\RtmpQ9McIb\downloaded_packages&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;man_vs_women &amp;lt;- simpsons %&amp;gt;% 
   filter(role %in% c(&amp;quot;Himself&amp;quot;, &amp;quot;Herself&amp;quot;)) %&amp;gt;% 
   group_by(season = round(season/2)*2, role) %&amp;gt;% 
   summarise(number = n())

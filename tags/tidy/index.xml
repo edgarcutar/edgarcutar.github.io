@@ -5,7 +5,7 @@
     <link>/tags/tidy/</link>
       <atom:link href="/tags/tidy/index.xml" rel="self" type="application/rss+xml" />
     <description>tidy</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Mon, 29 Jul 2019 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 06 Oct 2019 00:00:00 +0000</lastBuildDate>
     <image>
       <url>/img/edgar.jpg</url>
       <title>tidy</title>
@@ -24,7 +24,7 @@
 &lt;p&gt;A base que queremos está disponível via &lt;code&gt;wbstats&lt;/code&gt; e tem o código “SG.GEN.PARL.ZS”. Então vamos buscá-la através do pacote, puxando os dados desde 1997 (quando os dados começaram a ser coletados).&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;if (!require(&amp;quot;pacman&amp;quot;)) install.packages(&amp;quot;pacman&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## Carregando pacotes exigidos: pacman&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pacman::p_load(tidyverse, scales,wbstats)
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pacman::p_load(tidyverse, scales, wbstats)
 
 women &amp;lt;- wbstats::wb(indicator = &amp;quot;SG.GEN.PARL.ZS&amp;quot;, 
                      startdate = 1997, 
@@ -34,13 +34,13 @@ women &amp;lt;- wbstats::wb(indicator = &amp;quot;SG.GEN.PARL.ZS&amp;quot;,
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;women %&amp;gt;% glimpse()&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## Observations: 3,971
 ## Variables: 7
-## $ iso3c       &amp;lt;chr&amp;gt; &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;...
-## $ date        &amp;lt;chr&amp;gt; &amp;quot;2018&amp;quot;, &amp;quot;2017&amp;quot;, &amp;quot;2016&amp;quot;, &amp;quot;2015&amp;quot;, &amp;quot;2014&amp;quot;, &amp;quot;2013&amp;quot;, &amp;quot;2...
-## $ value       &amp;lt;dbl&amp;gt; 27.7, 27.7, 27.7, 27.7, 27.7, 27.7, 27.7, 27.7, 27...
-## $ indicatorID &amp;lt;chr&amp;gt; &amp;quot;SG.GEN.PARL.ZS&amp;quot;, &amp;quot;SG.GEN.PARL.ZS&amp;quot;, &amp;quot;SG.GEN.PARL.Z...
-## $ indicator   &amp;lt;chr&amp;gt; &amp;quot;Proportion of seats held by women in national par...
-## $ iso2c       &amp;lt;chr&amp;gt; &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;A...
-## $ country     &amp;lt;chr&amp;gt; &amp;quot;Afghanistan&amp;quot;, &amp;quot;Afghanistan&amp;quot;, &amp;quot;Afghanistan&amp;quot;, &amp;quot;Afgh...&lt;/code&gt;&lt;/pre&gt;
+## $ iso3c       &amp;lt;chr&amp;gt; &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;, &amp;quot;AFG&amp;quot;,...
+## $ date        &amp;lt;chr&amp;gt; &amp;quot;2018&amp;quot;, &amp;quot;2017&amp;quot;, &amp;quot;2016&amp;quot;, &amp;quot;2015&amp;quot;, &amp;quot;2014&amp;quot;, &amp;quot;2013&amp;quot;, &amp;quot;2012&amp;quot;,...
+## $ value       &amp;lt;dbl&amp;gt; 27.7, 27.7, 27.7, 27.7, 27.7, 27.7, 27.7, 27.7, 27.7, 2...
+## $ indicatorID &amp;lt;chr&amp;gt; &amp;quot;SG.GEN.PARL.ZS&amp;quot;, &amp;quot;SG.GEN.PARL.ZS&amp;quot;, &amp;quot;SG.GEN.PARL.ZS&amp;quot;, &amp;quot;...
+## $ indicator   &amp;lt;chr&amp;gt; &amp;quot;Proportion of seats held by women in national parliame...
+## $ iso2c       &amp;lt;chr&amp;gt; &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;AF&amp;quot;, &amp;quot;...
+## $ country     &amp;lt;chr&amp;gt; &amp;quot;Afghanistan&amp;quot;, &amp;quot;Afghanistan&amp;quot;, &amp;quot;Afghanistan&amp;quot;, &amp;quot;Afghanist...&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Ok, cada país possui 22 linhas, de 1997 a 2018.&lt;/p&gt;
 &lt;p&gt;Em primeiro lugar, eu gostaria de ver como a média mundial está se comportando desde 1997:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;media_mundo &amp;lt;- women %&amp;gt;% 
@@ -81,8 +81,8 @@ women %&amp;gt;%
   xlim(0,100) +
   scale_x_continuous(breaks = (0:10)*10) +
   theme_minimal()&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## Scale for &amp;#39;x&amp;#39; is already present. Adding another scale for &amp;#39;x&amp;#39;, which
-## will replace the existing scale.&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Scale for &amp;#39;x&amp;#39; is already present. Adding another scale for &amp;#39;x&amp;#39;, which will
+## replace the existing scale.&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2019-07-29-mulheres/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Nesse segundo gráfico temos um novo panorama, até menos animador. Embora em boa parte do mundo a situação parlamentar tenha evoluído, ainda existe uma boa quantidade de países em que o percentual ainda é muito baixo, abaixo de 10% das cadeiras sendo ocupadas por mulheres.&lt;/p&gt;
 &lt;p&gt;Pra finalizar, vamos dar uma olhada na situação do Brasil frente ao resto do mundo. Pra isso, vamos isolar a participação tupininquim das demais.&lt;/p&gt;
